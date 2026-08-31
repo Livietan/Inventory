@@ -56,7 +56,12 @@ input::placeholder {
     padding: 8px;
     user-select: none;
     cursor: pointer;
+    border-radius: 4px;
 }
 .auth-login:hover {
-    background: #646566;
+    background: #2A2C2F;
+    color: #F2F2F2;
+}
+.auth-login:active {
+    background: #3A3D42;
 }

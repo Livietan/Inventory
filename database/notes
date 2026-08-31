@@ -2,3 +2,4 @@ table user:
 ID primary key autoincrement
 username varchar(64)
 password varchar(32)
+role varchar(16)

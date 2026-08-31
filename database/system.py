@@ -6,7 +6,7 @@ cursor = connect.cursor()
 
 cursor.execute("""
 CREATE TABLE user (
-ID AUTO INCREMENT PRIMARY KEY INT,
+ID INTEGER PRIMARY KEY AUTOINCREMENT,
 username VARCHAR(64),
 password VARCHAR(32)
 );

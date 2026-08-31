@@ -1,1 +1,4 @@
-name table user
+table user:
+ID primary key autoincrement
+username varchar(64)
+password varchar(32)

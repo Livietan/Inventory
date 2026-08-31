@@ -8,7 +8,8 @@ cursor.execute("""
 CREATE TABLE user (
 ID INTEGER PRIMARY KEY AUTOINCREMENT,
 username VARCHAR(64),
-password VARCHAR(32)
+password VARCHAR(32),
+role VARCHAR(16)
 );
 """)
 

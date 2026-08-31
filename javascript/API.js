@@ -1,9 +1,6 @@
-const registerSubmit = document.getElementById("register");
+import { username, password } from "./dashboard";
 
-async function register() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
+export async function register() {
   var role = "admin";
   const response = await fetch(
     `http://127.0.0.1:8000/register?username=${username}&password=${password}&role=${role}`,
@@ -16,7 +13,3 @@ async function register() {
     alert(detail.status);
   }
 }
-
-registerSubmit.addEventListener("click", () => {
-  register();
-});

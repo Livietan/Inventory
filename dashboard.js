@@ -12,8 +12,8 @@ async function register() {
   if (detail.status == "valid") {
     console.log(detail.status);
   }
-  if (detail.status == "invalid") {
-    console.log(detail.status);
+  if (detail.status == "Username Not Available") {
+    alert(detail.status);
   }
 }
 

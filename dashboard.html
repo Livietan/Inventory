@@ -8,15 +8,22 @@
   </head>
   <body>
     <div class="container">
-        <div class="content">
-            <span>Account as admin</span>
-            <span>you will access as admin</span>
-        </div>
+      <div class="content" style="color: #B8BBC2;">
+        <span>Account as admin</span>
+        <span>you will access as admin</span>
+      </div>
       <div class="auth">
-        <span style="font-size: 18px; font-weight: 500;">username</span>
-        <input type="text" class="inp-username" />
-        <span style="font-size: 18px; font-weight: 500;">password</span>
-        <input type="text" class="inp-password" />
+        <div class="auth-username" style="display: flex; flex-direction: column;">
+          <span style="font-size: 18px; font-weight: 500">username</span>
+          <input type="text" class="inp-username" placeholder="your username"/>
+        </div>
+        <div class="auth-password" style="display: flex; flex-direction: column;">
+          <span style="font-size: 18px; font-weight: 500">password</span>
+          <input type="text" class="inp-password" placeholder="your password"/>
+        </div>
+        <div class="auth-button" style="text-align: center;">
+            <span>Access</span>
+        </div>
       </div>
     </div>
   </body>

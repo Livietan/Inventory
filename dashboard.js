@@ -8,10 +8,15 @@ async function register() {
   const response = await fetch(
     `http://127.0.0.1:8000/register?username=${username}&password=${password}&role=${role}`,
   );
-  console.log("valid");
-  return response;
+  var detail = await response.json();
+  if (detail.status == "valid") {
+    console.log(detail.status);
+  }
+  if (detail.status == "invalid") {
+    console.log(detail.status);
+  }
 }
 
 registerSubmit.addEventListener("click", () => {
-    register();
-})
+  register();
+});

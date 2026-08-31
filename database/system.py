@@ -10,15 +10,31 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+def fetch():
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    cursor.execute("SELECT * FROM user")
+    for i in cursor:
+        print(i)
+    connect.close()
+    connect.close()
+
+fetch()
+
 @app.get("/register")
 def main(username:str, password:str, role:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("""
-    INSERT INTO user (username, password, role) VALUES (?, ?, ?)
-    """, (username, password, role))
-    connect.commit()
-    connect.close()
+    try:
+        cursor.execute("""
+        INSERT INTO user (username, password, role) VALUES (?, ?, ?)
+        """, (username, password, role))
+        connect.commit()
+        return {"status": "valid"}
+    except:
+        return {"status": "invalid"}
+    finally:
+        connect.close()
 
 @app.get("/login")
 def main():

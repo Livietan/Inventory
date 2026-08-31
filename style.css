@@ -20,10 +20,11 @@ body {
   transform: translate(-50%, -50%);
   justify-content: center;
   width: fit-content;
-  padding: 64px;
+  padding: 54px;
   gap: 18px;
   color: var(--color-text);
   border-radius: 8px;
+  font-family: "Inter", sans-serif;
 }
 .content {
   display: flex;
@@ -31,6 +32,9 @@ body {
   width: 22rem;
   text-align: center;
   font-size: 26px;
+  cursor: pointer;
+  user-select: none;
+  justify-content: center;
 }
 .auth {
   display: flex;
@@ -46,11 +50,13 @@ input {
 input::placeholder {
   color: #7d8088;
 }
-.auth-button {
+.auth-login {
     background: #F2F2F2;
     color: #111214;
     padding: 8px;
+    user-select: none;
+    cursor: pointer;
 }
-.auth-button:hover {
+.auth-login:hover {
     background: #646566;
 }

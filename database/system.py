@@ -19,6 +19,8 @@ def fetch():
     connect.close()
     connect.close()
 
+fetch()
+
 @app.get("/register")
 def main(username:str, password:str, role:str):
     connect = sqlite3.connect("data/data.db")
@@ -28,9 +30,9 @@ def main(username:str, password:str, role:str):
         INSERT INTO user (username, password, role) VALUES (?, ?, ?)
         """, (username, password, role))
         connect.commit()
-        return {"status": "valid"}
+        return {"status": True, "detail": "valid"}
     except:
-        return {"status": "Username Not Available"}
+        return {"status": False, "detail": "username is not aviable"}
     finally:
         connect.close()
 

@@ -1,9 +1,9 @@
-import { register } from "./API";
+import { register } from "./API.js";
 
 const registerSubmit = document.getElementById("register");
-export const username = document.getElementById("username").value;
-export const password = document.getElementById("password").value;
+export const username = document.getElementById("username");
+export const password = document.getElementById("password");
 
 registerSubmit.addEventListener("click", () => {
-  register();
+  register()
 });

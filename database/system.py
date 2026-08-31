@@ -1,17 +1,25 @@
 import sqlite3
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-connect = sqlite3.connect("data/data.db")
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
-cursor = connect.cursor()
+@app.get("/register")
+def main(username:str, password:str, role:str):
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    cursor.execute("""
+    INSERT INTO user (username, password, role) VALUES (?, ?, ?)
+    """, (username, password, role))
+    connect.commit()
+    connect.close()
 
-cursor.execute("""
-CREATE TABLE user (
-ID INTEGER PRIMARY KEY AUTOINCREMENT,
-username VARCHAR(64),
-password VARCHAR(32),
-role VARCHAR(16)
-);
-""")
-
-connect.commit()
-connect.close()
+@app.get("/login")
+def main():
+    pass

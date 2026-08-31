@@ -1,4 +1,4 @@
-import { username, password } from "./dashboard.js";
+import { username, password } from "./access.js";
 
 export var token = null;
 export async function register() {

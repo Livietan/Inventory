@@ -9,9 +9,26 @@ body {
 :root {
   --color-text: #f5f5f5;
 }
-.container {
+.container-admin {
   position: absolute;
   display: flex;
+  align-items: center;
+  background: #1a1b1e;
+  border: 1px solid #34363b;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  width: fit-content;
+  padding: 54px;
+  gap: 18px;
+  color: var(--color-text);
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+}
+.container-manager {
+  position: absolute;
+  display: none;
   align-items: center;
   background: #1a1b1e;
   border: 1px solid #34363b;

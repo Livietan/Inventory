@@ -1,3 +1,7 @@
+:root {
+  --background-sidebar: #111111;
+  --background-menu: rgba(255, 255, 255, 0.12);
+}
 body {
   margin: 0;
   display: flex;

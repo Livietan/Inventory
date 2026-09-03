@@ -34,9 +34,14 @@ body {
   background: var(--background-menu);
 }
 /* content */
-.content span {
+.content {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.content span {
+    font-size: 56px;
 }

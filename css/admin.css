@@ -1,8 +1,3 @@
-/* sidebar */
-:root {
-  --background-sidebar: #111111;
-  --background-menu: rgba(255, 255, 255, 0.12);
-}
 body {
   margin: 0;
   display: flex;
@@ -33,11 +28,4 @@ body {
 }
 .menu:hover {
   background: var(--background-menu);
-}
-/* content */
-.content span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }

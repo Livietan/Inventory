@@ -1,8 +1,8 @@
+/* sidebar */
 :root {
   --background-sidebar: #111111;
   --background-menu: rgba(255, 255, 255, 0.12);
 }
-
 body {
   margin: 0;
   display: flex;
@@ -24,13 +24,13 @@ body {
   padding: 6px;
   border-radius: 8px;
   background: var(--background-menu);
-  border: 1px solid white;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 .menu {
-    display: flex;
-    padding: 6px;
-    border-radius: 8px;
+  display: flex;
+  padding: 6px;
+  border-radius: 8px;
 }
 .menu:hover {
-    background: var(--background-menu);
+  background: var(--background-menu);
 }

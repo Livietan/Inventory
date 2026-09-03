@@ -1,8 +1,8 @@
 import { register } from "./API.js";
 
 const registerSubmit = document.getElementById("register");
-export const username = document.getElementById("username");
-export const password = document.getElementById("password");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
 
 var adminContent = document.getElementById("admin-content");
 var managerContent = document.getElementById("manager-content");
@@ -20,5 +20,5 @@ managerContent.addEventListener("click", () => {
 });
 
 registerSubmit.addEventListener("click", () => {
-  register();
+  register(username, password);
 });

@@ -1,7 +1,5 @@
-import { username, password } from "./access.js";
-
 export var token = "akmal";
-export async function register() {
+export async function register(username, password) {
   if (username.value == "") {
     alert("username could'not empety")
   } else if (password.value == "") {

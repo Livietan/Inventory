@@ -1,4 +1,4 @@
-import { token } from "./API";
+import { token } from "./API.js";
 
 var firstMenu = document.getElementById("first-menu");
 var secondaryMenu = document.getElementById("secondary-menu");

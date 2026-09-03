@@ -1,5 +1,6 @@
 :root {
   --background-sidebar: #111111;
+  --background-menu: rgba(255, 255, 255, 0.12);
 }
 
 body {
@@ -15,12 +16,15 @@ body {
   padding: 10px 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
   align-items: center;
 }
 .menu-page {
   display: flex;
-  width: fit-content;
+  padding: 6px;
+  border-radius: 8px;
+  background: var(--background-menu);
+  border: 1px solid white;
 }
 .menu {
     display: flex;
@@ -28,5 +32,5 @@ body {
     border-radius: 8px;
 }
 .menu:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--background-menu);
 }

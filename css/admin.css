@@ -33,3 +33,10 @@ body {
 .menu:hover {
   background: var(--background-menu);
 }
+/* content */
+.content span {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -1,5 +1,5 @@
 :root {
-    --background-sidebar: ;
+  --background-sidebar: #111111;
 }
 
 body {
@@ -8,15 +8,25 @@ body {
   flex-direction: column;
 }
 .sidebar {
+  position: relative;
   height: 100vh;
-  width: 3rem;
-
-}
-.menu {
+  width: 4rem;
+  background: var(--background-sidebar);
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  align-items: center;
 }
-.menu svg {
-  height: 22px;
-  width: 22px;
+.menu-page {
+  display: flex;
+  width: fit-content;
+}
+.menu {
+    display: flex;
+    padding: 6px;
+    border-radius: 8px;
+}
+.menu:hover {
+    background: rgba(255, 255, 255, 0.06);
 }

@@ -10,6 +10,7 @@ export async function register(username, password, role) {
     var response = await request.json();
     if (response.status == true) {
       sessionStorage.setItem("user", response.user);
+      sessionStorage.setItem("role", response.role);
       window.location.href = `${response.role}-dashboard.html`;
     }
     if (response.status == false) {
@@ -30,6 +31,7 @@ export async function login(username, password, role) {
     var response = await request.json();
     if (response.status == true) {
       sessionStorage.setItem("user", response.user);
+      sessionStorage.setItem("role", response.role);
       window.location.href = `${response.role}-dashboard.html`;
     }
     if (response.status == false) {

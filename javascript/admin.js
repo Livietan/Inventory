@@ -1,10 +1,9 @@
-import { token } from "./API.js";
-
 var firstMenu = document.getElementById("first-menu");
 var secondaryMenu = document.getElementById("secondary-menu");
-var user = document.getElementById("user");
+var logoutMenu = document.getElementById("logout-menu");
+var userTag = document.getElementById("userTag");
 
-user.textContent = token;
+userTag.textContent = sessionStorage.getItem("user");
 
 firstMenu.addEventListener("click", () => {
   window.location.href = "admin-dashboard.html";
@@ -12,4 +11,8 @@ firstMenu.addEventListener("click", () => {
 
 secondaryMenu.addEventListener("click", () => {
   window.location.href = "admin-package.html";
+});
+logoutMenu.addEventListener("click", () => {
+  sessionStorage.removeItem("user");
+  window.location.href = "access.html";
 });

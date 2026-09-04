@@ -1,4 +1,3 @@
-export var token = null;
 export async function register(username, password, role) {
   if (username.value.trim() == "") {
     alert("username could'not empety")
@@ -10,7 +9,7 @@ export async function register(username, password, role) {
     );
     var response = await request.json();
     if (response.status == true) {
-      token = response.user;
+      sessionStorage.setItem("user", response.user);
       window.location.href = `${response.role}-dashboard.html`;
     }
     if (response.status == false) {

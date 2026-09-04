@@ -24,11 +24,15 @@ body {
   border-radius: 8px;
   background: var(--background-menu);
   border: 1px solid rgba(255, 255, 255, 0.18);
+  user-select: none;
+  cursor: pointer;
 }
 .menu {
   display: flex;
   padding: 6px;
   border-radius: 8px;
+  user-select: none;
+  cursor: pointer;
 }
 .menu:hover {
   background: var(--background-menu);
@@ -51,24 +55,42 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: grey;
+  background: rgba(0, 0, 0, 0.25);
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(5px);
 }
 .block-content {
-  height: fit-content;
-  width: fit-content;
   position: relative;
   align-items: center;
   display: flex;
   flex-direction: column;
-  background: black;
   border-radius: 10px;
-  color: white;
+  color: black;
   font-size: 54px;
   gap: 4px;
   padding: 12px;
+  font-family: "inter", sans-serif;
+  font-weight: 550;
+}
+.close {
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  user-select: none;
+}
+.close:hover {
+  background: rgba(255, 255, 255, 0.30);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.close:active {
+  background: rgba(255, 255, 255, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }

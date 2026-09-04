@@ -45,3 +45,30 @@ body {
 .content span {
   font-size: 56px;
 }
+/* blocked */
+.block-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: grey;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.block-content {
+  height: fit-content;
+  width: fit-content;
+  position: relative;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background: black;
+  border-radius: 10px;
+  color: white;
+  font-size: 54px;
+  gap: 4px;
+  padding: 12px;
+}

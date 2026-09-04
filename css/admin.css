@@ -47,12 +47,20 @@ body {
 .dashboard-header {
   position: relative;
   display: flex;
-  flex-direction: column;
   font-family: "Manrope", sans-serif;
+  align-items: center;
 }
 .text1 {
   font-size: 36px;
   font-weight: 550;
+}
+.datetime {
+  margin: 0 0 0 auto;
+  padding: 8px;
+  border-radius: 8px;
+  background: #E8EAED;
+  border: 1px solid  #C9CDD3;
+  color: #34373D;
 }
 /* job less */
 .job-less {

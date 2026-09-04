@@ -7,7 +7,9 @@ var closeMenu = document.getElementById("close");
 var user = sessionStorage.getItem("user");
 var role = sessionStorage.getItem("role");
 
-userTag.textContent = user;
+if (userTag) {
+  userTag.textContent = user;
+}
 
 if (role == "manager") {
   blockPopup.style.display = "none";

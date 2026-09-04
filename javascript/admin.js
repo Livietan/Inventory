@@ -6,9 +6,28 @@ var blockPopup = document.getElementById("block-popup");
 var closeMenu = document.getElementById("close");
 var user = sessionStorage.getItem("user");
 var role = sessionStorage.getItem("role");
+var dateTag = document.getElementById("dateTag");
+var dates = new Date();
+var date = dates.getDate();
+var mont = dates.getMonth();
+var year = dates.getFullYear();
+var day = [
+  "Monday",
+  "Tuesday",
+  "Wenesday",
+  "Thursday",
+  "Friday",
+  "saturday",
+  "Sunday",
+];
 
 if (userTag) {
   userTag.textContent = user;
+}
+
+if (dateTag) {
+  var times = `${day[date]} ${date}/${mont}/${year}`;
+  dateTag.textContent = times;
 }
 
 if (role == "admin") {
@@ -32,3 +51,4 @@ closeMenu.addEventListener("click", () => {
   sessionStorage.clear();
   window.location.href = "access.html";
 });
+

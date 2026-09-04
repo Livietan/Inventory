@@ -28,7 +28,7 @@ def main(username:str, password:str, role:str):
         INSERT INTO user (username, password, role) VALUES (?, ?, ?)
         """, (username, password, role))
         connect.commit()
-        return {"status": True, "detail": "valid"}
+        return {"status": True, "user": username, "role": role}
     except:
         return {"status": False, "detail": "username is not aviable"}
     finally:

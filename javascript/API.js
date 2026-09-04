@@ -1,19 +1,20 @@
-export var token = "akmal";
+export var token = null;
 export async function register(username, password, role) {
   if (username.value.trim() == "") {
     alert("username could'not empety")
   } else if (password.value.trim() == "") {
     alert("password could'not empety")
   } else {
-    const response = await fetch(
+    const request = await fetch(
       `http://127.0.0.1:8000/register?username=${username.value}&password=${password.value}&role=${role}`,
     );
-    var detail = await response.json();
-    if (detail.status == true) {
-      alert(username.value, role);
+    var response = await request.json();
+    if (response.status == true) {
+      token = response.user;
+      window.location.href = `${response.role}-dashboard.html`;
     }
-    if (detail.status == false) {
-      alert(detail.detail);
+    if (response.status == false) {
+      alert(response.detail);
     }
   }
 }

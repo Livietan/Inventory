@@ -1,8 +1,11 @@
 import { register } from "./API.js";
 
-const registerSubmit = document.getElementById("register");
-const username = document.getElementById("username");
-const password = document.getElementById("password");
+const registerAdmin = document.getElementById("register-admin");
+const usernameAdmin = document.getElementById("username-admin");
+const passwordAdmin = document.getElementById("password-admin");
+const registerManager = document.getElementById("register-manager");
+const usernameManager = document.getElementById("username-manager");
+const passwordManager = document.getElementById("password-manager");
 var role = "admin";
 
 var adminContent = document.getElementById("admin-content");
@@ -24,6 +27,10 @@ managerContent.addEventListener("click", () => {
   console.log(role);
 });
 
-registerSubmit.addEventListener("click", () => {
-  register(username, password, role);
+registerAdmin.addEventListener("click", () => {
+  register(usernameAdmin, passwordAdmin, role);
+});
+
+registerManager.addEventListener("click", () => {
+  register(usernameManager, passwordManager, role);
 });

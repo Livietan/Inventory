@@ -16,7 +16,7 @@ def fetch():
     cursor.execute("SELECT * FROM user")
     for i in cursor:
         print(i)
-    connect.close()
+    connect.commit()
     connect.close()
 
 @app.get("/register")

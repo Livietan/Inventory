@@ -1,13 +1,12 @@
 export var token = "akmal";
-export async function register(username, password) {
-  if (username.value == "") {
+export async function register(username, password, role) {
+  if (username.value.trim() == "") {
     alert("username could'not empety")
-  } else if (password.value == "") {
+  } else if (password.value.trim() == "") {
     alert("password could'not empety")
   } else {
-    var role = "admin";
     const response = await fetch(
-      `http://127.0.0.1:8000/register?username=${username.value}&password=${password.value}&role=${role}`,
+      `http://127.0.0.1:8000/register?username=${username.value}&password=${password.value}&role=${role.value}`,
     );
     var detail = await response.json();
     if (detail.status == true) {

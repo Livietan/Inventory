@@ -35,5 +35,14 @@ def main(username:str, password:str, role:str):
         connect.close()
 
 @app.get("/login")
-def main():
-    pass
+def main(username:str, password:str, role:str):
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    cursor.execute("""
+    SELECT username, password, role FROM user WHERE username=? AND password=? AND role=?
+    """, (username, password, role))
+    user = cursor.fetchone()
+    if user:
+        return {"status": True, "user": username, "role": role}
+    else:
+        return {"status": False, "detail": "password wrong or account not aviable"}

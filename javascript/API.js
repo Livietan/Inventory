@@ -17,6 +17,7 @@ export async function register(username, password, role) {
     }
   }
 }
+
 export async function login(username, password, role) {
   if (username.value.trim() == "") {
     alert("username could'not empety");

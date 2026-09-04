@@ -41,13 +41,34 @@ body {
 .content {
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  padding: 10px 28px;
+  width: 100%;
 }
-.content span {
-  font-size: 56px;
+.dashboard-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-family: "Manrope", sans-serif;
+}
+.text1 {
+  font-size: 36px;
+  font-weight: 550;
+}
+/* job less */
+.job-less {
+  height: 100%;
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.job-less img{
+  height: auto;
+  width: 22rem;
+}
+.job-less span {
+  font-size: 32px;
+  color: #5F6066;
 }
 /* blocked */
 .block-popup {
@@ -73,7 +94,7 @@ body {
   font-size: 54px;
   gap: 4px;
   padding: 12px;
-  font-family: "inter", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-weight: 550;
 }
 .close {
@@ -87,7 +108,7 @@ body {
   user-select: none;
 }
 .close:hover {
-  background: rgba(255, 255, 255, 0.30);
+  background: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 .close:active {

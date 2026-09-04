@@ -19,8 +19,6 @@ def fetch():
     connect.close()
     connect.close()
 
-fetch()
-
 @app.get("/register")
 def main(username:str, password:str, role:str):
     connect = sqlite3.connect("data/data.db")

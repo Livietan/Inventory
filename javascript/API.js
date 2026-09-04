@@ -6,11 +6,11 @@ export async function register(username, password, role) {
     alert("password could'not empety")
   } else {
     const response = await fetch(
-      `http://127.0.0.1:8000/register?username=${username.value}&password=${password.value}&role=${role.value}`,
+      `http://127.0.0.1:8000/register?username=${username.value}&password=${password.value}&role=${role}`,
     );
     var detail = await response.json();
     if (detail.status == true) {
-      console.log(detail.status);
+      alert(username.value, role);
     }
     if (detail.status == false) {
       alert(detail.detail);

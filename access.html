@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Inventory</title>
     <link rel="stylesheet" href="css/admin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,13 +18,11 @@
     </div>
     <div class="content">
       <div class="form">
-        <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; flex-direction: column; gap: 10px">
           <span class="head-form">Create an account</span>
           <span
             >Already have an account?
-            <span class="link-login" style="text-decoration: underline"
-              >Login</span
-            ></span
+            <span class="link-login">Login</span></span
           >
         </div>
         <div
@@ -37,7 +35,21 @@
           <input type="text" placeholder="Username" />
           <input type="password" placeholder="Password" />
         </div>
-        <div>
+        <label for="" class="radio">
+          <input class="radio" type="radio" value="agree" />
+          I agree to the
+          <span style="text-decoration: underline"
+            >Terms & Conditions</span
+          ></label
+        >
+        <div
+          style="
+            text-align: center;
+            gap: 10px;
+            display: flex;
+            flex-direction: column;
+          "
+        >
           <div class="button-login">
             <span>Create account</span>
           </div>

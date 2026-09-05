@@ -1,4 +1,6 @@
-
+:root {
+  --gap-input: 12px;
+}
 body {
   margin: 0;
   display: flex;
@@ -14,6 +16,7 @@ body {
   color: white;
   width: auto;
   justify-content: center;
+  align-items: center;
 }
 .image {
   overflow: hidden;
@@ -27,16 +30,46 @@ body {
   border-radius: 10px;
 }
 .head-form {
-  font-size: 64px;
-}
-.inpt2 {
-  width: 100%;
-  padding: 10px;
+  font-size: 68px;
+  font-weight: 500;
 }
 .form {
-  width: fit-content;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background: black;
+  gap: 2rem;
+}
+input {
+  width: 100%;
+  padding: 14px 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f5f5f5;
+  outline: none;
+  font-size: 16px;
+}
+input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+input:focus {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+.button-login {
+  background: #f2f2f2;
+  color: #0a0a0a;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+.button-login:hover {
+  background: #DADADA;
+}
+.button-login:active {
+  background: #C8C8C8;
+  transform: scale(0.99);
 }

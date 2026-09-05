@@ -18,20 +18,31 @@
     </div>
     <div class="content">
       <div class="form">
-        <span class="head-form">Create an account</span>
-        <div style="display: flex;">
-          <input type="text" placeholder="Frist name" style="width: 100%;"/>
-          <input type="text" placeholder="Last name" style="width: 100%;"/>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <span class="head-form">Create an account</span>
+          <span
+            >Already have an account?
+            <span class="link-login" style="text-decoration: underline"
+              >Login</span
+            ></span
+          >
         </div>
-        <input style="width: 100%; padding: 8px;" type="text" placeholder="Username" />
-        <input style="width: 100%; padding: 8px;" type="password" placeholder="Password" />
-        <div class="button-login">
-          <span>Create account</span>
-        </div>
-        <span
-          >Already have an account?<span class="link-login">Login</span></span
+        <div
+          style="display: flex; flex-direction: column; gap: var(--gap-input)"
         >
-        <span>Inventory System · Made by Akmal</span>
+          <div style="display: flex; gap: var(--gap-input)">
+            <input type="text" placeholder="Frist name" />
+            <input type="text" placeholder="Last name" />
+          </div>
+          <input type="text" placeholder="Username" />
+          <input type="password" placeholder="Password" />
+        </div>
+        <div>
+          <div class="button-login">
+            <span>Create account</span>
+          </div>
+          <span>Inventory System · Made by Akmal</span>
+        </div>
       </div>
     </div>
   </body>

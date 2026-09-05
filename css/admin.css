@@ -1,22 +1,25 @@
-html,
+
 body {
   margin: 0;
   display: flex;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: linear-gradient(150deg, #16181c 15%, #090a0c 100%, #030405 100%);
   font-family: "Inter", sans-serif;
+  overflow: hidden;
 }
 .form {
+  position: relative;
+  margin: 0 0 0 auto;
   display: flex;
   flex-direction: column;
   color: white;
-  padding: 20px;
-  width: 100%;
-  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -25%);
 }
 .image {
-  width: 45%;
+  width: 50%;
   height: 100%;
   overflow: hidden;
   padding: 40px;
@@ -30,4 +33,8 @@ body {
 }
 .head-form {
   font-size: 64px;
+}
+.inpt2 {
+  width: 20rem;
+  padding: 10px;
 }

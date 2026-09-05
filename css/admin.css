@@ -8,19 +8,14 @@ body {
   font-family: "Inter", sans-serif;
   overflow: hidden;
 }
-.form {
-  position: relative;
-  margin: 0 0 0 auto;
+.content {
   display: flex;
-  flex-direction: column;
+  flex: 1;
   color: white;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -25%);
+  width: auto;
+  justify-content: center;
 }
 .image {
-  width: 50%;
-  height: 100%;
   overflow: hidden;
   padding: 40px;
   box-sizing: border-box;
@@ -35,6 +30,13 @@ body {
   font-size: 64px;
 }
 .inpt2 {
-  width: 20rem;
+  width: 100%;
   padding: 10px;
+}
+.form {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: black;
 }

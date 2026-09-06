@@ -14,32 +14,85 @@
   </head>
   <body>
     <div class="image">
-      <img src="package/ChatGPT Image 5 Sep 2026, 12.37.11.png" alt="" />
+      <img
+        src="package/ChatGPT Image 5 Sep 2026, 12.37.11.png"
+        alt="package/ChatGPT Image 5 Sep 2026, 12.37.11.png"
+        draggable="false"
+      />
     </div>
     <div class="content">
-      <div class="form">
+      <div class="register">
         <div style="display: flex; flex-direction: column; gap: 10px">
           <span class="head-form">Create an account</span>
           <span
             >Already have an account?
-            <span class="link-login">Login</span></span
+            <span
+              style="cursor: pointer; text-decoration: underline"
+              id="link-login"
+              >Login</span
+            ></span
           >
         </div>
         <div
           style="display: flex; flex-direction: column; gap: var(--gap-input)"
         >
           <div style="display: flex; gap: var(--gap-input)">
-            <input type="text" placeholder="Frist name" />
-            <input type="text" placeholder="Last name" />
+            <input type="text" placeholder="Frist name" id="first-name" />
+            <input type="text" placeholder="Last name" id="last-name" />
           </div>
-          <input type="text" placeholder="Username" />
-          <input type="password" placeholder="Password" />
+          <input type="text" placeholder="Username" id="username-register" />
+          <input
+            type="password"
+            placeholder="Password"
+            id="password-register"
+          />
         </div>
         <label for="" class="radio">
-          <input class="radio" type="radio" value="agree" />
-          I agree to the
-          <span style="text-decoration: underline"
-            >Terms & Conditions</span
+          <input type="checkbox" value="agree" id="agree-register" />
+          <span
+            >I agree to the
+            <span style="text-decoration: underline"
+              >Terms & Conditions</span
+            ></span
+          ></label
+        >
+        <div
+          style="
+            text-align: center;
+            gap: 10px;
+            display: flex;
+            flex-direction: column;
+          "
+        >
+          <div class="button-create" id="button-create">
+            <span>Create account</span>
+          </div>
+          <span>Inventory System · Made by Akmal</span>
+        </div>
+      </div>
+      <div class="login">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="head-form">Create an account</span>
+          <span
+            >Don't have an account?
+            <span style="text-decoration: underline; cursor: pointer" id="link-register"
+              >Register</span
+            ></span
+          >
+        </div>
+        <div
+          style="display: flex; flex-direction: column; gap: var(--gap-input)"
+        >
+          <input type="text" placeholder="Username" id="username-login"/>
+          <input type="password" placeholder="Password" id="password-login"/>
+        </div>
+        <label for="" class="radio">
+          <input type="checkbox" value="agree" id="agree-login"/>
+          <span
+            >I agree to the
+            <span style="text-decoration: underline"
+              >Terms & Conditions</span
+            ></span
           ></label
         >
         <div

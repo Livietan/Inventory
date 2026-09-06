@@ -21,16 +21,12 @@
       />
     </div>
     <div class="content">
-      <div class="register">
+      <div class="register" id="register">
         <div style="display: flex; flex-direction: column; gap: 10px">
           <span class="head-form">Create an account</span>
           <span
             >Already have an account?
-            <span
-              style="cursor: pointer; text-decoration: underline"
-              id="link-login"
-              >Login</span
-            ></span
+            <span class="link" id="link-login">Login</span></span
           >
         </div>
         <div
@@ -50,10 +46,7 @@
         <label for="" class="radio">
           <input type="checkbox" value="agree" id="agree-register" />
           <span
-            >I agree to the
-            <span style="text-decoration: underline"
-              >Terms & Conditions</span
-            ></span
+            >I agree to the <span class="link">Terms & Conditions</span></span
           ></label
         >
         <div
@@ -70,29 +63,24 @@
           <span>Inventory System · Made by Akmal</span>
         </div>
       </div>
-      <div class="login">
+      <div class="login" id="login">
         <div style="display: flex; flex-direction: column; gap: 10px">
-          <span class="head-form">Create an account</span>
+          <span class="head-form">Login</span>
           <span
             >Don't have an account?
-            <span style="text-decoration: underline; cursor: pointer" id="link-register"
-              >Register</span
-            ></span
+            <span class="link" id="link-register">Register</span></span
           >
         </div>
         <div
           style="display: flex; flex-direction: column; gap: var(--gap-input)"
         >
-          <input type="text" placeholder="Username" id="username-login"/>
-          <input type="password" placeholder="Password" id="password-login"/>
+          <input type="text" placeholder="Username" id="username-login" />
+          <input type="password" placeholder="Password" id="password-login" />
         </div>
         <label for="" class="radio">
-          <input type="checkbox" value="agree" id="agree-login"/>
+          <input type="checkbox" value="agree" id="agree-login" />
           <span
-            >I agree to the
-            <span style="text-decoration: underline"
-              >Terms & Conditions</span
-            ></span
+            >I agree to the <span class="link">Terms & Conditions</span></span
           ></label
         >
         <div
@@ -104,11 +92,12 @@
           "
         >
           <div class="button-login">
-            <span>Create account</span>
+            <span>Login</span>
           </div>
           <span>Inventory System · Made by Akmal</span>
         </div>
       </div>
     </div>
   </body>
+  <script type="module" src="javascript/access.js"></script>
 </html>

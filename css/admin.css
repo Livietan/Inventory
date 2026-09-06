@@ -33,6 +33,14 @@ body {
   font-size: 68px;
   font-weight: 500;
 }
+.link {
+  cursor: pointer;
+  color: #A78BFA;
+}
+.link:hover {
+  color: #C4B5FD;
+  text-decoration: underline;
+}
 /* register form */
 .register {
   display: flex;

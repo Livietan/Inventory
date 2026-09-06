@@ -1,46 +1,13 @@
-import { register, login } from "./API.js";
+var linkRegister = document.getElementById("link-register");
+var registerForm = document.getElementById("register");
+var linkLogin = document.getElementById("link-login");
+var loginForm = document.getElementById("login");
 
-const registerAdmin = document.getElementById("register-admin");
-const usernameAdmin = document.getElementById("username-admin");
-const passwordAdmin = document.getElementById("password-admin");
-const loginAdmin = document.getElementById("login-admin");
-
-const registerManager = document.getElementById("register-manager");
-const usernameManager = document.getElementById("username-manager");
-const passwordManager = document.getElementById("password-manager");
-const loginManager = document.getElementById("login-manager");
-
-var role = "admin";
-
-var adminContent = document.getElementById("admin-content");
-var managerContent = document.getElementById("manager-content");
-var containerAdmin = document.getElementById("container-admin");
-var containerManager = document.getElementById("container-manager");
-
-adminContent.addEventListener("click", () => {
-  containerAdmin.style.display = "none";
-  containerManager.style.display = "flex";
-  role = "manager";
-  console.log(role);
+linkLogin.addEventListener("click", () => {
+  registerForm.style.display = "none";
+  loginForm.style.display = "flex";
 });
-
-managerContent.addEventListener("click", () => {
-  containerAdmin.style.display = "flex";
-  containerManager.style.display = "none";
-  role = "admin";
-  console.log(role);
-});
-
-registerAdmin.addEventListener("click", () => {
-  register(usernameAdmin, passwordAdmin, role);
-});
-
-registerManager.addEventListener("click", () => {
-  register(usernameManager, passwordManager, role);
-});
-loginAdmin.addEventListener("click", () => {
-  login(usernameAdmin, passwordAdmin, role);
-});
-loginManager.addEventListener("click", () => {
-  login(usernameManager, passwordManager, role);
+linkRegister.addEventListener("click", () => {
+  registerForm.style.display = "flex";
+  loginForm.style.display = "none";
 });

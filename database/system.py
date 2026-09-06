@@ -13,36 +13,46 @@ app.add_middleware(
 def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT * FROM user")
-    for i in cursor:
-        print(i)
+    cursor.execute("""
+    CREATE TABLE USER (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FIRSTNAME VARCHAR(16),
+    LASTNAME VARCHAR(16),
+    USERNAME VARCHAR(16) UNIQUE,
+    PASSWORD VARCHAR(32)
+    )
+    """)
     connect.commit()
     connect.close()
 
+
 @app.get("/register")
-def main(username:str, password:str, role:str):
+def main(firstName:str, lastName:str, username:str, password:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     try:
         cursor.execute("""
-        INSERT INTO user (username, password, role) VALUES (?, ?, ?)
-        """, (username, password, role))
+        INSERT INTO USER (FIRSTNAME, LASTNAME, USERNAME, PASSWORD) VALUES (?, ?, ?, ?)
+        """, (firstName, lastName, username, password))
         connect.commit()
-        return {"status": True, "user": username, "role": role}
+        cursor.execute("SELECT FIRSTNAME, LASTNAME, USERNAME, PASSWORD FROM USER WHERE USERNAME=? AND PASSWORD=?", (username, password))
+        result = cursor.fetchone()
+        first, last, username, password = result
+        return {"status": True, "name": first}
     except:
         return {"status": False, "detail": "username is not aviable"}
     finally:
         connect.close()
 
 @app.get("/login")
-def main(username:str, password:str, role:str):
+def main(username:str, password:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("""
-    SELECT username, password, role FROM user WHERE username=? AND password=? AND role=?
-    """, (username, password, role))
-    user = cursor.fetchone()
-    if user:
-        return {"status": True, "user": username, "role": role}
+    cursor.execute("SELECT FIRSTNAME, LASTNAME, USERNAME, PASSWORD FROM USER WHERE USERNAME=? AND PASSWORD=?", (username, password))
+
+    result = cursor.fetchone()
+    if result:
+        first, last, username, password = result
+        return {"status": True, "user": first}
     else:
         return {"status": False, "detail": "password wrong or account not aviable"}

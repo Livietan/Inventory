@@ -1,5 +1,6 @@
-table user:
-ID integer primary key autoincrement
-username varchar(64) UNIQUE
-password varchar(32)
-role varchar(16)
+table USER:
+ID INTEGER PRIMARY KEY AUTOINCREMENT,
+FIRSTNAME VARCHAR(16),
+LASTNAME VARCHAR(16),
+USERNAME VARCHAR(16) UNIQUE,
+PASSWORD VARCHAR(32)

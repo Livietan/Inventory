@@ -1,17 +1,20 @@
-export async function register(username, password, role) {
+export async function register(firstName, lastName, username, password) {
   if (username.value.trim() == "") {
     alert("username could'not empety");
   } else if (password.value.trim() == "") {
     alert("password could'not empety");
+  } else if (firstName.value.trim() == "") {
+    alert("fist name could'not empety");
+  } else if (lastName.value.trim() == "") {
+    alert("last name could'not empety");
   } else {
     const request = await fetch(
-      `http://127.0.0.1:8000/register?username=${username.value}&password=${password.value}&role=${role}`,
+      `http://127.0.0.1:8000/register?firstName=${firstName.value}&lastName=${lastName.value}&username=${username.value}&password=${password.value}`,
     );
     var response = await request.json();
     if (response.status == true) {
-      sessionStorage.setItem("user", response.user);
-      sessionStorage.setItem("role", response.role);
-      window.location.href = `${response.role}-dashboard.html`;
+      sessionStorage.setItem("user", response.name);
+      window.location.href = "dashboard.html";
     }
     if (response.status == false) {
       alert(response.detail);
@@ -19,20 +22,19 @@ export async function register(username, password, role) {
   }
 }
 
-export async function login(username, password, role) {
+export async function login(username, password) {
   if (username.value.trim() == "") {
     alert("username could'not empety");
   } else if (password.value.trim() == "") {
     alert("password could'not empety");
   } else {
     const request = await fetch(
-      `http://127.0.0.1:8000/login?username=${username.value}&password=${password.value}&role=${role}`,
+      `http://127.0.0.1:8000/login?username=${username.value}&password=${password.value}`,
     );
     var response = await request.json();
     if (response.status == true) {
       sessionStorage.setItem("user", response.user);
-      sessionStorage.setItem("role", response.role);
-      window.location.href = `${response.role}-dashboard.html`;
+      window.location.href = "dashboard.html";
     }
     if (response.status == false) {
       alert(response.detail);

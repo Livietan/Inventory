@@ -1,111 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="css/admin.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="menu-page" id="first-menu">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="36px"
-          viewBox="0 -960 960 960"
-          width="36px"
-          fill="#FFFFFF"
-        >
-          <path
-            d="M513.33-580v-260H840v260H513.33ZM120-446.67V-840h326.67v393.33H120ZM513.33-120v-393.33H840V-120H513.33ZM120-120v-260h326.67v260H120Zm66.67-393.33H380v-260H186.67v260ZM580-186.67h193.33v-260H580v260Zm0-460h193.33v-126.66H580v126.66Zm-393.33 460H380v-126.66H186.67v126.66ZM380-513.33Zm200-133.34Zm0 200ZM380-313.33Z"
-          />
-        </svg>
-      </div>
-      <div class="menu" id="secondary-menu">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="36px"
-          viewBox="0 -960 960 960"
-          width="36px"
-          fill="#FFFFFF"
-        >
-          <path
-            d="M446.67-163.67V-461l-260-150.33V-314l260 150.33Zm66.66 0 260-150.33v-298l-260 151v297.33ZM446.67-87 153.33-256q-15.66-9-24.5-24.33-8.83-15.34-8.83-33.34v-332.66q0-18 8.83-33.34 8.84-15.33 24.5-24.33l293.34-169q15.66-9 33.33-9 17.67 0 33.33 9l293.34 169q15.66 9 24.5 24.33 8.83 15.34 8.83 33.34v332.66q0 18-8.83 33.34-8.84 15.33-24.5 24.33L513.33-87q-15.66 9-33.33 9-17.67 0-33.33-9Zm196-526 93.66-54L480-815.33 386-761l256.67 148ZM480-518l95.33-55.67-257-148.33L223-667l257 149Z"
-          />
-        </svg>
-      </div>
-      <div class="menu">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="36px"
-          viewBox="0 -960 960 960"
-          width="36px"
-          fill="#FFFFFF"
-        >
-          <path
-            d="m382-80-18.67-126.67q-17-6.33-34.83-16.66-17.83-10.34-32.17-21.67L178-192.33 79.33-365l106.34-78.67q-1.67-8.33-2-18.16-.34-9.84-.34-18.17 0-8.33.34-18.17.33-9.83 2-18.16L79.33-595 178-767.67 296.33-715q14.34-11.33 32.34-21.67 18-10.33 34.66-16L382-880h196l18.67 126.67q17 6.33 35.16 16.33 18.17 10 31.84 22L782-767.67 880.67-595l-106.34 77.33q1.67 9 2 18.84.34 9.83.34 18.83 0 9-.34 18.5Q776-452 774-443l106.33 78-98.66 172.67-118-52.67q-14.34 11.33-32 22-17.67 10.67-35 16.33L578-80H382Zm55.33-66.67h85l14-110q32.34-8 60.84-24.5T649-321l103.67 44.33 39.66-70.66L701-415q4.33-16 6.67-32.17Q710-463.33 710-480q0-16.67-2-32.83-2-16.17-7-32.17l91.33-67.67-39.66-70.66L649-638.67q-22.67-25-50.83-41.83-28.17-16.83-61.84-22.83l-13.66-110h-85l-14 110q-33 7.33-61.5 23.83T311-639l-103.67-44.33-39.66 70.66L259-545.33Q254.67-529 252.33-513 250-497 250-480q0 16.67 2.33 32.67 2.34 16 6.67 32.33l-91.33 67.67 39.66 70.66L311-321.33q23.33 23.66 51.83 40.16 28.5 16.5 60.84 24.5l13.66 110Zm43.34-200q55.33 0 94.33-39T614-480q0-55.33-39-94.33t-94.33-39q-55.67 0-94.5 39-38.84 39-38.84 94.33t38.84 94.33q38.83 39 94.5 39ZM480-480Z"
-          />
-        </svg>
-      </div>
-      <div class="menu" id="logout-menu">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="36px"
-          viewBox="0 -960 960 960"
-          width="36px"
-          fill="#FFFFFF"
-        >
-          <path
-            d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"
-          />
-        </svg>
-      </div>
-    </div>
-    <div class="content">
-      <div class="job-less">
-        <img src="package/jobless.png" alt="jobless.png" />
-      </div>
-      <div class="dashboard-header">
-        <div style="display: flex; flex-direction: column;">
-          <span class="text1"
-            >Hallo <span class="text1" id="userTag"></span
-          ></span>
-          <span
-            >You've been recruited by {manager} to serve as an administrator for
-            {company}.</span
-          >
-        </div>
-        <div class="datetime">
-          <span id="dateTag"></span>
-        </div>
-      </div>
-    </div>
-    <div class="block-popup" id="block-popup">
-      <div class="block-content">
-        <span>Your session has blocked</span>
-        <span>This page only admin can access</span>
-        <div class="close" id="close">
-          <span style="font-size: 26px">Close</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="36px"
-            viewBox="0 -960 960 960"
-            width="36px"
-            fill="#000000"
-          >
-            <path
-              d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"
-            />
-          </svg>
-        </div>
-      </div>
-    </div>
-  </body>
-  <script type="module" src="javascript/admin.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  
+</body>
 </html>

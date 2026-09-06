@@ -1,84 +1,123 @@
+:root {
+  --gap-input: 12px;
+}
 body {
   margin: 0;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  background: #111111;
-}
-
-:root {
-  --color-text: #f5f5f5;
-}
-.container-admin {
-  position: absolute;
   display: flex;
-  align-items: center;
-  background: #1a1b1e;
-  border: 1px solid #34363b;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  justify-content: center;
-  width: fit-content;
-  padding: 54px;
-  gap: 18px;
-  color: var(--color-text);
-  border-radius: 8px;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(150deg, #16181c 15%, #090a0c 100%, #030405 100%);
   font-family: "Inter", sans-serif;
-}
-.container-manager {
-  position: absolute;
-  display: none;
-  align-items: center;
-  background: #1a1b1e;
-  border: 1px solid #34363b;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  justify-content: center;
-  width: fit-content;
-  padding: 54px;
-  gap: 18px;
-  color: var(--color-text);
-  border-radius: 8px;
-  font-family: "Inter", sans-serif;
+  overflow: hidden;
 }
 .content {
   display: flex;
-  flex-direction: column;
-  width: 22rem;
-  text-align: center;
-  font-size: 26px;
-  cursor: pointer;
-  user-select: none;
+  flex: 1;
+  color: white;
+  width: auto;
   justify-content: center;
+  align-items: center;
 }
-.auth {
+.image {
+  overflow: hidden;
+  padding: 40px;
+  box-sizing: border-box;
+}
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.head-form {
+  font-size: 68px;
+  font-weight: 500;
+}
+.link {
+  cursor: pointer;
+  color: #A78BFA;
+}
+.link:hover {
+  color: #C4B5FD;
+  text-decoration: underline;
+}
+/* register form */
+.register {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  width: 22rem;
+  padding: 20px;
+  gap: 2rem;
+  width: 100%;
+  max-width: 38rem;
 }
 input {
-  height: 32px;
-  padding: 0 10px;
+  width: 100%;
+  padding: 14px 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f5f5f5;
+  outline: none;
   font-size: 16px;
 }
 input::placeholder {
-  color: #7d8088;
-}
-.auth-login {
-  background: #f2f2f2;
-  color: #111214;
-  padding: 8px;
+  color: rgba(255, 255, 255, 0.42);
   user-select: none;
+}
+input:focus {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+.button-create {
+  background: #f2f2f2;
+  color: #0a0a0a;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
   cursor: pointer;
-  border-radius: 4px;
+  user-select: none;
 }
-.auth-login:hover {
-  background: #2a2c2f;
-  color: #f2f2f2;
+.button-create:hover {
+  background: #dadada;
 }
-.auth-login:active {
-  background: #3a3d42;
+.button-create:active {
+  background: #c8c8c8;
+  transform: scale(0.99);
+}
+.radio {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 10px;
+}
+.radio input{
+  margin: 0;
+  width: auto;
+  cursor: pointer;
+}
+/* login form */
+.login {
+  display: none;
+  flex-direction: column;
+  padding: 20px;
+  gap: 2rem;
+  width: 100%;
+  max-width: 38rem;
+}
+.button-login {
+  background: #f2f2f2;
+  color: #0a0a0a;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+.button-login:hover {
+  background: #dadada;
+}
+.button-login:active {
+  background: #c8c8c8;
+  transform: scale(0.99);
 }

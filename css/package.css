@@ -3,7 +3,6 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  display: flex;
 }
 .sidebar {
   background: black;
@@ -34,14 +33,4 @@ body {
 .menu svg {
   height: auto;
   width: 32px;
-}
-/* content */
-.content {
-  display: flex;
-  padding: 10px 22px;
-}
-.text {
-  font-size: 48px;
-  font-family: "Manrope", sans-serif;
-  font-weight: 525;
 }

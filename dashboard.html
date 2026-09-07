@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>dashboard</title>
     <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="sidebar">
-      <div class="menu-page">
+      <div class="menu-page" id="dashboard">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 -960 960 960"
@@ -19,7 +25,7 @@
           />
         </svg>
       </div>
-      <div class="menu">
+      <div class="menu" id="package">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 -960 960 960"
@@ -53,6 +59,11 @@
         </svg>
       </div>
     </div>
+    <div class="content">
+      <div class="header-content">
+        <span class="text">Hallo <span class="text" id="userTag">user</span></span>
+      </div>
+    </div>
   </body>
-  <script type="module" src="javascript/dashboard.js"></script>
+  <script src="javascript/dashboard.js"></script>
 </html>

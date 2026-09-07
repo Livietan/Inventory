@@ -53,6 +53,6 @@ def main(username:str, password:str):
     result = cursor.fetchone()
     if result:
         first, last, username, password = result
-        return {"status": True, "user": first}
+        return {"status": True, "name": first}
     else:
         return {"status": False, "detail": "password wrong or account not aviable"}

@@ -29,7 +29,7 @@ body {
   align-items: center;
 }
 .menu:hover {
-  background: #1C1F26;
+  background: #1c1f26;
 }
 .menu svg {
   height: auto;
@@ -38,10 +38,67 @@ body {
 /* content */
 .content {
   display: flex;
+  flex-direction: column;
   padding: 10px 22px;
+  width: 100%;
+  gap: 20px;
+}
+.header-content {
+  display: flex;
+  height: fit-content;
+  align-items: center;
+  width: 100%;
 }
 .text {
   font-size: 48px;
   font-family: "Manrope", sans-serif;
   font-weight: 525;
+}
+.dateTime {
+  margin: 0 0 0 auto;
+  border: 1px solid #cbd5e1;
+  padding: 6px;
+  border-radius: 8px;
+  background: #e2e8f0;
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+}
+.card {
+  display: flex;
+  font-size: 24px;
+  font-family: "Manrope", sans-serif;
+  gap: 5px;
+  justify-content: center;
+  padding: 8px;
+  align-items: center;
+}
+.recieve {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 4px;
+  background: #d1fae5;
+}
+.issue {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 4px;
+  background: #fee2e2;
+}
+.value {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 4px;
+  background: #FEF3C7;
+}
+.item {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 4px;
+  background: #DBEAFE;
 }

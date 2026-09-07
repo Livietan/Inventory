@@ -1,103 +1,80 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inventory</title>
-    <link rel="stylesheet" href="css/access.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="image">
-      <img
-        src="package/ChatGPT Image 5 Sep 2026, 12.37.11.png"
-        alt="package/ChatGPT Image 5 Sep 2026, 12.37.11.png"
-        draggable="false"
-      />
-    </div>
-    <div class="content">
-      <div class="register" id="register">
-        <div style="display: flex; flex-direction: column; gap: 10px">
-          <span class="head-form">Create an account</span>
-          <span
-            >Already have an account?
-            <span class="link" id="link-login">Login</span></span
-          >
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory</title>
+  <link rel="stylesheet" href="css/access.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <div class="image">
+    <img src="package/ChatGPT Image 5 Sep 2026, 12.37.11.png" alt="package/ChatGPT Image 5 Sep 2026, 12.37.11.png"
+      draggable="false" />
+  </div>
+  <div class="content">
+    <div class="register" id="register">
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span class="head-form">Create an account</span>
+        <span>Already have an account?
+          <span class="link" id="link-login">Login</span></span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: var(--gap-input)">
+        <div style="display: flex; gap: var(--gap-input)">
+          <input type="text" placeholder="Frist name" id="first-name" maxlength="16" />
+          <input type="text" placeholder="Last name" id="last-name" maxlength="16" />
         </div>
-        <div
-          style="display: flex; flex-direction: column; gap: var(--gap-input)"
-        >
-          <div style="display: flex; gap: var(--gap-input)">
-            <input type="text" placeholder="Frist name" id="first-name" />
-            <input type="text" placeholder="Last name" id="last-name" />
-          </div>
-          <input type="text" placeholder="Username" id="username-register" />
-          <input
-            type="password"
-            placeholder="Password"
-            id="password-register"
-          />
-        </div>
-        <label for="" class="radio">
-          <input type="checkbox" value="agree" id="agree-register" />
-          <span
-            >I agree to the <span class="link">Terms & Conditions</span></span
-          ></label
-        >
-        <div
-          style="
+        <input type="text" placeholder="Username" id="username-register" maxlength="16" />
+        <input type="password" placeholder="Password" id="password-register" maxlength="32" />
+      </div>
+      <label for="" class="radio">
+        <input type="checkbox" value="agree" id="agree-register" />
+        <span>I agree to the <span class="link">Terms & Conditions</span></span></label>
+      <div style="
             text-align: center;
             gap: 10px;
             display: flex;
             flex-direction: column;
-          "
-        >
-          <div class="button-create" id="create">
-            <span>Create account</span>
-          </div>
-          <span>Inventory System · Made by Akmal</span>
+          ">
+        <div class="button-create" id="create">
+          <span>Create account</span>
         </div>
+        <span>Inventory System · Made by Akmal</span>
       </div>
-      <div class="login" id="login">
-        <div style="display: flex; flex-direction: column; gap: 10px">
-          <span class="head-form">Login</span>
-          <span
-            >Don't have an account?
-            <span class="link" id="link-register">Register</span></span
-          >
-        </div>
-        <div
-          style="display: flex; flex-direction: column; gap: var(--gap-input)"
-        >
-          <input type="text" placeholder="Username" id="username-login" />
-          <input type="password" placeholder="Password" id="password-login" />
-        </div>
-        <label for="" class="radio">
-          <input type="checkbox" value="agree" id="agree-login" />
-          <span
-            >I agree to the <span class="link">Terms & Conditions</span></span
-          ></label
-        >
-        <div
-          style="
+    </div>
+    <div class="login" id="login">
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span class="head-form">Login</span>
+        <span>Don't have an account?
+          <span class="link" id="link-register">Register</span></span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: var(--gap-input)">
+        <input type="text" placeholder="Username" id="username-login" maxlength="16" />
+        <input type="password" placeholder="Password" id="password-login" maxlength="32" />
+      </div>
+      <label for="" class="radio">
+        <input type="checkbox" value="agree" id="agree-login" />
+        <span>I agree to the <span class="link">Terms & Conditions</span></span></label>
+      <div style="
             text-align: center;
             gap: 10px;
             display: flex;
             flex-direction: column;
-          "
-        >
-          <div class="button-login">
-            <span>Login</span>
-          </div>
-          <span>Inventory System · Made by Akmal</span>
+          ">
+        <div class="button-login" id="button-login">
+          <span>Login</span>
         </div>
+        <span>Inventory System · Made by Akmal</span>
       </div>
     </div>
-  </body>
-  <script type="module" src="javascript/access.js"></script>
+  </div>
+</body>
+<script type="module" src="javascript/access.js"></script>
+
 </html>

@@ -139,3 +139,43 @@ body {
   background: #fee2e2;
   color: #b91c1c;
 }
+.information-dashboard {
+  position: absolute;
+  display: none;
+  width: fit-content;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.information-package {
+  position: absolute;
+  display: none;
+  width: fit-content;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.information-setting {
+  position: absolute;
+  display: none;
+  width: fit-content;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.information-logout {
+  position: absolute;
+  display: none;
+  width: fit-content;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}

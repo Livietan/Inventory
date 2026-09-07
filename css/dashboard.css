@@ -31,6 +31,9 @@ body {
 .menu:hover {
   background: #1c1f26;
 }
+.menu:active {
+  transform: scale(0.9);
+}
 .menu svg {
   height: auto;
   width: 32px;

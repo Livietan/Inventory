@@ -28,9 +28,52 @@ body {
   align-items: center;
 }
 .menu:hover {
-  background: #1C1F26;
+  background: #1c1f26;
+}
+.menu:active {
+  transform: scale(0.9);
 }
 .menu svg {
   height: auto;
   width: 32px;
+}
+.information-dashboard {
+  position: absolute;
+  display: none;
+  width: fit-content;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.information-package {
+  position: absolute;
+  display: none;
+  width: fit-content;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.information-setting {
+  position: absolute;
+  display: none;
+  width: fit-content;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.information-logout {
+  position: absolute;
+  display: none;
+  width: fit-content;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }

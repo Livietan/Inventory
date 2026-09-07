@@ -11,17 +11,17 @@ export async function register(
     alert("password could'not empety");
   } else if (firstName.value.trim() == "") {
     alert("fist name could'not empety");
-  } else if (lastName.value.trim() == "") {
-    alert("last name could'not empety");
   } else if (checklist.checked == false) {
     alert("Please checklist the terms & conditions");
   } else {
+    var lastNameValue = lastName.value.trim() === "" ? "" : lastName.value;
     const request = await fetch(
-      `http://127.0.0.1:8000/register?firstName=${firstName.value}&lastName=${lastName.value}&username=${username.value}&password=${password.value}`,
+      `http://127.0.0.1:8000/register?firstName=${firstName.value}&lastName=${lastNameValue}&username=${username.value}&password=${password.value}`,
     );
     var response = await request.json();
     if (response.status == true) {
-      sessionStorage.setItem("user", response.name);
+      sessionStorage.setItem("firstName", response.firstName);
+      sessionStorage.setItem("lastName", response.lastName);
       window.location.href = "dashboard.html";
     }
     if (response.status == false) {
@@ -43,7 +43,8 @@ export async function login(username, password, checklist) {
     );
     var response = await request.json();
     if (response.status == true) {
-      sessionStorage.setItem("user", response.name);
+      sessionStorage.setItem("firstName", response.firstName);
+      sessionStorage.setItem("lastName", response.lastName);
       window.location.href = "dashboard.html";
     }
     if (response.status == false) {

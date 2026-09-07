@@ -14,17 +14,10 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    CREATE TABLE USER (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    FIRSTNAME VARCHAR(16),
-    LASTNAME VARCHAR(16),
-    USERNAME VARCHAR(16) UNIQUE,
-    PASSWORD VARCHAR(32)
-    )
+    DELETE FROM USER
     """)
     connect.commit()
     connect.close()
-
 
 @app.get("/register")
 def main(firstName:str, lastName:str, username:str, password:str):
@@ -38,7 +31,7 @@ def main(firstName:str, lastName:str, username:str, password:str):
         cursor.execute("SELECT FIRSTNAME, LASTNAME, USERNAME, PASSWORD FROM USER WHERE USERNAME=? AND PASSWORD=?", (username, password))
         result = cursor.fetchone()
         first, last, username, password = result
-        return {"status": True, "name": first}
+        return {"status": True, "firstName": first, "lastName": last}
     except:
         return {"status": False, "detail": "username is not aviable"}
     finally:
@@ -53,6 +46,6 @@ def main(username:str, password:str):
     result = cursor.fetchone()
     if result:
         first, last, username, password = result
-        return {"status": True, "name": first}
+        return {"status": True, "firstName": first, "lastName": last}
     else:
         return {"status": False, "detail": "password wrong or account not aviable"}

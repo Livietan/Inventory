@@ -19,7 +19,7 @@ var dayList = [
 ];
 
 tagTime.textContent = `${dayList[day]} ${date}/${mont}/${year}`;
-userTag.textContent = sessionStorage.getItem("user");
+userTag.textContent = `${sessionStorage.getItem("firstName")} ${sessionStorage.getItem("lastName")}`;
 package.addEventListener("click", () => {
   window.location.href = "package.html";
 });

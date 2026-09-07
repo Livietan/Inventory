@@ -83,12 +83,18 @@ body {
 }
 .card {
   display: flex;
-  font-size: 24px;
   font-family: "Manrope", sans-serif;
   gap: 5px;
   padding: 8px;
   align-items: center;
   justify-content: center;
+}
+.txt1 {
+  font-size: 14px;
+  font-weight: 500;
+}
+.txt2 {
+  font-size: 28px;
 }
 .recieve {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -106,11 +112,30 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   padding: 4px;
-  background: #FEF3C7;
+  background: #fef3c7;
 }
 .item {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   padding: 4px;
-  background: #DBEAFE;
+  background: #dbeafe;
+}
+.profile-setting {
+  display: none;
+  width: fit-content;
+  border: 1px solid #e5e7eb;
+  background: #faf9f6;
+  padding: 4px;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  border-radius: 5px;
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.1),
+    0 2px 5px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  user-select: none;
+}
+.profile-setting:hover {
+  background: #fee2e2;
+  color: #b91c1c;
 }

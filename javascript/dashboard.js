@@ -2,6 +2,8 @@ var package = document.getElementById("package");
 var tagTime = document.getElementById("datetime");
 var logout = document.getElementById("log-out");
 var userTag = document.getElementById("userTag");
+var ellipsis = document.getElementById("ellipsis");
+var profileSetting = document.getElementById("profile-setting");
 
 var datetime = new Date();
 var day = datetime.getDay();
@@ -26,4 +28,15 @@ package.addEventListener("click", () => {
 logout.addEventListener("click", () => {
   sessionStorage.clear();
   window.location.href = "access.html";
+});
+ellipsis.addEventListener("click", () => {
+  if (profileSetting.style.display == "none") {
+    profileSetting.style.display = "block";
+    profileSetting.addEventListener("click", () => {
+      sessionStorage.clear();
+      window.location.href = "access.html";
+    });
+  } else {
+    profileSetting.style.display = "none";
+  }
 });

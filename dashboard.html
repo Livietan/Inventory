@@ -11,6 +11,9 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap"
     rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
@@ -53,6 +56,14 @@
           <span class="text" id="userTag"></span>
           <span class="administrator">administrator</span>
         </div>
+        <svg class="ellipsis" id="ellipsis" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+          width="24px" fill="#000000">
+          <path
+            d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z" />
+        </svg>
+        <div class="profile-setting" id="profile-setting">
+          <span>Log-out</span>
+        </div>
       </div>
       <div class="dateTime">
         <span id="datetime"></span>
@@ -66,8 +77,8 @@
             d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z" />
         </svg>
         <div style="display: flex; flex-direction: column">
-          <span>Items</span>
-          <span>0</span>
+          <span class="txt1">Items</span>
+          <span class="txt2">0</span>
         </div>
       </div>
       <div class="card">
@@ -76,8 +87,8 @@
           <path d="M480-80 200-360l56-56 184 183v-647h80v647l184-184 56 57L480-80Z" />
         </svg>
         <div style="display: flex; flex-direction: column">
-          <span>Receive</span>
-          <span>0</span>
+          <span class="txt1">Receive</span>
+          <span class="txt2">0</span>
         </div>
       </div>
       <div class="card">
@@ -86,8 +97,8 @@
           <path d="M440-80v-647L256-544l-56-56 280-280 280 280-56 57-184-184v647h-80Z" />
         </svg>
         <div style="display: flex; flex-direction: column">
-          <span>Issued</span>
-          <span>0</span>
+          <span class="txt1">Issued</span>
+          <span class="txt2">0</span>
         </div>
       </div>
       <div class="card">
@@ -97,11 +108,12 @@
             d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z" />
         </svg>
         <div style="display: flex; flex-direction: column">
-          <span>Values</span>
-          <span>$0</span>
+          <span class="txt1">Values</span>
+          <span class="txt2">$0</span>
         </div>
       </div>
     </div>
+
 </body>
 <script src="javascript/dashboard.js"></script>
 

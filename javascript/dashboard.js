@@ -26,7 +26,7 @@ var dayList = [
   "Saturday",
 ];
 
-tagTime.textContent = `${dayList[day]} ${date}/${mont}/${year}`;
+tagTime.textContent = `${dayList[day]} ${date}/${mont+1}/${year}`;
 userTag.textContent = `${sessionStorage.getItem("firstName")} ${sessionStorage.getItem("lastName")}`;
 
 dashboard.addEventListener("mouseenter", () => {

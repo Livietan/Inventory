@@ -182,3 +182,34 @@ body {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+.history {
+  padding: 10px 20px;
+  height: 100%;
+  border-radius: 8px;
+}
+.header-history {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.menu-history {
+  display: flex;
+  gap: 5px;
+  user-select: none;
+}
+.line-history {
+  height: auto;
+  border: 1px solid black;
+}
+.table {
+  display: flex;
+  justify-content: space-between;
+}
+.main-menu-history {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}

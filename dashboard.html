@@ -125,20 +125,31 @@
         </div>
       </div>
     </div>
-    <div class="history">
-      <div class="header-history">
-        <div class="menu-history">
-          <span class="main-menu-history" style="cursor: pointer;">Action</span>
+    <div class="table" id="table">
+      <div class="header-table">
+        <div class="list-menu-table">
+          <span class="menu-table" style="background: rgba(0, 0, 0, 0.1);" id="menu-action">Action</span>
           <span class="line-history"></span>
-          <span style="cursor: pointer; padding: 2px 6px;">Transactions</span>
+          <span class="menu-table" id="menu-transaction">Transactions</span>
         </div>
-        <div class="table">
+        <div class="audit-log" id="audit-log-action" style="display: flex;">
           <span>Name</span>
           <span>Action</span>
           <span>Amount</span>
-          <span>Date time</span>
+          <span>Time</span>
         </div>
-      </div>
+        <div class="audit-log" id="audit-log-transaction" style="display: none;">
+          <span>Name</span>
+          <span>Action</span>
+          <span>Address</span>
+          <span>Amount</span>
+          <span>Time</span>
+        </div>
+        <div class="wrong-icon-table">
+          <span class="icon" style="font-size: 128px;">(>_<)</span>
+          <span class="icon" style="font-size: 24px;">Something Wrong</span>
+        </div>
+      </div>  
     </div>
   </div>
 

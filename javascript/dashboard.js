@@ -10,6 +10,10 @@ var informationDashboard = document.getElementById("information-dashboard");
 var informationPackage = document.getElementById("information-package");
 var informationSetting = document.getElementById("information-setting");
 var informationLogout = document.getElementById("information-logout");
+var menuTableAction = document.getElementById("menu-action");
+var menuTableTransaction = document.getElementById("menu-transaction");
+var tableAction = document.getElementById("audit-log-action");
+var tableTransaction = document.getElementById("audit-log-transaction");
 
 var datetime = new Date();
 var day = datetime.getDay();
@@ -26,7 +30,7 @@ var dayList = [
   "Saturday",
 ];
 
-tagTime.textContent = `${dayList[day]} ${date}/${mont+1}/${year}`;
+tagTime.textContent = `${dayList[day]} ${date}/${mont + 1}/${year}`;
 userTag.textContent = `${sessionStorage.getItem("firstName")} ${sessionStorage.getItem("lastName")}`;
 
 dashboard.addEventListener("mouseenter", () => {
@@ -82,4 +86,16 @@ ellipsis.addEventListener("click", () => {
   } else {
     profileSetting.style.display = "none";
   }
+});
+menuTableAction.addEventListener("click", () => {
+  menuTableAction.style.background = "rgba(0, 0, 0, 0.1)";
+  menuTableTransaction.style.background = "rgba(0, 0, 0, 0)";
+  tableAction.style.display = "flex";
+  tableTransaction.style.display = "none";
+});
+menuTableTransaction.addEventListener("click", () => {
+  menuTableAction.style.background = "rgba(0, 0, 0, 0)";
+  menuTableTransaction.style.background = "rgba(0, 0, 0, 0.1)";
+  tableAction.style.display = "none";
+  tableTransaction.style.display = "flex";
 });

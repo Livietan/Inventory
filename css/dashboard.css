@@ -182,12 +182,14 @@ body {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
-.history {
+.table {
   padding: 10px 20px;
   height: 100%;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
 }
-.header-history {
+.header-table {
   font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -195,7 +197,7 @@ body {
   flex-direction: column;
   gap: 10px;
 }
-.menu-history {
+.list-menu-table {
   display: flex;
   gap: 5px;
   user-select: none;
@@ -204,12 +206,25 @@ body {
   height: auto;
   border: 1px solid black;
 }
-.table {
-  display: flex;
-  justify-content: space-between;
+.audit-log {
+  justify-content: space-around;
 }
-.main-menu-history {
-  background: rgba(0, 0, 0, 0.15);
+.menu-table {
   padding: 2px 6px;
   border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+.wrong-icon-table {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.icon {
+  color: rgba(0, 0, 0, 0.2);
+  font-family: "Inter", sans-serif;
 }

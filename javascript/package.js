@@ -8,6 +8,10 @@ var informationPackage = document.getElementById("information-package");
 var informationSetting = document.getElementById("information-setting");
 var informationLogout = document.getElementById("information-logout");
 
+var newQuantity = document.getElementById("new-quantity");
+var quantityPopup = document.getElementById("quantity-popup");
+var popup = document.querySelector(".popup");
+
 dashboard.addEventListener("click", () => {
   window.location.href = "dashboard.html";
 });
@@ -51,3 +55,12 @@ logout.addEventListener("mouseenter", () => {
 logout.addEventListener("mouseleave", () => {
   informationLogout.style.display = "none";
 });
+newQuantity.addEventListener("click", () => {
+  quantityPopup.style.display = "block";
+});
+quantityPopup.addEventListener("click", () => {
+  quantityPopup.style.display = "none";
+});
+popup.addEventListener("click", (e) => {
+  e.stopPropagation();
+})

@@ -89,6 +89,8 @@ body {
   display: flex;
   width: 100%;
   justify-content: space-around;
+  border-top: 1px solid black;
+  padding-top: 10px;
   border-bottom: 1px solid black;
   padding-bottom: 10px;
   font-family: "Inter", sans-serif;
@@ -103,12 +105,14 @@ body {
   margin: 0 0 0 auto;
 }
 .menu-button {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
   border: 1px solid #dcdce1;
   border-radius: 8px;
-  font-family: "Inter", sans-serif;
-  padding: 5px;
+  padding: 8px 16px;
   background: #f4f4f6;
-  color: #222222;
+  color: #374151;
   user-select: none;
   cursor: pointer;
 }
@@ -134,4 +138,55 @@ select {
   font-weight: 600;
   color: #111111;
   letter-spacing: -0.02em;
+}
+.new-quantity {
+  position: absolute;
+  display: none;
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+}
+.popup {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  padding: 24px;
+  background: #ffffff;
+  gap: 10px;
+  font-family: "Inter", sans-serif;
+  height: auto;
+  width: 24rem;
+}
+.popup input {
+  height: 1rem;
+  width: auto;
+  padding: 12px 14px;
+  font-size: 16px;
+}
+.popup input::placeholder {
+  font-size: 16px;
+}
+.button-mint {
+  color: #ffffff;
+  background: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  height: 2rem;
+  user-select: none;
+  cursor: pointer;
+}
+.button-mint:hover {
+  background: #2A2A2A;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+}
+.button-mint:active {
+  background: #000000;
 }

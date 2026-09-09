@@ -3,6 +3,7 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  display: flex;
 }
 .sidebar {
   background: black;
@@ -76,4 +77,61 @@ body {
   padding: 5px 10px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.content {
+  width: 100%;
+  padding: 10px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.audit-log {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  font-family: "Inter", sans-serif;
+}
+.header-menu {
+  display: flex;
+  align-items: center;
+}
+.left-menu {
+  display: flex;
+  gap: 5px;
+  margin: 0 0 0 auto;
+}
+.menu-button {
+  border: 1px solid #dcdce1;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  padding: 5px;
+  background: #f4f4f6;
+  color: #222222;
+  user-select: none;
+  cursor: pointer;
+}
+.menu-button:hover {
+  background: #eaeaf0;
+  border-color: #cfcfd6;
+}
+.menu-button:active {
+  background: #e1e1e8;
+}
+.table {
+  padding-top: 16px;
+  height: 100%;
+}
+select {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  padding-right: 10px;
+}
+.name-inventory {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: -0.02em;
 }

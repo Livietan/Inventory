@@ -14,26 +14,32 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    DELETE FROM USER
+    CREATE TABLE USERS (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FIRSTNAME VARCHAR(16),
+    LASTNAME VARCHAR(16),
+    INVENTORYNAME VARCHAR(16),
+    USERNAME VARCHAR(16) UNIQUE,
+    PASSWORD VARCHAR(32))
     """)
     connect.commit()
     connect.close()
 
 @app.get("/register")
-def main(firstName:str, lastName:str, username:str, password:str):
+def main(firstName:str, lastName:str, inventoryName:str, username:str, password:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     try:
         cursor.execute("""
-        INSERT INTO USER (FIRSTNAME, LASTNAME, USERNAME, PASSWORD) VALUES (?, ?, ?, ?)
-        """, (firstName, lastName, username, password))
+        INSERT INTO USERS (FIRSTNAME, LASTNAME, INVENTORYNAME, USERNAME, PASSWORD) VALUES (?, ?, ?, ?, ?)
+        """, (firstName, lastName, inventoryName, username, password))
         connect.commit()
-        cursor.execute("SELECT FIRSTNAME, LASTNAME, USERNAME, PASSWORD FROM USER WHERE USERNAME=? AND PASSWORD=?", (username, password))
+        cursor.execute("SELECT FIRSTNAME, LASTNAME, INVENTORYNAME, USERNAME, PASSWORD FROM USERS WHERE USERNAME=? AND PASSWORD=?", (username, password))
         result = cursor.fetchone()
-        first, last, username, password = result
-        return {"status": True, "firstName": first, "lastName": last}
-    except:
-        return {"status": False, "detail": "username is not aviable"}
+        first, last, inventoryName, username, password = result
+        return {"status": True, "firstName": first, "lastName": last, "inventoryName": inventoryName, "username": username}
+    except Exception as e:
+        return {"status": False, "detail": str(e)}
     finally:
         connect.close()
 
@@ -41,11 +47,22 @@ def main(firstName:str, lastName:str, username:str, password:str):
 def main(username:str, password:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT FIRSTNAME, LASTNAME, USERNAME, PASSWORD FROM USER WHERE USERNAME=? AND PASSWORD=?", (username, password))
+    cursor.execute("SELECT FIRSTNAME, LASTNAME, INVENTORYNAME, USERNAME, PASSWORD FROM USERS WHERE USERNAME=? AND PASSWORD=?", (username, password))
 
     result = cursor.fetchone()
     if result:
-        first, last, username, password = result
-        return {"status": True, "firstName": first, "lastName": last}
+        first, last, inventoryName, username, password = result
+        return {"status": True, "firstName": first, "lastName": last, "inventoryName": inventoryName, "username": username}
     else:
-        return {"status": False, "detail": "password wrong or account not aviable"}
+        return {"status": False, "detail": "password not found or account not aviable"}
+
+@app.get("/GetData")
+def main(username:str):
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    cursor.execute("SELECT FIRSTNAME, LASTNAME, INVENTORYNAME, USERNAME, PASSWORD FROM USERS WHERE USERNAME=?", (username,))
+    result = cursor.fetchone()
+    if result:
+        first, last, inventoryName, username, password = result
+        return {"firstName": first, "lastName": last, "inventoryName": inventoryName, "username": username}
+        

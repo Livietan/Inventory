@@ -1,5 +1,7 @@
+import { getDataUser } from "./API.js";
+
 var dashboard = document.getElementById("dashboard");
-var package = document.getElementById("package");
+var packages = document.getElementById("package");
 var setting = document.getElementById("setting");
 var logout = document.getElementById("log-out");
 var tagTime = document.getElementById("datetime");
@@ -14,6 +16,9 @@ var menuTableAction = document.getElementById("menu-action");
 var menuTableTransaction = document.getElementById("menu-transaction");
 var tableAction = document.getElementById("audit-log-action");
 var tableTransaction = document.getElementById("audit-log-transaction");
+
+var user = sessionStorage.getItem("username");
+var data = await getDataUser(user);
 
 var datetime = new Date();
 var day = datetime.getDay();
@@ -31,7 +36,7 @@ var dayList = [
 ];
 
 tagTime.textContent = `${dayList[day]} ${date}/${mont + 1}/${year}`;
-userTag.textContent = `${sessionStorage.getItem("firstName")} ${sessionStorage.getItem("lastName")}`;
+userTag.textContent = `${data.firstName} ${data.lastName}`;
 
 dashboard.addEventListener("mouseenter", () => {
   var x = dashboard.getBoundingClientRect();
@@ -42,16 +47,16 @@ dashboard.addEventListener("mouseenter", () => {
 dashboard.addEventListener("mouseleave", () => {
   informationDashboard.style.display = "none";
 });
-package.addEventListener("click", () => {
+packages.addEventListener("click", () => {
   window.location.href = "package.html";
 });
-package.addEventListener("mouseenter", () => {
-  var x = package.getBoundingClientRect();
+packages.addEventListener("mouseenter", () => {
+  var x = packages.getBoundingClientRect();
   informationPackage.style.display = "block";
   informationPackage.style.top = `${x.top + 10}px`;
   informationPackage.style.left = `${x.left + 60}px`;
 });
-package.addEventListener("mouseleave", () => {
+packages.addEventListener("mouseleave", () => {
   informationPackage.style.display = "none";
 });
 setting.addEventListener("mouseenter", () => {

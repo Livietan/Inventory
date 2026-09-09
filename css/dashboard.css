@@ -215,16 +215,12 @@ body {
   cursor: pointer;
   user-select: none;
 }
-.wrong-icon-table {
+.not-found {
   position: absolute;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-.icon {
   color: rgba(0, 0, 0, 0.2);
   font-family: "Inter", sans-serif;
 }

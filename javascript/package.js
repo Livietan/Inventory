@@ -1,16 +1,23 @@
+import { getDataUser } from "./API.js";
+
 var dashboard = document.getElementById("dashboard");
-var package = document.getElementById("package");
+var packages = document.getElementById("package");
 var setting = document.getElementById("setting");
 var logout = document.getElementById("log-out");
-var profileSetting = document.getElementById("profile-setting");
 var informationDashboard = document.getElementById("information-dashboard");
 var informationPackage = document.getElementById("information-package");
 var informationSetting = document.getElementById("information-setting");
 var informationLogout = document.getElementById("information-logout");
+var tagInventory = document.getElementById("tag-inventory");
 
 var newQuantity = document.getElementById("new-quantity");
 var quantityPopup = document.getElementById("quantity-popup");
 var popup = document.querySelector(".popup");
+
+var user = sessionStorage.getItem("username");
+var data = await getDataUser(user);
+
+tagInventory.textContent = `${data.inventoryName}`;
 
 dashboard.addEventListener("click", () => {
   window.location.href = "dashboard.html";
@@ -24,13 +31,13 @@ dashboard.addEventListener("mouseenter", () => {
 dashboard.addEventListener("mouseleave", () => {
   informationDashboard.style.display = "none";
 });
-package.addEventListener("mouseenter", () => {
-  var x = package.getBoundingClientRect();
+packages.addEventListener("mouseenter", () => {
+  var x = packages.getBoundingClientRect();
   informationPackage.style.display = "block";
   informationPackage.style.top = `${x.top + 10}px`;
   informationPackage.style.left = `${x.left + 60}px`;
 });
-package.addEventListener("mouseleave", () => {
+packages.addEventListener("mouseleave", () => {
   informationPackage.style.display = "none";
 });
 setting.addEventListener("mouseenter", () => {

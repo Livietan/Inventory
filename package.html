@@ -84,6 +84,7 @@
         <span>Amount</span>
         <span>Price</span>
       </div>
+      <div></div>
       <div class="not-found">
         <span style="font-size: 128px;">404</span>
       </div>
@@ -91,13 +92,33 @@
   </div>
   <div class="new-quantity" id="quantity-popup">
     <div class="popup">
-      <span style="color: #111111; font-size: 28px; font-weight: 700;">New Quantity</span>
-      <input type="text" placeholder="Name">
-      <input type="text" placeholder="Type">
-      <input type="text" placeholder="Category">
-      <input type="text" placeholder="Amount">
-      <input type="text" placeholder="Price">
-      <div class="button-mint">
+      <div style="display: flex;">
+        <span style="color: #111111; font-size: 28px; font-weight: 700;">New Quantity</span>
+        <div style="margin: 0 0 0 auto; cursor: pointer;" id="close-mint">
+          <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#BB271A">
+            <path
+              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+          </svg>
+        </div>
+      </div>
+      <input type="text" placeholder="Name" id="name-mint">
+      <input type="text" placeholder="Category" id="category-mint">
+      <input type="text" placeholder="Amount" id="amount-mint">
+      <input type="text" placeholder="Price" id="price-mint">
+      <div class="type-class">
+        <span class="type-label">Type item</span>
+        <div class="type-option">
+          <div class="check">
+            <input type="radio" value="new" name="radio" checked>
+            <span>New</span>
+          </div>
+          <div class="check">
+            <input type="radio" value="used" name="radio">
+            <span>Used</span>
+          </div>
+        </div>
+      </div>
+      <div class="button-mint" id="button-mint">
         <span style="font-size: 16px;">Mint</span>
       </div>
     </div>

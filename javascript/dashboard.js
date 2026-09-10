@@ -35,8 +35,10 @@ var dayList = [
   "Saturday",
 ];
 
+if (data) {
+  userTag.textContent = `${data.firstName} ${data.lastName}`;
+}
 tagTime.textContent = `${dayList[day]} ${date}/${mont + 1}/${year}`;
-userTag.textContent = `${data.firstName} ${data.lastName}`;
 
 dashboard.addEventListener("mouseenter", () => {
   var x = dashboard.getBoundingClientRect();

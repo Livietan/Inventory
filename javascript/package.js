@@ -1,4 +1,4 @@
-import { getDataUser } from "./API.js";
+import { getDataItem, getDataUser, mintItem } from "./API.js";
 
 var dashboard = document.getElementById("dashboard");
 var packages = document.getElementById("package");
@@ -13,11 +13,16 @@ var tagInventory = document.getElementById("tag-inventory");
 var newQuantity = document.getElementById("new-quantity");
 var quantityPopup = document.getElementById("quantity-popup");
 var popup = document.querySelector(".popup");
+var closeQuantity = document.getElementById("close-mint");
+var buttonMint = document.getElementById("button-mint");
 
 var user = sessionStorage.getItem("username");
-var data = await getDataUser(user);
+var dataUser = await getDataUser(user);
+// var dataItem = await getDataItem(user);
 
-tagInventory.textContent = `${data.inventoryName}`;
+if (dataUser) {
+  tagInventory.textContent = `${dataUser.inventoryName}`;
+}
 
 dashboard.addEventListener("click", () => {
   window.location.href = "dashboard.html";
@@ -70,4 +75,26 @@ quantityPopup.addEventListener("click", () => {
 });
 popup.addEventListener("click", (e) => {
   e.stopPropagation();
-})
+});
+closeQuantity.addEventListener("click", () => {
+  quantityPopup.style.display = "none";
+});
+buttonMint.addEventListener("click", () => {
+  var nameMint = document.getElementById("name-mint");
+  var categoryMint = document.getElementById("category-mint");
+  var amountMint = document.getElementById("amount-mint");
+  var priceMint = document.getElementById("price-mint");
+  var typeMint = document.querySelector("input[name=radio]:checked");
+  if (nameitem.value.trim() == "") {
+    alert("name could'not empety");
+  } else if (categoryItem.value.trim() == "") {
+    alert("category could'not empety");
+  } else if (amountItem.value.trim() == "") {
+    alert("amount could'not empety");
+  } else if (priceItem.value.trim() == "") {
+    alert("amount could'not empety");
+  } else {
+    mintItem(user, nameMint, typeMint, categoryMint, amountMint, priceMint);
+    quantityPopup.style.display = "none";
+  }
+});

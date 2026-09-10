@@ -189,6 +189,9 @@ body {
   display: flex;
   flex-direction: column;
 }
+.content-table {
+  height: 100%;
+}
 .header-table {
   font-family: "Inter", sans-serif;
   font-weight: 500;
@@ -208,6 +211,10 @@ body {
 }
 .audit-log {
   justify-content: space-around;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .menu-table {
   padding: 2px 6px;
@@ -216,11 +223,11 @@ body {
   user-select: none;
 }
 .not-found {
-  position: absolute;
+  position: relative;
+  display: flex;
+  height: 100%;
   align-items: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  justify-content: center;
   color: rgba(0, 0, 0, 0.2);
   font-family: "Inter", sans-serif;
 }

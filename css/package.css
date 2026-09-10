@@ -126,6 +126,8 @@
 .table {
   padding-top: 16px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 select {
   font-family: "Inter", sans-serif;
@@ -150,6 +152,7 @@ select {
   position: absolute;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -158,8 +161,8 @@ select {
   background: #ffffff;
   gap: 10px;
   font-family: "Inter", sans-serif;
-  height: auto;
-  width: 24rem;
+  height: 26rem;
+  width: 22rem;
 }
 .popup input {
   height: 1rem;
@@ -198,3 +201,24 @@ select {
   color: rgba(0, 0, 0, 0.2);
   font-family: "Inter", sans-serif;
 }
+.type-class {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.type-label {
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+.type-option {
+  display: flex;
+  gap: 5px;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+}
+.check {
+  display: flex;
+  align-items: center;
+}
+

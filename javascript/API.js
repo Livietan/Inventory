@@ -20,6 +20,7 @@ export async function register(
     var lastNameValue = lastName.value.trim() === "" ? "" : lastName.value;
     const request = await fetch(
       `http://127.0.0.1:8000/register?firstName=${firstName.value}&lastName=${lastNameValue}&inventoryName=${inventoryName.value}&username=${username.value}&password=${password.value}`,
+      { method: "POST" },
     );
     var response = await request.json();
     if (response.status == true) {
@@ -42,6 +43,7 @@ export async function login(username, password, checklist) {
   } else {
     const request = await fetch(
       `http://127.0.0.1:8000/login?username=${username.value}&password=${password.value}`,
+      { method: "POST" },
     );
     var response = await request.json();
     if (response.status == true) {
@@ -54,9 +56,46 @@ export async function login(username, password, checklist) {
   }
 }
 
-export async function getDataUser(username) {
-  const request = await fetch(
-    `http://127.0.0.1:8000/GetData?username=${username}`,
+export async function mintItem(
+  owner,
+  nameitem,
+  typeItem,
+  categoryItem,
+  amountItem,
+  priceItem,
+) {
+  return await fetch(
+    `http://127.0.0.1:8000/mint?owner=${owner}&nameItem=${nameitem.value}&typeItem=${typeItem.value}&categoryItem=${categoryItem.value}&amountItem=${amountItem.value}&priceItem=${priceItem.value}`,
+    { method: "POST" },
   );
-  return await request.json();
+}
+
+export async function getDataUser(username) {
+  try {
+    const request = await fetch(
+      `http://127.0.0.1:8000/GetData?username=${username}`,
+      { method: "POST" },
+    );
+    if (!request.ok) {
+      return null;
+    }
+    return await request.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getDataItem(username) {
+  try {
+    const request = await fetch(
+      `http://127.0.0.1:8000/GetItems?username=${username}`,
+      { method: "POST" },
+    );
+    if (!request.ok) {
+      return null;
+    }
+    return await request.json();
+  } catch {
+    return null;
+  }
 }

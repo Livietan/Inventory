@@ -14,18 +14,19 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    CREATE TABLE USERS (
+    CREATE TABLE ITEMS (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    FIRSTNAME VARCHAR(16),
-    LASTNAME VARCHAR(16),
-    INVENTORYNAME VARCHAR(16),
-    USERNAME VARCHAR(16) UNIQUE,
-    PASSWORD VARCHAR(32))
+    OWNER VARCHAR(16),
+    NAMEITEM VARCHAR(16),
+    TYPEITEM VARCHAR(16),
+    CATEGORY VARCHAR(16),
+    AMOUNT INTEGER,
+    PRICE INTEGER)
     """)
     connect.commit()
     connect.close()
 
-@app.get("/register")
+@app.post("/register")
 def main(firstName:str, lastName:str, inventoryName:str, username:str, password:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
@@ -43,7 +44,7 @@ def main(firstName:str, lastName:str, inventoryName:str, username:str, password:
     finally:
         connect.close()
 
-@app.get("/login")
+@app.post("/login")
 def main(username:str, password:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
@@ -56,7 +57,7 @@ def main(username:str, password:str):
     else:
         return {"status": False, "detail": "password not found or account not aviable"}
 
-@app.get("/GetData")
+@app.post("/GetData")
 def main(username:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
@@ -65,4 +66,32 @@ def main(username:str):
     if result:
         first, last, inventoryName, username, password = result
         return {"firstName": first, "lastName": last, "inventoryName": inventoryName, "username": username}
-        
+
+@app.post("/GetItems")
+def main(username:str):
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    cursor.execute("SELECT OWNER, NAMEITEM, TYPEITEM, CATEGORY, AMOUNT, PRICE FROM USERS WHERE OWNER=?", (username,))
+    result = cursor.fetchall()
+    data = []
+    for owner, nameitem, typeitem, category, amount, price in result:
+        data.append({"owner": owner, "nameItem":nameitem, "typeItem": typeitem, "category": category, "amount": amount, "price": price})
+    connect.close()
+    return data
+
+@app.post("/mint")
+def main(owner:str, nameItem:str, typeItem:str, categoryItem:str, amountItem:int, priceItem:int):
+    connect = sqlite3.connect("data/data,db")
+    cursor = connect.cursor()
+    cursor.execute("""
+    INSERT INTO ITEMS (
+    OWNER VARCHAR(16),
+    NAMEITEM VARCHAR(16),
+    TYPEITEM VARCHAR(16),
+    CATEGORY VARCHAR(16),
+    AMOUNT INTEGER,
+    PRICE INTEGER
+    )
+    """, (owner, nameItem, typeItem, categoryItem, amountItem, priceItem))
+    connect.commit()
+    connect.close()

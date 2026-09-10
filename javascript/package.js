@@ -85,13 +85,13 @@ buttonMint.addEventListener("click", () => {
   var amountMint = document.getElementById("amount-mint");
   var priceMint = document.getElementById("price-mint");
   var typeMint = document.querySelector("input[name=radio]:checked");
-  if (nameitem.value.trim() == "") {
+  if (nameMint.value.trim() == "") {
     alert("name could'not empety");
-  } else if (categoryItem.value.trim() == "") {
+  } else if (categoryMint.value.trim() == "") {
     alert("category could'not empety");
-  } else if (amountItem.value.trim() == "") {
+  } else if (amountMint.value.trim() == "") {
     alert("amount could'not empety");
-  } else if (priceItem.value.trim() == "") {
+  } else if (priceMint.value.trim() == "") {
     alert("amount could'not empety");
   } else {
     mintItem(user, nameMint, typeMint, categoryMint, amountMint, priceMint);

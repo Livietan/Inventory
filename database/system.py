@@ -81,17 +81,17 @@ def main(username:str):
 
 @app.post("/mint")
 def main(owner:str, nameItem:str, typeItem:str, categoryItem:str, amountItem:int, priceItem:int):
-    connect = sqlite3.connect("data/data,db")
+    connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
     INSERT INTO ITEMS (
-    OWNER VARCHAR(16),
-    NAMEITEM VARCHAR(16),
-    TYPEITEM VARCHAR(16),
-    CATEGORY VARCHAR(16),
-    AMOUNT INTEGER,
-    PRICE INTEGER
-    )
+    OWNER,
+    NAMEITEM,
+    TYPEITEM,
+    CATEGORY,
+    AMOUNT,
+    PRICE
+    ) VALUES (?, ?, ?, ?, ?, ?)
     """, (owner, nameItem, typeItem, categoryItem, amountItem, priceItem))
     connect.commit()
     connect.close()

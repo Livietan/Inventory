@@ -14,14 +14,7 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    CREATE TABLE ITEMS (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    OWNER VARCHAR(16),
-    NAMEITEM VARCHAR(16),
-    TYPEITEM VARCHAR(16),
-    CATEGORY VARCHAR(16),
-    AMOUNT INTEGER,
-    PRICE INTEGER)
+    DELETE FROM ITEMS
     """)
     connect.commit()
     connect.close()
@@ -71,13 +64,16 @@ def main(username:str):
 def main(username:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT OWNER, NAMEITEM, TYPEITEM, CATEGORY, AMOUNT, PRICE FROM USERS WHERE OWNER=?", (username,))
+    cursor.execute("SELECT OWNER, NAMEITEM, TYPEITEM, CATEGORY, AMOUNT, PRICE FROM ITEMS WHERE OWNER=?", (username,))
     result = cursor.fetchall()
     data = []
     for owner, nameitem, typeitem, category, amount, price in result:
         data.append({"owner": owner, "nameItem":nameitem, "typeItem": typeitem, "category": category, "amount": amount, "price": price})
     connect.close()
-    return data
+    if data:
+        return {"point": True, "value": data}
+    else:
+        return {"point": False, "value": []}
 
 @app.post("/mint")
 def main(owner:str, nameItem:str, typeItem:str, categoryItem:str, amountItem:int, priceItem:int):

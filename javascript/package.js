@@ -9,6 +9,8 @@ var informationPackage = document.getElementById("information-package");
 var informationSetting = document.getElementById("information-setting");
 var informationLogout = document.getElementById("information-logout");
 var tagInventory = document.getElementById("tag-inventory");
+var listItems = document.getElementById("list-container");
+var notFound = document.getElementById("404");
 
 var newQuantity = document.getElementById("new-quantity");
 var quantityPopup = document.getElementById("quantity-popup");
@@ -18,12 +20,33 @@ var buttonMint = document.getElementById("button-mint");
 
 var user = sessionStorage.getItem("username");
 var dataUser = await getDataUser(user);
-// var dataItem = await getDataItem(user);
+var dataItem = await getDataItem(user);
+listItems.innerHTML = "";
 
 if (dataUser) {
   tagInventory.textContent = `${dataUser.inventoryName}`;
 }
 
+if (dataItem.point == true) {
+  notFound.style.display = "none";
+  dataItem.value.forEach((item, index) => {
+    var dataItem = document.createElement("div");
+    dataItem.classList.add("data-row");
+    dataItem.innerHTML = `
+    <div>
+      <span>${index + 1}</span>
+      <span>${item.nameItem}</span>
+    </div>
+    <span>${item.typeItem}</span>
+    <span>${item.category}</span>
+    <span>${item.amount}</span>
+    <span>$${item.price}</span>
+    `;
+    listItems.appendChild(dataItem);
+  });
+} else {
+  notFound.style.display = "block";
+}
 dashboard.addEventListener("click", () => {
   window.location.href = "dashboard.html";
 });

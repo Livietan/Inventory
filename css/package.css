@@ -86,14 +86,15 @@
   gap: 10px;
 }
 .audit-log {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 1.5fr 0.5fr;
   width: 100%;
-  justify-content: space-around;
   border-top: 1px solid black;
   padding-top: 10px;
   border-bottom: 1px solid black;
   padding-bottom: 10px;
   font-family: "Inter", sans-serif;
+  align-items: center;
 }
 .header-menu {
   display: flex;
@@ -221,4 +222,17 @@ select {
   display: flex;
   align-items: center;
 }
-
+#list-container {
+  display: flex;
+  flex-direction: column;
+}
+.data-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 1.5fr 0.5fr;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}

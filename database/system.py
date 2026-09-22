@@ -14,7 +14,13 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    
+    CREATE TABLE ITEMS (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    SIGNATURE VARCHAR(64),
+    NAMEITEM VARCHAR(16),
+    TYPEITEM VARCHAR(16),
+    AMOUNT INTEGER,
+    PRICE INTEGER
     )
     """)
     connect.commit()

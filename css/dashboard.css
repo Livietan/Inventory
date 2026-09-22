@@ -161,3 +161,48 @@ body {
   border-bottom: 1.75px solid rgba(255, 255, 255, 0.08);
   width: 100%;
 }
+.popup-add {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #212b31;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
+  font-family: "JetBrains Mono";
+  padding: .5rem;
+  color: white;
+  gap: 10px;
+  width: 50rem;
+  padding: 10px;
+}
+.popup-add input {
+  font-size: 16px;
+  padding: 3px;
+  background: #0f1620;
+  border: 1px solid #2a3646;
+  color: rgba(255, 255, 255, 0.75);
+  border-radius: 6px;
+  padding: 10px;
+}
+.popup-add input[type="number"]::-webkit-inner-spin-button,
+.popup-add input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+.popup-add input::placeholder {
+  color: #64748b;
+}
+.button-add {
+  background: #50d2c1;
+  padding: .5rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+}
+.button-add:hover {
+  background: #3ec1cf;
+}

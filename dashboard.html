@@ -33,7 +33,7 @@
     </div>
     <div class="content">
         <div class="head-menu">
-            <div class="button-add-item">
+            <div class="button-add-item" id="button-add-item">
                 <span>+add</span>
             </div>
         </div>
@@ -57,6 +57,16 @@
             </div>
             <span class="line"></span>
             <div class="data" id="data"></div>
+        </div>
+    </div>
+    <div class="popup-add" id="popup-add">
+        <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Add your item</span>
+        <input type="text" placeholder="Name" id="name" maxlength="16">
+        <input type="text" placeholder="Type" id="type" maxlength="16">
+        <input type="number" placeholder="Amount" id="amount">
+        <input type="number" placeholder="Price" id="price">
+        <div class="button-add" id="button-add">
+            <span>Add Item</span>
         </div>
     </div>
 </body>

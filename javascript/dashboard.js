@@ -31,9 +31,9 @@ document.addEventListener("click", () => {
   });
 });
 addbutton.addEventListener("click", async () => {
-  var request = await addItem(sign, name, type, amount, price);
+  var request = await addItem(sign, name.value, type.value, amount.value, price.value);
   var response = await request.json();
-  if (response.status == True) {
+  if (response.status == true) {
     popupAdd.style.display = "none";
   } else {
     alert(response.detail);

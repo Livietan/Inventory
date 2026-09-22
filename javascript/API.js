@@ -61,7 +61,7 @@ export async function addItem(
   priceItem,
 ) {
   return await fetch(
-    `http://127.0.0.1:8000/AddItem?signature=${signature}&nameItem=${nameitem.value}&typeItem=${typeItem.value}&categoryItem=${categoryItem.value}&amountItem=${amountItem.value}&priceItem=${priceItem.value}`,
+    `http://127.0.0.1:8000/AddItem?signature=${signature}&nameItem=${nameitem}&typeItem=${typeItem}&amountItem=${amountItem}&priceItem=${priceItem}`,
     { method: "POST" },
   );
 }

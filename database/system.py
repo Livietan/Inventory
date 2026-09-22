@@ -102,4 +102,4 @@ def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:in
         connect.close()
         return {"status": True}
     except Exception as e :
-        return {"status": False, "detail": e}
+        return {"detail": e}

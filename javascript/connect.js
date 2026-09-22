@@ -7,7 +7,6 @@ var loginForm = document.getElementById("login");
 
 var firstName = document.getElementById("first-name");
 var lastName = document.getElementById("last-name");
-var inventoryName = document.getElementById("inventory-name");
 var usernameRegister = document.getElementById("username-register");
 var passwordRegister = document.getElementById("password-register");
 var agreeRegister = document.getElementById("agree-register");
@@ -27,7 +26,7 @@ linkRegister.addEventListener("click", () => {
   loginForm.style.display = "none";
 });
 create.addEventListener("click", () => {
-  register(firstName, lastName, inventoryName, usernameRegister, passwordRegister, agreeRegister);
+  register(firstName, lastName, usernameRegister, passwordRegister, agreeRegister);
 });
 loginButton.addEventListener("click", () => {
   login(usernameLogin, passwordLogin, agreeLogin);

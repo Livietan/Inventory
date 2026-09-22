@@ -6,8 +6,8 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(150deg, #16181c 15%, #090a0c 100%, #030405 100%);
-  font-family: "Inter", sans-serif;
+  background: #1b2429;
+  font-family: "JetBrains Mono";
   overflow: hidden;
 }
 .content {
@@ -18,19 +18,8 @@ body {
   justify-content: center;
   align-items: center;
 }
-.image {
-  overflow: hidden;
-  padding: 40px;
-  box-sizing: border-box;
-}
-.image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-}
 .head-form {
-  font-size: 68px;
+  font-size: 54px;
   font-weight: 500;
 }
 .link {
@@ -64,13 +53,14 @@ input {
 input::placeholder {
   color: rgba(255, 255, 255, 0.42);
   user-select: none;
+  font-family: "JetBrains Mono";
 }
 input:focus {
   background: rgba(255, 255, 255, 0.07);
   border-color: rgba(255, 255, 255, 0.35);
 }
 .button-create {
-  background: #f2f2f2;
+  background: #50d2c1;
   color: #0a0a0a;
   border-radius: 8px;
   padding: 14px;
@@ -79,7 +69,7 @@ input:focus {
   user-select: none;
 }
 .button-create:hover {
-  background: #dadada;
+  background: #7bf2ff;
 }
 .button-create:active {
   background: #c8c8c8;

@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, hashlib
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,24 +14,26 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    DELETE FROM ITEMS
+    
+    )
     """)
     connect.commit()
     connect.close()
 
 @app.post("/register")
-def main(firstName:str, lastName:str, inventoryName:str, username:str, password:str):
+def main(firstName:str, lastName:str, username:str, password:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     try:
+        signature = hashlib.sha256(username.encode("utf-8")).hexdigest()
         cursor.execute("""
-        INSERT INTO USERS (FIRSTNAME, LASTNAME, INVENTORYNAME, USERNAME, PASSWORD) VALUES (?, ?, ?, ?, ?)
-        """, (firstName, lastName, inventoryName, username, password))
+        INSERT INTO USERS (FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD) VALUES (?, ?, ?, ?)
+        """, (firstName, lastName, signature, password))
         connect.commit()
-        cursor.execute("SELECT FIRSTNAME, LASTNAME, INVENTORYNAME, USERNAME, PASSWORD FROM USERS WHERE USERNAME=? AND PASSWORD=?", (username, password))
+        cursor.execute("SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=? AND PASSWORD=?", (signature, password))
         result = cursor.fetchone()
-        first, last, inventoryName, username, password = result
-        return {"status": True, "firstName": first, "lastName": last, "inventoryName": inventoryName, "username": username}
+        A, B, C, D = result
+        return {"status": True, "firstName": A, "lastName": B, "signature": C}
     except Exception as e:
         return {"status": False, "detail": str(e)}
     finally:
@@ -39,26 +41,27 @@ def main(firstName:str, lastName:str, inventoryName:str, username:str, password:
 
 @app.post("/login")
 def main(username:str, password:str):
+    signature = hashlib.sha256(username.encode("utf-8")).hexdigest()
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT FIRSTNAME, LASTNAME, INVENTORYNAME, USERNAME, PASSWORD FROM USERS WHERE USERNAME=? AND PASSWORD=?", (username, password))
+    cursor.execute("SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=? AND PASSWORD=?", (signature, password))
 
     result = cursor.fetchone()
     if result:
-        first, last, inventoryName, username, password = result
-        return {"status": True, "firstName": first, "lastName": last, "inventoryName": inventoryName, "username": username}
+        A, B, C, D = result
+        return {"status": True, "firstName": A, "lastName": B, "signature": C}
     else:
         return {"status": False, "detail": "password not found or account not aviable"}
 
 @app.post("/GetData")
-def main(username:str):
+def main(sign:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT FIRSTNAME, LASTNAME, INVENTORYNAME, USERNAME, PASSWORD FROM USERS WHERE USERNAME=?", (username,))
+    cursor.execute("SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=?", (sign,))
     result = cursor.fetchone()
     if result:
-        first, last, inventoryName, username, password = result
-        return {"firstName": first, "lastName": last, "inventoryName": inventoryName, "username": username}
+        A, B, C, D = result
+        return {"firstName": A, "lastName": B, "signature": C}
 
 @app.post("/GetItems")
 def main(username:str):

@@ -1,9 +1,14 @@
-import { getDataUser } from "./API.js";
+import { addItem, getDataUser } from "./API.js";
 
 var userTag = document.getElementById("user-tag");
 var addPopup = document.getElementById("button-add-item");
 var popupAdd = document.getElementById("popup-add");
 var addbutton = document.getElementById("button-add");
+
+var name = document.getElementById("Name");
+var type = document.getElementById("Type");
+var amount = document.getElementById("Amount");
+var price = document.getElementById("Price");
 
 var sign = sessionStorage.getItem("signature");
 var data = await getDataUser(sign);
@@ -24,4 +29,14 @@ document.addEventListener("click", () => {
   popupAdd.querySelectorAll("input").forEach((input) => {
     input.value = "";
   });
+});
+addbutton.addEventListener("click", async () => {
+  var request = await addItem(sign, name, type, amount, price);
+  var response = await request.json();
+  if (response.status == True) {
+    popupAdd.style.display = "none";
+  } else {
+    alert(response.detail);
+    popupAdd.style.display = "none";
+  }
 });

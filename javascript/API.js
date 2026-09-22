@@ -53,16 +53,15 @@ export async function login(username, password, checklist) {
   }
 }
 
-export async function mintItem(
-  owner,
+export async function addItem(
+  signature,
   nameitem,
   typeItem,
-  categoryItem,
   amountItem,
   priceItem,
 ) {
   return await fetch(
-    `http://127.0.0.1:8000/mint?owner=${owner}&nameItem=${nameitem.value}&typeItem=${typeItem.value}&categoryItem=${categoryItem.value}&amountItem=${amountItem.value}&priceItem=${priceItem.value}`,
+    `http://127.0.0.1:8000/AddItem?signature=${signature}&nameItem=${nameitem.value}&typeItem=${typeItem.value}&categoryItem=${categoryItem.value}&amountItem=${amountItem.value}&priceItem=${priceItem.value}`,
     { method: "POST" },
   );
 }

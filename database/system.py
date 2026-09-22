@@ -73,30 +73,33 @@ def main(sign:str):
 def main(username:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT OWNER, NAMEITEM, TYPEITEM, CATEGORY, AMOUNT, PRICE FROM ITEMS WHERE OWNER=?", (username,))
+    cursor.execute("SELECT SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=?", (username,))
     result = cursor.fetchall()
     data = []
-    for owner, nameitem, typeitem, category, amount, price in result:
-        data.append({"owner": owner, "nameItem":nameitem, "typeItem": typeitem, "category": category, "amount": amount, "price": price})
+    for owner, nameitem, typeitem, amount, price in result:
+        data.append({"nameItem":nameitem, "typeItem": typeitem, "amount": amount, "price": price})
     connect.close()
     if data:
-        return {"point": True, "value": data}
+        return {"status": True, "value": data}
     else:
-        return {"point": False, "value": []}
+        return {"status": False, "value": []}
 
-@app.post("/mint")
-def main(owner:str, nameItem:str, typeItem:str, categoryItem:str, amountItem:int, priceItem:int):
-    connect = sqlite3.connect("data/data.db")
-    cursor = connect.cursor()
-    cursor.execute("""
-    INSERT INTO ITEMS (
-    OWNER,
-    NAMEITEM,
-    TYPEITEM,
-    CATEGORY,
-    AMOUNT,
-    PRICE
-    ) VALUES (?, ?, ?, ?, ?, ?)
-    """, (owner, nameItem, typeItem, categoryItem, amountItem, priceItem))
-    connect.commit()
-    connect.close()
+@app.post("/AddItem")
+def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:int):
+    try:
+        connect = sqlite3.connect("data/data.db")
+        cursor = connect.cursor()
+        cursor.execute("""
+        INSERT INTO ITEMS (
+        SIGNATURE,
+        NAMEITEM,
+        TYPEITEM,
+        AMOUNT,
+        PRICE
+        ) VALUES (?, ?, ?, ?, ?)
+        """, (signature, nameItem, typeItem, amountItem, priceItem))
+        connect.commit()
+        connect.close()
+        return {"status": True}
+    except Exception as e :
+        return {"status": False, "detail": e}

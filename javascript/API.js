@@ -69,7 +69,7 @@ export async function addItem(
 export async function getDataUser(sign) {
   try {
     const request = await fetch(
-      `http://127.0.0.1:8000/GetData?sign=${sign}`,
+      `http://127.0.0.1:8000/GetData?signature=${sign}`,
       { method: "POST" },
     );
     if (!request.ok) {
@@ -84,7 +84,7 @@ export async function getDataUser(sign) {
 export async function getDataItem(username) {
   try {
     const request = await fetch(
-      `http://127.0.0.1:8000/GetItems?username=${username}`,
+      `http://127.0.0.1:8000/GetItems?signature=${username}`,
       { method: "POST" },
     );
     if (!request.ok) {

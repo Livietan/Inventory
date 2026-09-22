@@ -101,6 +101,8 @@ body {
   font-size: 0.75rem;
   font-weight: 500;
   color: rgba(242, 243, 244, 0.55);
+  border-bottom: 1.75px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
 }
 .connect-popup {
   position: absolute;
@@ -157,10 +159,6 @@ body {
 .button-add-item:hover {
   background: #7bf2ff;
 }
-.line {
-  border-bottom: 1.75px solid rgba(255, 255, 255, 0.08);
-  width: 100%;
-}
 .popup-add {
   position: absolute;
   display: none;
@@ -205,4 +203,14 @@ body {
 }
 .button-add:hover {
   background: #3ec1cf;
+}
+.data-row {
+  font-family: "JetBrains Mono";
+  display: grid;
+  grid-template-columns: 0.1fr 2fr 2fr 2fr 0.25fr 0.5fr;
+  padding: 10px;
+  cursor: pointer;
+}
+.data-row:hover {
+  background: rgba(59, 130, 246, 0.08);
 }

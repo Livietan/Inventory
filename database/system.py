@@ -60,23 +60,23 @@ def main(username:str, password:str):
         return {"status": False, "detail": "password not found or account not aviable"}
 
 @app.post("/GetData")
-def main(sign:str):
+def main(signature:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=?", (sign,))
+    cursor.execute("SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=?", (signature,))
     result = cursor.fetchone()
     if result:
         A, B, C, D = result
         return {"firstName": A, "lastName": B, "signature": C}
 
 @app.post("/GetItems")
-def main(username:str):
+def main(signature:str):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=?", (username,))
+    cursor.execute("SELECT SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=?", (signature,))
     result = cursor.fetchall()
     data = []
-    for owner, nameitem, typeitem, amount, price in result:
+    for signature, nameitem, typeitem, amount, price in result:
         data.append({"nameItem":nameitem, "typeItem": typeitem, "amount": amount, "price": price})
     connect.close()
     if data:

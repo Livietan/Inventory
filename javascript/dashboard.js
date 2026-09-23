@@ -1,4 +1,4 @@
-import { addItem, Delete, getDataItem, getDataUser } from "./API.js";
+import { addItem, Delete, getDataItem, getDataStat, getDataUser, Update } from "./API.js";
 
 var userTag = document.getElementById("user-tag");
 var addPopup = document.getElementById("button-add-item");
@@ -12,6 +12,15 @@ var nameD = document.getElementById("nameD");
 var typeD = document.getElementById("typeD");
 var checkboxD = document.getElementById("checkboxD");
 var deleteItem = document.getElementById("delete-item");
+var popupEdit = document.getElementById("popup-edit");
+var buttonEditItem = document.getElementById("button-edit-item");
+var itemSelect = document.getElementById("item-select");
+var editItemButton = document.getElementById("edit-item");
+var typeEdit = document.getElementById("type-edit");
+var amountEdit = document.getElementById("Amount-edit");
+var priceEdit = document.getElementById("Price-edit");
+var valueTag = document.getElementById("value");
+var totalTag = document.getElementById("total");
 
 var name = document.getElementById("Name");
 var type = document.getElementById("Type");
@@ -21,6 +30,7 @@ var price = document.getElementById("Price");
 var sign = sessionStorage.getItem("signature");
 var data = await getDataUser(sign);
 var response = await getDataItem(sign);
+var stat = await getDataStat(sign);
 
 if (response.status == true) {
   dataItem.innerHTML = "";
@@ -38,9 +48,9 @@ if (response.status == true) {
   });
 }
 
-if (data) {
-  userTag.textContent = `${data.firstName} ${data.lastName}`;
-}
+valueTag.textContent = `$${stat.price}`;
+totalTag.textContent = stat.amount;
+userTag.textContent = `${data.firstName} ${data.lastName}`;
 
 deletex.addEventListener("click", (e) => {
   popupDelete.style.display = "flex";
@@ -63,6 +73,7 @@ popupAdd.addEventListener("click", (e) => {
 document.addEventListener("click", () => {
   popupAdd.style.display = "none";
   popupDelete.style.display = "none";
+  popupEdit.style.display = "none";
   checkboxD.checked = false;
   popupDelete.querySelectorAll("input").forEach((input) => {
     input.value = "";
@@ -90,4 +101,29 @@ addbutton.addEventListener("click", async () => {
 deleteItem.addEventListener("click", () => {
   Delete(sign, nameD, typeD, checkboxD);
   popupDelete.style.display = "none";
+  popupDelete.querySelectorAll("input").forEach((input) => {
+    input.value = "";
+  });
+});
+buttonEditItem.addEventListener("click", (e) => {
+  popupEdit.style.display = "flex";
+  e.stopPropagation();
+  itemSelect.innerHTML =
+    "<option value='' disabled selected>Select item</option>";
+  response.value.forEach((item) => {
+    var data = document.createElement("option");
+    data.value = item.nameItem;
+    data.textContent = item.nameItem;
+    itemSelect.appendChild(data);
+  });
+});
+popupEdit.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+editItemButton.addEventListener("click", () => {  
+  Update(sign, itemSelect, typeEdit, amountEdit, priceEdit);
+  popupEdit.style.display = "none";
+  popupEdit.querySelectorAll("input").forEach((input) => {
+    input.value = "";
+  });
 });

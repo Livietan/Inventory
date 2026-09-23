@@ -261,7 +261,7 @@ body {
 .data-row {
   font-family: "JetBrains Mono";
   display: grid;
-  grid-template-columns: 0.1fr 2fr 2fr 2fr 0.25fr 0.5fr;
+  grid-template-columns: 0.1fr 2fr 2.25fr 2fr 0.25fr 0.5fr;
   padding: 10px;
   cursor: pointer;
 }
@@ -294,10 +294,6 @@ body {
   border-radius: 6px;
   padding: 10px;
 }
-.popup-delete input[type="number"]::-webkit-inner-spin-button,
-.popup-delete input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-}
 .popup-add input::placeholder {
   color: #64748b;
 }
@@ -314,4 +310,64 @@ body {
 }
 .delete-item:hover {
   background: #4a1a1e;
+}
+.popup-edit {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #212b31;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
+  font-family: "JetBrains Mono";
+  padding: 0.5rem;
+  color: white;
+  gap: 10px;
+  width: 30rem;
+  padding: 10px;
+}
+.popup-edit input {
+  font-size: 16px;
+  padding: 3px;
+  background: #0f1620;
+  border: 1px solid #2a3646;
+  color: rgba(255, 255, 255, 0.75);
+  border-radius: 6px;
+  padding: 10px;
+}
+.popup-edit input::-webkit-inner-spin-button,
+.popup-edit input::-webkit-outer-spin-button {
+  appearance: none;
+}
+.popup-add input::placeholder {
+  color: #64748b;
+}
+.edit-item {
+  background: #103a3a;
+  border: 1.5px solid #4dffff;
+  padding: 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+  color: #7dffff;
+}
+.edit-item:hover {
+  background: #1a4a4a;
+}
+.select-item {
+  font-size: 16px;
+  padding: 3px;
+  background-color: #0f1620;
+  border: 1px solid #2a3646;
+  color: rgba(255, 255, 255, 0.75);
+  border-radius: 6px;
+  padding: 10px;
+  appearance: none;
+  background-image: url("/assets/arrow.svg");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
 }

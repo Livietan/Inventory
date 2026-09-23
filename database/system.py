@@ -10,21 +10,17 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-def fetch():
+def fetch(signature):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    CREATE TABLE ITEMS (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    SIGNATURE VARCHAR(64),
-    NAMEITEM VARCHAR(16),
-    TYPEITEM VARCHAR(16),
-    AMOUNT INTEGER,
-    PRICE INTEGER
-    )
-    """)
-    connect.commit()
-    connect.close()
+    SELECT SUM(AMOUNT),
+    SUM(PRICE)
+    FROM ITEMS
+    WHERE SIGNATURE=?
+    """, (signature,))
+    print(cursor.fetchone())
+
 
 @app.post("/register")
 def main(firstName:str, lastName:str, username:str, password:str):
@@ -84,6 +80,21 @@ def main(signature:str):
     else:
         return {"status": False, "value": []}
 
+@app.post("/GetStat")
+def main(signature:str):
+    try:
+        connect = sqlite3.connect("data/data.db")
+        cursor = connect.cursor()
+        cursor.execute("SELECT SUM(AMOUNT), SUM(PRICE) FROM ITEMS WHERE SIGNATURE=?", (signature,))
+        result = cursor.fetchone()
+        if result:
+            A, B = result
+            return {"amount": A, "price": B}
+    except Exception as e:
+        raise str(e)
+    finally:
+        connect.close()
+
 @app.post("/AddItem")
 def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:int):
     try:
@@ -102,7 +113,7 @@ def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:in
         connect.close()
         return {"status": True}
     except Exception as e :
-        return {"detail": e}
+        return {"status": False, "detail": e}
 
 @app.post("/delete")
 def main(signature:str, nameItem:str, typeItem:str):
@@ -114,4 +125,20 @@ def main(signature:str, nameItem:str, typeItem:str):
         connect.close()
         return {"status": True}
     except Exception as e :
-        return {"status": False, "detail": e}
+        return {"status": False, "detail": str(e)}
+
+@app.post("/update")
+def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
+    try:
+        connect = sqlite3.connect("data/data.db")
+        cursor = connect.cursor()
+        cursor.execute("""
+        UPDATE ITEMS SET AMOUNT=?, 
+        PRICE=?
+        WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?""",
+        (amount, price, signature, nameItem, typeItem))
+        connect.commit()
+        connect.close()
+        return {"status": True}
+    except Exception as e:
+        return {"status": False, "detail": str(e)}

@@ -95,6 +95,20 @@ export async function getDataItem(username) {
     return null;
   }
 }
+export async function getDataStat(username) {
+  try {
+    const request = await fetch(
+      `http://127.0.0.1:8000/GetStat?signature=${username}`,
+      { method: "POST" },
+    );
+    if (!request.ok) {
+      return null;
+    }
+    return await request.json();
+  } catch {
+    return null;
+  }
+}
 export async function Delete(signature, nameItem, typeItem, checklist) {
   if (signature.trim() == "") {
     alert("signature could'not empety");
@@ -107,6 +121,28 @@ export async function Delete(signature, nameItem, typeItem, checklist) {
   } else {
     const request = await fetch(
       `http://127.0.0.1:8000/delete?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}`,
+      { method: "POST" },
+    );
+    var response = await request.json();
+    if (response.status == false) {
+      alert(response.detail);
+    }
+  }
+}
+export async function Update(signature, nameItem, typeItem, amount, price) {
+  if (signature.trim() == "") {
+    alert("signature could'not empety");
+  } else if (nameItem.value.trim() == "") {
+    alert("name item could'not empety");
+  } else if (typeItem.value.trim() == "") {
+    alert("type item could'not empety");
+  } else if (amount.value <= 0) {
+    alert(`Amount cannot be under ${amount.value}`);
+  } else if (amount.value <= 0) {
+    alert(`Amount cannot be under ${amount.value}`);
+  } else {
+    const request = await fetch(
+      `http://127.0.0.1:8000/update?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}&amount=${amount.value}&price=${price.value}`,
       { method: "POST" },
     );
     var response = await request.json();

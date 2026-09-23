@@ -103,3 +103,15 @@ def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:in
         return {"status": True}
     except Exception as e :
         return {"detail": e}
+
+@app.post("/delete")
+def main(signature:str, nameItem:str, typeItem:str):
+    try:
+        connect = sqlite3.connect("data/data.db")
+        cursor = connect.cursor()
+        cursor.execute("DELETE FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
+        connect.commit()
+        connect.close()
+        return {"status": True}
+    except Exception as e :
+        return {"status": False, "detail": e}

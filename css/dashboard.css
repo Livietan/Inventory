@@ -15,11 +15,9 @@ body {
   height: fit-content;
   padding: 1rem;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 .user {
-  margin: 0 0 0 auto;
   display: flex;
   align-items: center;
   color: white;
@@ -29,12 +27,31 @@ body {
 }
 .search {
   position: absolute;
+  left: 50%;
+  transform: translate(-50%);
   color: rgba(242, 243, 244, 0.35);
   width: 30rem;
   padding: 0.3rem;
   background: #18191b;
   border: 1px solid rgba(255, 255, 255, 0.08);
   outline: none;
+}
+.logout {
+  margin: 0 0 0 auto;
+  background: #3a1518;
+  color: #ff6b6b;
+  padding: 5px 10px;
+  border: 1px solid #ff5252;
+  border-radius: 6px;
+  font-weight: 500;
+  font-family: "JetBrains Mono";
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.logout:hover {
+  color: #ff8a8a;
+  background: #3a1f24;
 }
 .search::placeholder {
   color: rgba(242, 243, 244, 0.35);
@@ -143,10 +160,29 @@ body {
 }
 .head-menu {
   width: 60%;
+  display: flex;
+  align-items: center;
+}
+.button-edit-item {
+  background: #103a3a;
+  border: 1.5px solid #4dffff;
+  color: #7dffff;
+  padding: 5px 20px;
+  border-radius: 4px;
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+}
+.button-edit-item:hover {
+  background: #1a4a4a;
 }
 .button-add-item {
-  margin: 0 0 0 auto;
-  background: #50d2c1;
+  background: #0d4a4a;
+  border: 1.5px solid #5fffff;
+  color: #9cffff;
   padding: 5px 20px;
   border-radius: 4px;
   font-family: "Inter";
@@ -157,7 +193,23 @@ body {
   width: fit-content;
 }
 .button-add-item:hover {
-  background: #7bf2ff;
+  background: #145858;
+}
+.delete {
+  background: #3a1518;
+  border: 1px solid #ff5252;
+  padding: 5px 20px;
+  border-radius: 4px;
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  color: #ff6b6b;
+}
+.delete:hover {
+  background: #4a1a1e;
 }
 .popup-add {
   position: absolute;
@@ -170,7 +222,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
   font-family: "JetBrains Mono";
-  padding: .5rem;
+  padding: 0.5rem;
   color: white;
   gap: 10px;
   width: 50rem;
@@ -193,16 +245,18 @@ body {
   color: #64748b;
 }
 .button-add {
-  background: #50d2c1;
-  padding: .5rem;
+  background: #103a3a;
+  border: 1.5px solid #4dffff;
+  padding: 0.5rem;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
   user-select: none;
   font-weight: 500;
+  color: #7dffff;
 }
 .button-add:hover {
-  background: #3ec1cf;
+  background: #1a4a4a;
 }
 .data-row {
   font-family: "JetBrains Mono";
@@ -213,4 +267,51 @@ body {
 }
 .data-row:hover {
   background: rgba(59, 130, 246, 0.08);
+}
+.popup-delete {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #212b31;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
+  font-family: "JetBrains Mono";
+  padding: 0.5rem;
+  color: white;
+  gap: 10px;
+  width: 30rem;
+  padding: 10px;
+}
+.popup-delete input {
+  font-size: 16px;
+  padding: 3px;
+  background: #0f1620;
+  border: 1px solid #2a3646;
+  color: rgba(255, 255, 255, 0.75);
+  border-radius: 6px;
+  padding: 10px;
+}
+.popup-delete input[type="number"]::-webkit-inner-spin-button,
+.popup-delete input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+.popup-add input::placeholder {
+  color: #64748b;
+}
+.delete-item {
+  background: #3a1518;
+  border: 1.5px solid #ff5252;
+  padding: 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+  color: #ff6b6b;
+}
+.delete-item:hover {
+  background: #4a1a1e;
 }

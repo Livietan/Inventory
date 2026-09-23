@@ -20,7 +20,6 @@
 
 <body>
     <div class="header">
-        <input class="search" type="text" placeholder="Search">
         <div class="user">
             <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#e3e3e3">
                 <path
@@ -30,11 +29,23 @@
                 <span id="user-tag">Username</span>
             </div>
         </div>
+        <input class="search" type="text" placeholder="Search">
+        <div class="logout" id="logout">
+            <span>Logout</span>
+        </div>
     </div>
     <div class="content">
         <div class="head-menu">
-            <div class="button-add-item" id="button-add-item">
-                <span>Add New</span>
+            <div class="delete" id="delete">
+                <span>Delete</span>
+            </div>
+            <div style="margin: 0 0 0 auto; display: flex; gap: 1rem;">
+                <div class="button-edit-item" id="button-edit-item">
+                    <span>Edit Item</span>
+                </div>
+                <div class="button-add-item" id="button-add-item">
+                    <span>Add New</span>
+                </div>
             </div>
         </div>
         <div class="content1">
@@ -58,6 +69,7 @@
             <div class="data" id="data-item"></div>
         </div>
     </div>
+    <!-- add new -->
     <div class="popup-add" id="popup-add">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Add your item</span>
         <input type="text" placeholder="Name" id="Name" maxlength="16">
@@ -68,6 +80,21 @@
             <span>Add Item</span>
         </div>
     </div>
+    <!-- delete item -->
+    <div class="popup-delete" id="popup-delete">
+        <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Delete Your Items</span>
+        <input type="text" placeholder="Item Name" id="nameD">
+        <input type="text" placeholder="Type item" id="typeD">
+        <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="checkbox" value="agree" id="checkboxD">
+            <span style="font-size: 14px;">I understand this action cannot be undone.</span>
+        </div>
+        <div class="delete-item" id="delete-item">
+            <span>delete</span>
+        </div>
+    </div>
+    <!-- edit item -->
+     
 </body>
 <script type="module" src="javascript/dashboard.js"></script>
 

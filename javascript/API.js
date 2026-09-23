@@ -95,3 +95,23 @@ export async function getDataItem(username) {
     return null;
   }
 }
+export async function Delete(signature, nameItem, typeItem, checklist) {
+  if (signature.trim() == "") {
+    alert("signature could'not empety");
+  } else if (nameItem.value.trim() == "") {
+    alert("name item could'not empety");
+  } else if (typeItem.value.trim() == "") {
+    alert("type item could'not empety");
+  } else if (checklist.checked == false) {
+    alert("Please checklist the terms & conditions");
+  } else {
+    const request = await fetch(
+      `http://127.0.0.1:8000/delete?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}`,
+      { method: "POST" },
+    );
+    var response = await request.json();
+    if (response.status == false) {
+      alert(response.detail);
+    }
+  }
+}

@@ -26,23 +26,35 @@
                     d="M325-111.5q-73-31.5-127.5-86t-86-127.5Q80-398 80-480.5t31.5-155q31.5-72.5 86-127t127.5-86Q398-880 480.5-880t155 31.5q72.5 31.5 127 86t86 127Q880-563 880-480.5T848.5-325q-31.5 73-86 127.5t-127 86Q563-80 480.5-80T325-111.5ZM480-162q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z" />
             </svg>
             <div style="display: flex; flex-direction: column;">
-                <span id="user-tag">Username</span>
+                <span id="name-tag">Username</span>
+            </div>
+            <div id="copy-button" style="display: flex; align-items: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                    fill="#FFFFFF">
+                    <path
+                        d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z" />
+                </svg>
             </div>
         </div>
-        <div class="logout" id="logout">
+        <div class="logout" id="button-logout">
             <span>Logout</span>
         </div>
     </div>
     <div class="content">
         <div class="head-menu">
-            <div class="delete" id="delete">
-                <span>Delete</span>
+            <div style="display: flex; gap: 1rem;">
+                <div class="delete" id="delete">
+                    <span>Delete</span>
+                </div>
+                <div class="shipping" id="">
+                    <span>Shipping</span>
+                </div>
             </div>
             <div style="margin: 0 0 0 auto; display: flex; gap: 1rem;">
-                <div class="button-edit-item" id="button-edit-item">
+                <div class="button-edit-item" id="edit-item">
                     <span>Edit Item</span>
                 </div>
-                <div class="button-add-item" id="button-add-item">
+                <div class="button-add-item" id="add-new">
                     <span>Add New</span>
                 </div>
             </div>
@@ -50,11 +62,11 @@
         <div class="content1">
             <div class="card1">
                 <span class="label">Total</span>
-                <span class="value" id="total">0</span>
+                <span class="value" id="total-tag">0</span>
             </div>
             <div class="card2">
                 <span class="label">Value</span>
-                <span class="value" id="value">0</span>
+                <span class="value" id="value-tag">0</span>
             </div>
         </div>
         <div class="content2">
@@ -65,18 +77,18 @@
                 <span>Amount</span>
                 <span>Price $</span>
             </div>
-            <div class="data" id="data-item"></div>
+            <div class="data" id="item-pool-tags"></div>
         </div>
     </div>
     <!-- add new -->
-    <div class="popup-add" id="popup-add">
+    <div class="popup-add" id="popup-add-new">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Add your
             item</span>
-        <input type="text" placeholder="Name" id="Name" maxlength="16">
-        <input type="text" placeholder="Type" id="Type" maxlength="16">
-        <input type="number" placeholder="Amount" id="Amount">
-        <input type="number" placeholder="Price" id="Price">
-        <div class="button-add" id="button-add">
+        <input type="text" placeholder="Name" id="name-add-new" maxlength="16">
+        <input type="text" placeholder="Type" id="type-add-new" maxlength="16">
+        <input type="number" placeholder="Amount" id="amount-add-new">
+        <input type="number" placeholder="Price" id="price-add-new">
+        <div class="button-add" id="button-add-item">
             <span>Add Item</span>
         </div>
     </div>
@@ -84,13 +96,13 @@
     <div class="popup-delete" id="popup-delete">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Delete
             Your Item</span>
-        <input type="text" placeholder="Item Name" id="nameD">
-        <input type="text" placeholder="Type item" id="typeD">
+        <input type="text" placeholder="Item Name" id="name-delete-item">
+        <input type="text" placeholder="Type item" id="type-delete-item">
         <div style="display: flex; align-items: center; gap: 5px;">
-            <input type="checkbox" value="agree" id="checkboxD">
+            <input type="checkbox" value="agree" id="aggree-delete-item">
             <span style="font-size: 14px;">I understand this action cannot be undone.</span>
         </div>
-        <div class="delete-item" id="delete-item">
+        <div class="delete-item" id="button-delete-item">
             <span>delete</span>
         </div>
     </div>
@@ -98,11 +110,11 @@
     <div class="popup-edit" id="popup-edit">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Edit
             Your Item</span>
-        <select class="select-item" id="item-select"></select>
-        <input type="text" placeholder="Type" id="type-edit">
-        <input type="number" placeholder="Amount" id="Amount-edit" min="0">
-        <input type="number" placeholder="Price" id="Price-edit" min="0">
-        <div class="edit-item" id="edit-item">
+        <select class="select-item" id="item-select-edit"></select>
+        <input type="text" placeholder="Type" id="type-edit-item">
+        <input type="number" placeholder="Amount" id="Amount-edit-item" min="0">
+        <input type="number" placeholder="Price" id="Price-edit-item" min="0">
+        <div class="edit-item" id="button-edit-item">
             <span>Edit Item</span>
         </div>
     </div>

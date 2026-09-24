@@ -60,10 +60,11 @@ export async function addItem(
   amountItem,
   priceItem,
 ) {
-  return await fetch(
+  var request = await fetch(
     `http://127.0.0.1:8000/AddItem?signature=${signature}&nameItem=${nameitem}&typeItem=${typeItem}&amountItem=${amountItem}&priceItem=${priceItem}`,
     { method: "POST" },
   );
+  return await request.json();
 }
 
 export async function getDataUser(sign) {
@@ -95,6 +96,7 @@ export async function getDataItem(username) {
     return null;
   }
 }
+
 export async function getDataStat(username) {
   try {
     const request = await fetch(
@@ -109,6 +111,7 @@ export async function getDataStat(username) {
     return null;
   }
 }
+
 export async function Delete(signature, nameItem, typeItem, checklist) {
   if (signature.trim() == "") {
     alert("signature could'not empety");
@@ -129,6 +132,7 @@ export async function Delete(signature, nameItem, typeItem, checklist) {
     }
   }
 }
+
 export async function Update(signature, nameItem, typeItem, amount, price) {
   if (signature.trim() == "") {
     alert("signature could'not empety");

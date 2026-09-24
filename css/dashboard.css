@@ -211,6 +211,24 @@ body {
 .delete:hover {
   background: #4a1a1e;
 }
+.shipping {
+  background: #0F1B2E;
+  border: 1px solid #3B82F6;
+  padding: 5px 20px;
+  border-radius: 4px;
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  color: #60A5FA;
+}
+.shipping:hover {
+  background: #16243D;
+  border: 1px solid #60A5FA;
+  color: #93C5FD;
+}
 .popup-add {
   position: absolute;
   display: none;

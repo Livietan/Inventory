@@ -10,17 +10,17 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-def fetch(signature):
+def fetch():
+    sign = "90cc33a41b541af2c1964e3e10a46088cbdedf63031efaa35d588a698c91193f"
+    nameItem = "RTX 4090"
+    typeItem = "GPU"
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("""
-    SELECT SUM(AMOUNT),
-    SUM(PRICE)
-    FROM ITEMS
-    WHERE SIGNATURE=?
-    """, (signature,))
+    cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (sign, nameItem, typeItem))
     print(cursor.fetchone())
-
+    
+    connect.commit()
+    connect.close()
 
 @app.post("/register")
 def main(firstName:str, lastName:str, username:str, password:str):
@@ -89,11 +89,11 @@ def main(signature:str):
         result = cursor.fetchone()
         if result:
             A, B = result
-            return {"amount": A, "price": B}
+            C = B * A
+            return {"amount": A, "price": C}
     except Exception as e:
-        raise str(e)
-    finally:
-        connect.close()
+        return {"amount": 0, "price": 0}
+        
 
 @app.post("/AddItem")
 def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:int):
@@ -142,3 +142,13 @@ def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
         return {"status": True}
     except Exception as e:
         return {"status": False, "detail": str(e)}
+
+@app.post("shipping")
+def main(signatureSender:str, signatureRecieve:str, nameItem:str, typeItem:str, amount:str):
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureSender, nameItem, typeItem))
+    rate = cursor.fetchone() - amount
+    cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?" (rate, signatureSender, nameItem, typeItem))
+    connect.commit()
+    connect.close()

@@ -1,40 +1,53 @@
-import { addItem, Delete, getDataItem, getDataStat, getDataUser, Update } from "./API.js";
+import {
+  addItem,
+  Delete,
+  getDataItem,
+  getDataStat,
+  getDataUser,
+  Update,
+} from "./API.js";
 
-var userTag = document.getElementById("user-tag");
-var addPopup = document.getElementById("button-add-item");
-var popupAdd = document.getElementById("popup-add");
-var addbutton = document.getElementById("button-add");
-var dataItem = document.getElementById("data-item");
-var logout = document.getElementById("logout");
-var deletex = document.getElementById("delete");
-var popupDelete = document.getElementById("popup-delete");
-var nameD = document.getElementById("nameD");
-var typeD = document.getElementById("typeD");
-var checkboxD = document.getElementById("checkboxD");
-var deleteItem = document.getElementById("delete-item");
-var popupEdit = document.getElementById("popup-edit");
-var buttonEditItem = document.getElementById("button-edit-item");
-var itemSelect = document.getElementById("item-select");
-var editItemButton = document.getElementById("edit-item");
-var typeEdit = document.getElementById("type-edit");
-var amountEdit = document.getElementById("Amount-edit");
-var priceEdit = document.getElementById("Price-edit");
-var valueTag = document.getElementById("value");
-var totalTag = document.getElementById("total");
+var userTag = document.getElementById("name-tag");
+var valueTag = document.getElementById("value-tag");
+var totalTag = document.getElementById("total-tag");
+var item_pool_tags = document.getElementById("item-pool-tags");
 
-var name = document.getElementById("Name");
-var type = document.getElementById("Type");
-var amount = document.getElementById("Amount");
-var price = document.getElementById("Price");
+var spawn_popup_new_item = document.getElementById("add-new");
+var spawn_popup_delete = document.getElementById("delete");
+var spawn_popup_edit_item = document.getElementById("edit-item");
+var button_logout = document.getElementById("button-logout");
 
-var sign = sessionStorage.getItem("signature");
-var data = await getDataUser(sign);
-var response = await getDataItem(sign);
-var stat = await getDataStat(sign);
+var popup_add_new = document.getElementById("popup-add-new");
+var popup_delete = document.getElementById("popup-delete");
+var popup_edit = document.getElementById("popup-edit");
 
-if (response.status == true) {
-  dataItem.innerHTML = "";
-  response.value.forEach((item, index) => {
+var button_add_item = document.getElementById("button-add-item");
+var button_delete_item = document.getElementById("button-delete-item");
+var button_edit_item = document.getElementById("button-edit-item");
+var button_copy_signature = document.getElementById("copy-button");
+
+var name_delete_item = document.getElementById("name-delete-item");
+var type_delete_item = document.getElementById("type-delete-item");
+var aggree_delete_item = document.getElementById("aggree-delete-item");
+
+var item_select_edit = document.getElementById("item-select-edit");
+var type_edit_item = document.getElementById("type-edit-item");
+var amount_edit_item = document.getElementById("Amount-edit-item");
+var price_edit_item = document.getElementById("Price-edit-item");
+
+var name_add_new = document.getElementById("name-add-new");
+var type_add_new = document.getElementById("type-add-new");
+var amount_add_new = document.getElementById("amount-add-new");
+var price_add_new = document.getElementById("price-add-new");
+
+var signature = sessionStorage.getItem("signature");
+var responseDataUser = await getDataUser(signature);
+var responseDataItem = await getDataItem(signature);
+var responseDataStat = await getDataStat(signature);
+
+if (responseDataItem.status == true) {
+  item_pool_tags.innerHTML = "";
+  responseDataItem.value.forEach((item, index) => {
     var data = document.createElement("div");
     data.classList.add("data-row");
     data.innerHTML = `
@@ -44,86 +57,88 @@ if (response.status == true) {
     <span>${item.amount}</span>
     <span>${item.price}</span>
     `;
-    dataItem.appendChild(data);
+    item_pool_tags.appendChild(data);
   });
 }
 
-valueTag.textContent = `$${stat.price}`;
-totalTag.textContent = stat.amount;
-userTag.textContent = `${data.firstName} ${data.lastName}`;
+valueTag.textContent = `$${responseDataStat.price}`;
+totalTag.textContent = responseDataStat.amount;
+userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
 
-deletex.addEventListener("click", (e) => {
-  popupDelete.style.display = "flex";
+spawn_popup_delete.addEventListener("click", (e) => {
+  popup_delete.style.display = "flex";
   e.stopPropagation();
 });
-popupDelete.addEventListener("click", (e) => {
+popup_delete.addEventListener("click", (e) => {
   e.stopPropagation();
 });
-logout.addEventListener("click", () => {
+button_logout.addEventListener("click", () => {
   sessionStorage.clear();
   window.location.href = "connect.html";
 });
-addPopup.addEventListener("click", (e) => {
-  popupAdd.style.display = "flex";
+spawn_popup_new_item.addEventListener("click", (e) => {
+  popup_add_new.style.display = "flex";
   e.stopPropagation();
 });
-popupAdd.addEventListener("click", (e) => {
+popup_add_new.addEventListener("click", (e) => {
   e.stopPropagation();
 });
 document.addEventListener("click", () => {
-  popupAdd.style.display = "none";
-  popupDelete.style.display = "none";
-  popupEdit.style.display = "none";
-  checkboxD.checked = false;
-  popupDelete.querySelectorAll("input").forEach((input) => {
+  popup_add_new.style.display = "none";
+  popup_delete.style.display = "none";
+  popup_edit.style.display = "none";
+  aggree_delete_item.checked = false;
+  popup_delete.querySelectorAll("input").forEach((input) => {
     input.value = "";
   });
-  popupAdd.querySelectorAll("input").forEach((input) => {
+  popup_add_new.querySelectorAll("input").forEach((input) => {
     input.value = "";
   });
 });
-addbutton.addEventListener("click", async () => {
-  var request = await addItem(
-    sign,
-    name.value,
-    type.value,
-    amount.value,
-    price.value,
+button_add_item.addEventListener("click", async () => {
+  var response = await addItem(
+    signature,
+    name_add_new.value,
+    type_add_new.value,
+    amount_add_new.value,
+    price_add_new.value,
   );
-  var response = await request.json();
   if (response.status == true) {
-    popupAdd.style.display = "none";
+    popup_add_new.style.display = "none";
   } else {
     alert(response.detail);
-    popupAdd.style.display = "none";
+    popup_add_new.style.display = "none";
   }
 });
-deleteItem.addEventListener("click", () => {
-  Delete(sign, nameD, typeD, checkboxD);
-  popupDelete.style.display = "none";
-  popupDelete.querySelectorAll("input").forEach((input) => {
+button_delete_item.addEventListener("click", () => {
+  Delete(signature, name_delete_item, type_delete_item, aggree_delete_item);
+  popup_delete.style.display = "none";
+  popup_delete.querySelectorAll("input").forEach((input) => {
     input.value = "";
   });
 });
-buttonEditItem.addEventListener("click", (e) => {
-  popupEdit.style.display = "flex";
+spawn_popup_edit_item.addEventListener("click", (e) => {
+  popup_edit.style.display = "flex";
   e.stopPropagation();
-  itemSelect.innerHTML =
+  item_select_edit.innerHTML =
     "<option value='' disabled selected>Select item</option>";
-  response.value.forEach((item) => {
+  responseDataItem.value.forEach((item) => {
     var data = document.createElement("option");
     data.value = item.nameItem;
     data.textContent = item.nameItem;
-    itemSelect.appendChild(data);
+    item_select_edit.appendChild(data);
   });
 });
-popupEdit.addEventListener("click", (e) => {
+popup_edit.addEventListener("click", (e) => {
   e.stopPropagation();
 });
-editItemButton.addEventListener("click", () => {  
-  Update(sign, itemSelect, typeEdit, amountEdit, priceEdit);
-  popupEdit.style.display = "none";
-  popupEdit.querySelectorAll("input").forEach((input) => {
+button_edit_item.addEventListener("click", () => {
+  Update(signature, item_select_edit, type_edit_item, amount_edit_item, price_edit_item);
+  popup_edit.style.display = "none";
+  popup_edit.querySelectorAll("input").forEach((input) => {
     input.value = "";
   });
 });
+button_copy_signature.addEventListener("click", () => {
+  navigator.clipboard.writeText(signature);
+})

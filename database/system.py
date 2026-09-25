@@ -11,15 +11,21 @@ app.add_middleware(
 )
 
 def fetch():
-    sign = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
-    nameItem = "RTX 500"
-    typeItem = "GPU"
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT * FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (sign, nameItem, typeItem))
-    print(cursor.fetchone())
-
-fetch()
+    cursor.execute("""
+    CREATE TABLE LEDGER(
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    SENDER VARCHAR(64),
+    RECIEVER VARCHAR(64),
+    NAMEITEM VARCHAR(16),
+    TYPEITEM VARCHAR(16),
+    AMOUNT INTEGER
+    DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+    connect.commit()
+    connect.close()
 
 @app.post("/register")
 def main(firstName:str, lastName:str, username:str, password:str):
@@ -142,22 +148,45 @@ def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
     except Exception as e:
         return {"status": False, "detail": str(e)}
 
-@app.post("shipping")
-def main(signatureSender:str, signatureRecieve:str, nameItem:str, typeItem:str, amount:str):
+@app.post("/shipping")
+def main(signatureSender:str, signatureRecieve:str, nameItem:str, typeItem:str, amount:int):
     sender(signatureSender, nameItem, typeItem, amount)
+    reciever(signatureRecieve, nameItem, typeItem, amount)
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    cursor.execute()
     
 def sender(signature:str, nameItem:str, typeItem:str, amount:int):
     connect = sqlite3.connect("data/data.db")
-    cursor = connect.cursor()
-    cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
-    token = cursor.fetchone()
-    
-    if token is None:
-        return {"status": True, "detail": "data item wrong!"}
-    
-    cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (token[0] - amount, signature, nameItem, typeItem))
-    connect.commit()
-    connect.close()
+    try:
+        cursor = connect.cursor()
+        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
+        token = cursor.fetchone()
 
-def reciever():
-    pass
+        if token is None:
+            return {"status": True, "detail": "data item wrong!"}
+        else:
+            rate = token[0] - amount
+            if rate <= 0:
+                return {"status": False, "detail": "amount invalid"}
+            else:
+                cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (rate, signature, nameItem, typeItem))
+        
+        connect.commit()
+    finally:
+        connect.close()
+
+def reciever(signature:str, nameItem:str, typeItem:str, amount:int):
+    connect = sqlite3.connect("data/data.db")
+    try:
+        cursor = connect.cursor()
+        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
+
+        result = cursor.fetchone()
+        if result is None:
+            cursor.execute("INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES (?, ?, ?, ?, ?)", (signature, nameItem, typeItem, amount, 0))
+        else :
+            cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (result[0] + amount, signature, nameItem, typeItem))
+        connect.commit()
+    finally:
+        connect.close()

@@ -156,7 +156,7 @@ export async function Update(signature, nameItem, typeItem, amount, price) {
   }
 }
 
-async function Shipping(
+export async function Shipping(
   signature_sender,
   signature_reciever,
   name_item,

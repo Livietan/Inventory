@@ -11,16 +11,15 @@ app.add_middleware(
 )
 
 def fetch():
-    sign = "90cc33a41b541af2c1964e3e10a46088cbdedf63031efaa35d588a698c91193f"
-    nameItem = "RTX 4090"
+    sign = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
+    nameItem = "RTX 500"
     typeItem = "GPU"
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (sign, nameItem, typeItem))
+    cursor.execute("SELECT * FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (sign, nameItem, typeItem))
     print(cursor.fetchone())
-    
-    connect.commit()
-    connect.close()
+
+fetch()
 
 @app.post("/register")
 def main(firstName:str, lastName:str, username:str, password:str):
@@ -145,10 +144,20 @@ def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
 
 @app.post("shipping")
 def main(signatureSender:str, signatureRecieve:str, nameItem:str, typeItem:str, amount:str):
+    sender(signatureSender, nameItem, typeItem, amount)
+    
+def sender(signature:str, nameItem:str, typeItem:str, amount:int):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
-    cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureSender, nameItem, typeItem))
-    rate = cursor.fetchone() - amount
-    cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?" (rate, signatureSender, nameItem, typeItem))
+    cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
+    token = cursor.fetchone()
+    
+    if token is None:
+        return {"status": True, "detail": "data item wrong!"}
+    
+    cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (token[0] - amount, signature, nameItem, typeItem))
     connect.commit()
     connect.close()
+
+def reciever():
+    pass

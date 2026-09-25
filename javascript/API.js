@@ -155,3 +155,8 @@ export async function Update(signature, nameItem, typeItem, amount, price) {
     }
   }
 }
+
+async function Shipping(signature_sender, signature_reciever, name_item, type_item, amount) {
+  var request = await fetch(`http://127.0.0.1:8000/`)
+
+}

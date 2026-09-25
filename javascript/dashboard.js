@@ -16,10 +16,12 @@ var spawn_popup_new_item = document.getElementById("add-new");
 var spawn_popup_delete = document.getElementById("delete");
 var spawn_popup_edit_item = document.getElementById("edit-item");
 var button_logout = document.getElementById("button-logout");
+var spawn_popup_shipping = document.getElementById("shipping");
 
 var popup_add_new = document.getElementById("popup-add-new");
 var popup_delete = document.getElementById("popup-delete");
 var popup_edit = document.getElementById("popup-edit");
+var popup_shipping = document.getElementById("popup-shipping");
 
 var button_add_item = document.getElementById("button-add-item");
 var button_delete_item = document.getElementById("button-delete-item");
@@ -41,29 +43,29 @@ var amount_add_new = document.getElementById("amount-add-new");
 var price_add_new = document.getElementById("price-add-new");
 
 var signature = sessionStorage.getItem("signature");
-var responseDataUser = await getDataUser(signature);
-var responseDataItem = await getDataItem(signature);
-var responseDataStat = await getDataStat(signature);
+// var responseDataUser = await getDataUser(signature);
+// var responseDataItem = await getDataItem(signature);
+// var responseDataStat = await getDataStat(signature);
 
-if (responseDataItem.status == true) {
-  item_pool_tags.innerHTML = "";
-  responseDataItem.value.forEach((item, index) => {
-    var data = document.createElement("div");
-    data.classList.add("data-row");
-    data.innerHTML = `
-    <span>${index + 1}</span>
-    <span>${item.nameItem}</span>
-    <span>${item.typeItem}</span>
-    <span>${item.amount}</span>
-    <span>${item.price}</span>
-    `;
-    item_pool_tags.appendChild(data);
-  });
-}
+// if (responseDataItem.status == true) {
+//   item_pool_tags.innerHTML = "";
+//   responseDataItem.value.forEach((item, index) => {
+//     var data = document.createElement("div");
+//     data.classList.add("data-row");
+//     data.innerHTML = `
+//     <span>${index + 1}</span>
+//     <span>${item.nameItem}</span>
+//     <span>${item.typeItem}</span>
+//     <span>${item.amount}</span>
+//     <span>${item.price}</span>
+//     `;
+//     item_pool_tags.appendChild(data);
+//   });
+// }
 
-valueTag.textContent = `$${responseDataStat.price}`;
-totalTag.textContent = responseDataStat.amount;
-userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
+// valueTag.textContent = `$${responseDataStat.price}`;
+// totalTag.textContent = responseDataStat.amount;
+// userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
 
 spawn_popup_delete.addEventListener("click", (e) => {
   popup_delete.style.display = "flex";
@@ -83,10 +85,18 @@ spawn_popup_new_item.addEventListener("click", (e) => {
 popup_add_new.addEventListener("click", (e) => {
   e.stopPropagation();
 });
+spawn_popup_shipping.addEventListener("click", (e) => {
+  popup_shipping.style.display = "flex";
+  e.stopPropagation();
+});
+popup_shipping.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
 document.addEventListener("click", () => {
   popup_add_new.style.display = "none";
   popup_delete.style.display = "none";
   popup_edit.style.display = "none";
+  popup_shipping.style.display = "none";
   aggree_delete_item.checked = false;
   popup_delete.querySelectorAll("input").forEach((input) => {
     input.value = "";
@@ -133,7 +143,13 @@ popup_edit.addEventListener("click", (e) => {
   e.stopPropagation();
 });
 button_edit_item.addEventListener("click", () => {
-  Update(signature, item_select_edit, type_edit_item, amount_edit_item, price_edit_item);
+  Update(
+    signature,
+    item_select_edit,
+    type_edit_item,
+    amount_edit_item,
+    price_edit_item,
+  );
   popup_edit.style.display = "none";
   popup_edit.querySelectorAll("input").forEach((input) => {
     input.value = "";
@@ -141,4 +157,4 @@ button_edit_item.addEventListener("click", () => {
 });
 button_copy_signature.addEventListener("click", () => {
   navigator.clipboard.writeText(signature);
-})
+});

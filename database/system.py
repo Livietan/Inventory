@@ -149,44 +149,64 @@ def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
         return {"status": False, "detail": str(e)}
 
 @app.post("/shipping")
-def main(signatureSender:str, signatureRecieve:str, nameItem:str, typeItem:str, amount:int):
-    sender(signatureSender, nameItem, typeItem, amount)
-    reciever(signatureRecieve, nameItem, typeItem, amount)
-    connect = sqlite3.connect("data/data.db")
-    cursor = connect.cursor()
-    cursor.execute()
+def main(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
+    try:
+        sender(signatureSender, signatureReciever, nameItem, typeItem, amount)
+    except Exception as e:
+        return {"status": False, "detail": e}
     
-def sender(signature:str, nameItem:str, typeItem:str, amount:int):
+def sender(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
     connect = sqlite3.connect("data/data.db")
     try:
         cursor = connect.cursor()
-        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
+        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureSender, nameItem, typeItem))
         token = cursor.fetchone()
 
         if token is None:
-            return {"status": True, "detail": "data item wrong!"}
+            return {"status": False, "detail": "data item wrong!"}
         else:
             rate = token[0] - amount
             if rate <= 0:
                 return {"status": False, "detail": "amount invalid"}
             else:
-                cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (rate, signature, nameItem, typeItem))
-        
+                cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (rate, signatureSender, nameItem, typeItem))
+                reciever(signatureSender, signatureReciever, nameItem, typeItem, amount)
+
         connect.commit()
+    except Exception as e:
+        connect.rollback()
+        return {"status": False, "detail": e}
     finally:
         connect.close()
 
-def reciever(signature:str, nameItem:str, typeItem:str, amount:int):
+def reciever(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
     connect = sqlite3.connect("data/data.db")
     try:
         cursor = connect.cursor()
-        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
+        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureReciever, nameItem, typeItem))
 
         result = cursor.fetchone()
         if result is None:
-            cursor.execute("INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES (?, ?, ?, ?, ?)", (signature, nameItem, typeItem, amount, 0))
+            cursor.execute("INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES (?, ?, ?, ?, ?)", (signatureReciever, nameItem, typeItem, amount, 0))
+            ledger(signatureSender, signatureReciever, nameItem, typeItem, amount)
         else :
-            cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (result[0] + amount, signature, nameItem, typeItem))
+            cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (result[0] + amount, signatureReciever, nameItem, typeItem))
+            ledger(signatureSender, signatureReciever, nameItem, typeItem, amount)
         connect.commit()
+    except Exception as e:
+        connect.rollback()
+        return {"status": False, "detail": e}
+    finally:
+        connect.close()
+
+def ledger(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    try:
+        cursor.execute("INSERT INTO LEDGER (SENDER, RECIEVER, NAMEITEM, TYPEITEM, AMOUNT) VALUES (?, ?, ?, ?, ?)", (signatureSender, signatureReciever, nameItem, typeItem, amount))
+        connect.commit()
+    except Exception as e:
+        connect.rollback()
+        return {"status": False, "detail": e}
     finally:
         connect.close()

@@ -5,6 +5,7 @@ import {
   getDataStat,
   getDataUser,
   Update,
+  Shipping,
 } from "./API.js";
 
 var userTag = document.getElementById("name-tag");
@@ -27,6 +28,7 @@ var button_add_item = document.getElementById("button-add-item");
 var button_delete_item = document.getElementById("button-delete-item");
 var button_edit_item = document.getElementById("button-edit-item");
 var button_copy_signature = document.getElementById("copy-button");
+var button_shipping_send = document.getElementById("shipping-send");
 
 var name_delete_item = document.getElementById("name-delete-item");
 var type_delete_item = document.getElementById("type-delete-item");
@@ -42,30 +44,35 @@ var type_add_new = document.getElementById("type-add-new");
 var amount_add_new = document.getElementById("amount-add-new");
 var price_add_new = document.getElementById("price-add-new");
 
+var signature_reciever_shipping = document.getElementById("reciever-shipping");
+var name_item_shipping = document.getElementById("name-item-shipping");
+var type_item_shipping = document.getElementById("type-item-shipping");
+var amount_item_shipping = document.getElementById("amount-item-shipping");
+
 var signature = sessionStorage.getItem("signature");
-// var responseDataUser = await getDataUser(signature);
-// var responseDataItem = await getDataItem(signature);
-// var responseDataStat = await getDataStat(signature);
+var responseDataUser = await getDataUser(signature);
+var responseDataItem = await getDataItem(signature);
+var responseDataStat = await getDataStat(signature);
 
-// if (responseDataItem.status == true) {
-//   item_pool_tags.innerHTML = "";
-//   responseDataItem.value.forEach((item, index) => {
-//     var data = document.createElement("div");
-//     data.classList.add("data-row");
-//     data.innerHTML = `
-//     <span>${index + 1}</span>
-//     <span>${item.nameItem}</span>
-//     <span>${item.typeItem}</span>
-//     <span>${item.amount}</span>
-//     <span>${item.price}</span>
-//     `;
-//     item_pool_tags.appendChild(data);
-//   });
-// }
+if (responseDataItem.status == true) {
+  item_pool_tags.innerHTML = "";
+  responseDataItem.value.forEach((item, index) => {
+    var data = document.createElement("div");
+    data.classList.add("data-row");
+    data.innerHTML = `
+    <span>${index + 1}</span>
+    <span>${item.nameItem}</span>
+    <span>${item.typeItem}</span>
+    <span>${item.amount}</span>
+    <span>${item.price}</span>
+    `;
+    item_pool_tags.appendChild(data);
+  });
+}
 
-// valueTag.textContent = `$${responseDataStat.price}`;
-// totalTag.textContent = responseDataStat.amount;
-// userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
+valueTag.textContent = `$${responseDataStat.price}`;
+totalTag.textContent = responseDataStat.amount;
+userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
 
 spawn_popup_delete.addEventListener("click", (e) => {
   popup_delete.style.display = "flex";
@@ -157,4 +164,17 @@ button_edit_item.addEventListener("click", () => {
 });
 button_copy_signature.addEventListener("click", () => {
   navigator.clipboard.writeText(signature);
+});
+button_shipping_send.addEventListener("click", () => {
+  Shipping(
+    signature,
+    signature_reciever_shipping,
+    name_item_shipping,
+    type_item_shipping,
+    amount_item_shipping,
+  );
+  popup_shipping.style.display = "none";
+  popup_shipping.querySelectorAll("input").forEach((input) => {
+    input.value = "";
+  });
 });

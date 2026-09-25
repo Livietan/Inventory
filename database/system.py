@@ -144,7 +144,6 @@ def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
         (amount, price, signature, nameItem, typeItem))
         connect.commit()
         connect.close()
-        return {"status": True}
     except Exception as e:
         return {"status": False, "detail": str(e)}
 

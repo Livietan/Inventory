@@ -16,8 +16,8 @@ def fetch():
     cursor.execute("""
     DROP TABLE LEDGER
     """)
-    for i in cursor.fetchall():
-        print(i)
+    connect.commit()
+    connect.close()
 
 @app.post("/register")
 def main(firstName:str, lastName:str, username:str, password:str):

@@ -14,10 +14,10 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    DROP TABLE LEDGER
+    SELECT name FROM sqlite_master WHERE type='table';
     """)
-    connect.commit()
-    connect.close()
+    for i in cursor.fetchall():
+        print(i)
 
 @app.post("/register")
 def main(firstName:str, lastName:str, username:str, password:str):

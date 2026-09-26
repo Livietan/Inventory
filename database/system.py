@@ -19,13 +19,11 @@ def fetch():
     for i in cursor.fetchall():
         print(i)
 
-fetch()
-
 @app.post("/register")
 def main(firstName:str, lastName:str, username:str, password:str):
-    connect = sqlite3.connect("data/data.db")
-    cursor = connect.cursor()
     try:
+        connect = sqlite3.connect("data/data.db")
+        cursor = connect.cursor()
         signature = hashlib.sha256(username.encode("utf-8")).hexdigest()
         cursor.execute("""
         INSERT INTO USERS (FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD) VALUES (?, ?, ?, ?)
@@ -64,6 +62,8 @@ def main(signature:str):
     if result:
         A, B, C, D = result
         return {"firstName": A, "lastName": B, "signature": C}
+    else:
+        return {"firstName": None, "lastName": None, "signature": None}
 
 @app.post("/GetItems")
 def main(signature:str):
@@ -82,16 +82,15 @@ def main(signature:str):
 
 @app.post("/GetStat")
 def main(signature:str):
-    try:
-        connect = sqlite3.connect("data/data.db")
-        cursor = connect.cursor()
-        cursor.execute("SELECT SUM(AMOUNT), SUM(PRICE) FROM ITEMS WHERE SIGNATURE=?", (signature,))
-        result = cursor.fetchone()
-        if result:
-            A, B = result
-            C = B * A
-            return {"amount": A, "price": C}
-    except Exception as e:
+    connect = sqlite3.connect("data/data.db")
+    cursor = connect.cursor()
+    cursor.execute("SELECT SUM(AMOUNT), SUM(PRICE) FROM ITEMS WHERE SIGNATURE=?", (signature,))
+    result = cursor.fetchone()
+    if result:
+        A, B = result
+        C = B * A
+        return {"amount": A, "price": C}
+    else:
         return {"amount": 0, "price": 0}
 
 @app.post("/AddItem")
@@ -147,9 +146,9 @@ def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
 
 @app.post("/shipping")
 def main(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
-    connect = sqlite3.connect("data/data.db")
-    cursor = connect.cursor()
     try:
+        connect = sqlite3.connect("data/data.db")
+        cursor = connect.cursor()
         cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureSender, nameItem, typeItem))
         result = cursor.fetchone()
         if result is None:

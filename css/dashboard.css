@@ -164,9 +164,9 @@ body {
   align-items: center;
 }
 .button-add-item {
-  background: #0d4a4a;
-  border: 1.5px solid #5fffff;
-  color: #9cffff;
+  background: #103a3a;
+  border: 1.5px solid #4dffff;
+  color: #7dffff;
   padding: 5px 15px;
   border-radius: 4px;
   font-family: "Inter";
@@ -177,7 +177,7 @@ body {
   width: fit-content;
 }
 .button-add-item:hover {
-  background: #145858;
+  background: #1a4a4a;
 }
 .button-edit-item {
   background: #103a3a;

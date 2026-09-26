@@ -12,6 +12,7 @@ var userTag = document.getElementById("name-tag");
 var valueTag = document.getElementById("value-tag");
 var totalTag = document.getElementById("total-tag");
 var item_pool_tags = document.getElementById("item-pool-tags");
+var tagLog = document.getElementById("log");
 
 var spawn_popup_new_item = document.getElementById("add-new");
 var spawn_popup_delete = document.getElementById("delete");
@@ -76,6 +77,12 @@ if (!responseDataUser || !responseDataItem || !responseDataStat) {
   valueTag.textContent = `$${responseDataStat.price}`;
   totalTag.textContent = responseDataStat.amount;
   userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
+}
+
+if (signature == null) {
+  tagLog.textContent = "Login";
+} else {
+  tagLog.textContent = "Logout";
 }
 
 spawn_popup_delete.addEventListener("click", (e) => {

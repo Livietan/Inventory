@@ -14,7 +14,7 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    SELECT * FROM ITEMS
+    DROP TABLE LEDGER
     """)
     for i in cursor.fetchall():
         print(i)
@@ -166,14 +166,12 @@ def main(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str,
                     if result is None:
                         try:
                             cursor.execute("INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES (?, ?, ?, ?, ?)", (signatureReciever, nameItem, typeItem, amount, 0))
-                            cursor.execute("INSERT INTO LEDGER (SENDER, RECIEVER, NAMEITEM, TYPEITEM, AMOUNT) VALUES (?, ?, ?, ?, ?)", (signatureSender, signatureReciever, nameItem, typeItem, amount))
                         except Exception as e:
                             connect.rollback()
                             return {"status": False, "detail": str(e)}
                     else:
                         try:
                             cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (result[0] + amount, signatureReciever, nameItem, typeItem))
-                            cursor.execute("INSERT INTO LEDGER (SENDER, RECIEVER, NAMEITEM, TYPEITEM, AMOUNT) VALUES (?, ?, ?, ?, ?)", (signatureSender, signatureReciever, nameItem, typeItem, amount))
                         except Exception as e:
                             connect.rollback()
                             return {"status": False, "detail": str(e)}

@@ -14,18 +14,12 @@ def fetch():
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     cursor.execute("""
-    CREATE TABLE LEDGER(
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    SENDER VARCHAR(64),
-    RECIEVER VARCHAR(64),
-    NAMEITEM VARCHAR(16),
-    TYPEITEM VARCHAR(16),
-    AMOUNT INTEGER
-    DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
+    SELECT * FROM ITEMS
     """)
-    connect.commit()
-    connect.close()
+    for i in cursor.fetchall():
+        print(i)
+
+fetch()
 
 @app.post("/register")
 def main(firstName:str, lastName:str, username:str, password:str):
@@ -42,6 +36,7 @@ def main(firstName:str, lastName:str, username:str, password:str):
         A, B, C, D = result
         return {"status": True, "firstName": A, "lastName": B, "signature": C}
     except Exception as e:
+        connect.rollback()
         return {"status": False, "detail": str(e)}
     finally:
         connect.close()
@@ -98,7 +93,6 @@ def main(signature:str):
             return {"amount": A, "price": C}
     except Exception as e:
         return {"amount": 0, "price": 0}
-        
 
 @app.post("/AddItem")
 def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:int):
@@ -115,10 +109,11 @@ def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:in
         ) VALUES (?, ?, ?, ?, ?)
         """, (signature, nameItem, typeItem, amountItem, priceItem))
         connect.commit()
-        connect.close()
-        return {"status": True}
     except Exception as e :
+        connect.rollback()
         return {"status": False, "detail": e}
+    finally:
+        connect.close()
 
 @app.post("/delete")
 def main(signature:str, nameItem:str, typeItem:str):
@@ -127,10 +122,11 @@ def main(signature:str, nameItem:str, typeItem:str):
         cursor = connect.cursor()
         cursor.execute("DELETE FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
         connect.commit()
-        connect.close()
-        return {"status": True}
     except Exception as e :
+        connect.rollback()
         return {"status": False, "detail": str(e)}
+    finally:
+        connect.close()
 
 @app.post("/update")
 def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
@@ -143,69 +139,51 @@ def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
         WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?""",
         (amount, price, signature, nameItem, typeItem))
         connect.commit()
-        connect.close()
     except Exception as e:
+        connect.rollback()
         return {"status": False, "detail": str(e)}
+    finally:
+        connect.close()
 
 @app.post("/shipping")
 def main(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
-    try:
-        sender(signatureSender, signatureReciever, nameItem, typeItem, amount)
-    except Exception as e:
-        return {"status": False, "detail": e}
-    
-def sender(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
-    connect = sqlite3.connect("data/data.db")
-    try:
-        cursor = connect.cursor()
-        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureSender, nameItem, typeItem))
-        token = cursor.fetchone()
-
-        if token is None:
-            return {"status": False, "detail": "data item wrong!"}
-        else:
-            rate = token[0] - amount
-            if rate <= 0:
-                return {"status": False, "detail": "amount invalid"}
-            else:
-                cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (rate, signatureSender, nameItem, typeItem))
-                reciever(signatureSender, signatureReciever, nameItem, typeItem, amount)
-
-        connect.commit()
-    except Exception as e:
-        connect.rollback()
-        return {"status": False, "detail": e}
-    finally:
-        connect.close()
-
-def reciever(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
-    connect = sqlite3.connect("data/data.db")
-    try:
-        cursor = connect.cursor()
-        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureReciever, nameItem, typeItem))
-
-        result = cursor.fetchone()
-        if result is None:
-            cursor.execute("INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES (?, ?, ?, ?, ?)", (signatureReciever, nameItem, typeItem, amount, 0))
-            ledger(signatureSender, signatureReciever, nameItem, typeItem, amount)
-        else :
-            cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (result[0] + amount, signatureReciever, nameItem, typeItem))
-            ledger(signatureSender, signatureReciever, nameItem, typeItem, amount)
-        connect.commit()
-    except Exception as e:
-        connect.rollback()
-        return {"status": False, "detail": e}
-    finally:
-        connect.close()
-
-def ledger(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str, amount:int):
     connect = sqlite3.connect("data/data.db")
     cursor = connect.cursor()
     try:
-        cursor.execute("INSERT INTO LEDGER (SENDER, RECIEVER, NAMEITEM, TYPEITEM, AMOUNT) VALUES (?, ?, ?, ?, ?)", (signatureSender, signatureReciever, nameItem, typeItem, amount))
+        cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureSender, nameItem, typeItem))
+        result = cursor.fetchone()
+        if result is None:
+            return {"status": False, "detail": "item nothing!"}
+        else:
+            rate = result[0] - amount
+            if rate < 0:
+                return {"status": False, "detail": "Stock not enough"}
+            else:
+                cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (rate, signatureSender, nameItem, typeItem))
+                try:
+                    cursor.execute("SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signatureReciever, nameItem, typeItem))
+
+                    result = cursor.fetchone()
+                    if result is None:
+                        try:
+                            cursor.execute("INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES (?, ?, ?, ?, ?)", (signatureReciever, nameItem, typeItem, amount, 0))
+                            cursor.execute("INSERT INTO LEDGER (SENDER, RECIEVER, NAMEITEM, TYPEITEM, AMOUNT) VALUES (?, ?, ?, ?, ?)", (signatureSender, signatureReciever, nameItem, typeItem, amount))
+                        except Exception as e:
+                            connect.rollback()
+                            return {"status": False, "detail": str(e)}
+                    else:
+                        try:
+                            cursor.execute("UPDATE ITEMS SET AMOUNT=? WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (result[0] + amount, signatureReciever, nameItem, typeItem))
+                            cursor.execute("INSERT INTO LEDGER (SENDER, RECIEVER, NAMEITEM, TYPEITEM, AMOUNT) VALUES (?, ?, ?, ?, ?)", (signatureSender, signatureReciever, nameItem, typeItem, amount))
+                        except Exception as e:
+                            connect.rollback()
+                            return {"status": False, "detail": str(e)}
+                except Exception as e:
+                    connect.rollback()
+                    return {"status": False, "detail": str(e)}
         connect.commit()
     except Exception as e:
         connect.rollback()
-        return {"status": False, "detail": e}
+        return {"status": False, "detail": str(e)}
     finally:
         connect.close()

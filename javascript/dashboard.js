@@ -54,25 +54,29 @@ var responseDataUser = await getDataUser(signature);
 var responseDataItem = await getDataItem(signature);
 var responseDataStat = await getDataStat(signature);
 
-if (responseDataItem.status == true) {
-  item_pool_tags.innerHTML = "";
-  responseDataItem.value.forEach((item, index) => {
-    var data = document.createElement("div");
-    data.classList.add("data-row");
-    data.innerHTML = `
-    <span>${index + 1}</span>
-    <span>${item.nameItem}</span>
-    <span>${item.typeItem}</span>
-    <span>${item.amount}</span>
-    <span>${item.price}</span>
-    `;
-    item_pool_tags.appendChild(data);
-  });
+if (!responseDataUser || !responseDataItem || !responseDataStat) {
+  console.log("Fail to load data")
+} else {
+  if (responseDataItem.status == true) {
+    item_pool_tags.innerHTML = "";
+    responseDataItem.value.forEach((item, index) => {
+      var data = document.createElement("div");
+      data.classList.add("data-row");
+      data.innerHTML = `
+      <span>${index + 1}</span>
+      <span>${item.nameItem}</span>
+      <span>${item.typeItem}</span>
+      <span>${item.amount}</span>
+      <span>${item.price}</span>
+      `;
+      item_pool_tags.appendChild(data);
+    });
+  }
+  
+  valueTag.textContent = `$${responseDataStat.price}`;
+  totalTag.textContent = responseDataStat.amount;
+  userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
 }
-
-valueTag.textContent = `$${responseDataStat.price}`;
-totalTag.textContent = responseDataStat.amount;
-userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
 
 spawn_popup_delete.addEventListener("click", (e) => {
   popup_delete.style.display = "flex";

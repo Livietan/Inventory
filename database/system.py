@@ -51,7 +51,7 @@ def main(username:str, password:str):
         A, B, C, D = result
         return {"status": True, "firstName": A, "lastName": B, "signature": C}
     else:
-        return {"status": False, "detail": "password not found or account not aviable"}
+        return {"status": False, "detail": result}
 
 @app.post("/GetData")
 def main(signature:str):
@@ -86,7 +86,7 @@ def main(signature:str):
     cursor = connect.cursor()
     cursor.execute("SELECT SUM(AMOUNT), SUM(PRICE) FROM ITEMS WHERE SIGNATURE=?", (signature,))
     result = cursor.fetchone()
-    if result:
+    if result[0] is not None and result[1] is not None:
         A, B = result
         C = B * A
         return {"amount": A, "price": C}

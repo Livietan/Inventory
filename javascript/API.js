@@ -23,8 +23,7 @@ export async function register(
     if (response.status == true) {
       sessionStorage.setItem("signature", response.signature);
       window.location.href = "dashboard.html";
-    }
-    if (response.status == false) {
+    } else {
       alert(response.detail);
     }
   }
@@ -46,9 +45,8 @@ export async function login(username, password, checklist) {
     if (response.status == true) {
       sessionStorage.setItem("signature", response.signature);
       window.location.href = "dashboard.html";
-    }
-    if (response.status == false) {
-      alert(response.detail);
+    } else {
+      console.log(response.detail);
     }
   }
 }
@@ -64,7 +62,10 @@ export async function addItem(
     `http://127.0.0.1:8000/AddItem?signature=${signature}&nameItem=${nameitem}&typeItem=${typeItem}&amountItem=${amountItem}&priceItem=${priceItem}`,
     { method: "POST" },
   );
-  return await request.json();
+  var response = request.json();
+  if (response.status == false) {
+    console.log(response.detail);
+  }
 }
 
 export async function getDataUser(sign) {
@@ -73,10 +74,7 @@ export async function getDataUser(sign) {
       `http://127.0.0.1:8000/GetData?signature=${sign}`,
       { method: "POST" },
     );
-    if (!request.ok) {
-      return null;
-    }
-    return await request.json();
+    return request.json();
   } catch {
     return null;
   }
@@ -88,10 +86,7 @@ export async function getDataItem(username) {
       `http://127.0.0.1:8000/GetItems?signature=${username}`,
       { method: "POST" },
     );
-    if (!request.ok) {
-      return null;
-    }
-    return await request.json();
+    return request.json();
   } catch {
     return null;
   }
@@ -103,10 +98,7 @@ export async function getDataStat(username) {
       `http://127.0.0.1:8000/GetStat?signature=${username}`,
       { method: "POST" },
     );
-    if (!request.ok) {
-      return null;
-    }
-    return await request.json();
+    return request.json();
   } catch {
     return null;
   }
@@ -126,9 +118,9 @@ export async function Delete(signature, nameItem, typeItem, checklist) {
       `http://127.0.0.1:8000/delete?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}`,
       { method: "POST" },
     );
-    var response = await request.json();
+    var response = request.json();
     if (response.status == false) {
-      alert(response.detail);
+      console.log(response.detail);
     }
   }
 }
@@ -149,9 +141,9 @@ export async function Update(signature, nameItem, typeItem, amount, price) {
       `http://127.0.0.1:8000/update?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}&amount=${amount.value}&price=${price.value}`,
       { method: "POST" },
     );
-    var response = await request.json();
+    var response = request.json();
     if (response.status == false) {
-      alert(response.detail);
+      console.log(response.detail);
     }
   }
 }
@@ -168,11 +160,11 @@ export async function Shipping(
   } else {
     var request = await fetch(
       `http://127.0.0.1:8000/shipping?signatureSender=${signature_sender}&signatureReciever=${signature_reciever.value}&nameItem=${name_item.value}&typeItem=${type_item.value}&amount=${amount.value}`,
-      { method: "POST"},
+      { method: "POST" },
     );
-    var response = await request.json();
+    var response = request.json();
     if (response.status == false) {
-      alert(response.detail)
+      console.log(response.detail);
     }
   }
 }

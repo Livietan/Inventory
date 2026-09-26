@@ -43,18 +43,37 @@
     <div class="content">
         <div class="head-menu">
             <div style="display: flex; gap: 1rem;">
-                <div class="delete" id="delete">
+                <div class="delete" id="delete" style="display: flex; align-items: center; gap: 3px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                        fill="#FF6B53">
+                        <path
+                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+                    </svg>
                     <span>Delete</span>
                 </div>
-                <div class="shipping" id="shipping">
+                <div class="shipping" id="shipping" style="display: flex; align-items: center; gap: 3px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                        fill="#3B82F6">
+                        <path
+                            d="M195-195q-35-35-35-85H60l18-80h113q17-19 40-29.5t49-10.5q26 0 49 10.5t40 29.5h167l84-360H182l4-17q6-28 27.5-45.5T264-800h456l-37 160h117l120 160-40 200h-80q0 50-35 85t-85 35q-50 0-85-35t-35-85H400q0 50-35 85t-85 35q-50 0-85-35Zm442-245h193l4-21-74-99h-95l-28 120Zm-19-273 2-7-84 360 2-7 34-146 46-200ZM20-427l20-80h220l-20 80H20Zm80-146 20-80h260l-20 80H100Zm180 333q17 0 28.5-11.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 17 11.5 28.5T280-240Zm400 0q17 0 28.5-11.5T720-280q0-17-11.5-28.5T680-320q-17 0-28.5 11.5T640-280q0 17 11.5 28.5T680-240Z" />
+                    </svg>
                     <span>Shipping</span>
                 </div>
             </div>
             <div style="margin: 0 0 0 auto; display: flex; gap: 1rem;">
-                <div class="button-edit-item" id="edit-item">
+                <div class="button-edit-item" id="edit-item" style="display: flex; align-items: center; gap: 3px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                        fill="#4DFFFF">
+                        <path
+                            d="m399-144 97-96h320v96H399Zm-183-72h51l375-375-51-51-375 375v51Zm-72 72v-153l498-498q11-11 24.06-16 13.07-5 27-5 13.94 0 26.94 5 13 5 24 16l51 51q11 11 16 24.05t5 26.55q0 14.4-5.02 27.49Q805.96-652.83 795-642L297-144H144Zm600-549-51-51 51 51Zm-127.95 76.95L591-642l51 51-25.95-25.05Z" />
+                    </svg>
                     <span>Edit Item</span>
                 </div>
-                <div class="button-add-item" id="add-new">
+                <div class="button-add-item" id="add-new" style="display: flex; align-items: center; gap: 3px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                        fill="#4DFFFF">
+                        <path d="M444-144v-300H144v-72h300v-300h72v300h300v72H516v300h-72Z" />
+                    </svg>
                     <span>Add New</span>
                 </div>
             </div>
@@ -120,7 +139,8 @@
     </div>
     <!-- shipping -->
     <div class="popup-shipping" id="popup-shipping">
-        <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Shipping your items</span>
+        <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Shipping
+            your items</span>
         <input type="text" id="reciever-shipping" placeholder="Signature" maxlength="64">
         <input type="text" id="name-item-shipping" placeholder="Name Item">
         <input type="text" id="type-item-shipping" placeholder="Type Item">

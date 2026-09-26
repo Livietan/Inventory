@@ -163,27 +163,11 @@ body {
   display: flex;
   align-items: center;
 }
-.button-edit-item {
-  background: #103a3a;
-  border: 1.5px solid #4dffff;
-  color: #7dffff;
-  padding: 5px 20px;
-  border-radius: 4px;
-  font-family: "Inter";
-  font-size: 14px;
-  font-weight: 400;
-  cursor: pointer;
-  user-select: none;
-  width: fit-content;
-}
-.button-edit-item:hover {
-  background: #1a4a4a;
-}
 .button-add-item {
   background: #0d4a4a;
   border: 1.5px solid #5fffff;
   color: #9cffff;
-  padding: 5px 20px;
+  padding: 5px 15px;
   border-radius: 4px;
   font-family: "Inter";
   font-size: 14px;
@@ -195,10 +179,11 @@ body {
 .button-add-item:hover {
   background: #145858;
 }
-.delete {
-  background: #3a1518;
-  border: 1px solid #ff5252;
-  padding: 5px 20px;
+.button-edit-item {
+  background: #103a3a;
+  border: 1.5px solid #4dffff;
+  color: #7dffff;
+  padding: 5px 15px;
   border-radius: 4px;
   font-family: "Inter";
   font-size: 14px;
@@ -206,15 +191,14 @@ body {
   cursor: pointer;
   user-select: none;
   width: fit-content;
-  color: #ff6b6b;
 }
-.delete:hover {
-  background: #4a1a1e;
+.button-edit-item:hover {
+  background: #1a4a4a;
 }
 .shipping {
   background: #0f1b2e;
   border: 1px solid #3b82f6;
-  padding: 5px 20px;
+  padding: 5px 15px;
   border-radius: 4px;
   font-family: "Inter";
   font-size: 14px;
@@ -228,6 +212,22 @@ body {
   background: #16243d;
   border: 1px solid #60a5fa;
   color: #93c5fd;
+}
+.delete {
+  background: #3a1518;
+  border: 1px solid #ff5252;
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  color: #ff6b6b;
+}
+.delete:hover {
+  background: #4a1a1e;
 }
 .popup-add {
   position: absolute;

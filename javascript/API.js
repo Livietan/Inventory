@@ -24,7 +24,7 @@ export async function register(
       sessionStorage.setItem("signature", response.signature);
       window.location.href = "dashboard.html";
     } else {
-      alert(response.detail);
+      aler(response.detail);
     }
   }
 }

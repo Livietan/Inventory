@@ -15,16 +15,26 @@ export async function register(
     alert("Please checklist the terms & conditions");
   } else {
     var lastNameValue = lastName.value.trim() === "" ? "" : lastName.value;
-    const request = await fetch(
-      `http://127.0.0.1:8000/register?firstName=${firstName.value}&lastName=${lastNameValue}&username=${username.value}&password=${password.value}`,
-      { method: "POST" },
-    );
+    const request = await fetch("http://127.0.0.1:8000/register?", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        first_name: firstName.value,
+        last_name: lastNameValue,
+        Signature: username.value,
+        Password: password.value,
+      }),
+    });
     var response = await request.json();
-    if (response.status == true) {
-      sessionStorage.setItem("signature", response.signature);
+    if (response.Status == true) {
+      sessionStorage.setItem("FirstName", response.first_name);
+      sessionStorage.setItem("LastName", response.last_name);
+      sessionStorage.setItem("Signature", response.Signature);
       window.location.href = "dashboard.html";
     } else {
-      aler(response.detail);
+      console.log(response.Detail);
     }
   }
 }
@@ -37,13 +47,21 @@ export async function login(username, password, checklist) {
   } else if (checklist.checked == false) {
     alert("Please checklist the terms & conditions");
   } else {
-    const request = await fetch(
-      `http://127.0.0.1:8000/login?username=${username.value}&password=${password.value}`,
-      { method: "POST" },
-    );
+    const request = await fetch("http://127.0.0.1:8000/login", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        Signature: username.value,
+        Password: password.value,
+      }),
+    });
     var response = await request.json();
-    if (response.status == true) {
-      sessionStorage.setItem("signature", response.signature);
+    if (response.Status == true) {
+      sessionStorage.setItem("FirstName", response.first_name);
+      sessionStorage.setItem("LastName", response.last_name);
+      sessionStorage.setItem("Signature", response.Signature);
       window.location.href = "dashboard.html";
     } else {
       console.log(response.detail);

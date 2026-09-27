@@ -50,36 +50,41 @@ var name_item_shipping = document.getElementById("name-item-shipping");
 var type_item_shipping = document.getElementById("type-item-shipping");
 var amount_item_shipping = document.getElementById("amount-item-shipping");
 
-var signature = sessionStorage.getItem("signature");
-var responseDataUser = await getDataUser(signature);
-var responseDataItem = await getDataItem(signature);
-var responseDataStat = await getDataStat(signature);
+var FirstName = sessionStorage.getItem("FirstName");
+var LastName = sessionStorage.getItem("LastName");
+var Signature = sessionStorage.getItem("Signature");
+// var responseDataUser = await getDataUser(signature);
+// var responseDataItem = await getDataItem(signature);
+// var responseDataStat = await getDataStat(signature);
 
-if (!responseDataUser || !responseDataItem || !responseDataStat) {
-  console.log("Fail to load data");
-} else {
-  if (responseDataItem.status == true) {
-    item_pool_tags.innerHTML = "";
-    responseDataItem.value.forEach((item, index) => {
-      var data = document.createElement("div");
-      data.classList.add("data-row");
-      data.innerHTML = `
-      <span>${index + 1}</span>
-      <span>${item.nameItem}</span>
-      <span>${item.typeItem}</span>
-      <span>${item.amount}</span>
-      <span>${item.price}</span>
-      `;
-      item_pool_tags.appendChild(data);
-    });
-  }
-
-  valueTag.textContent = `$${responseDataStat.price}`;
-  totalTag.textContent = responseDataStat.amount;
-  userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
+if (FirstName && LastName != null) {
+  userTag.textContent = `${FirstName} ${LastName}`
 }
 
-if (signature == null) {
+// if (!responseDataUser || !responseDataItem || !responseDataStat) {
+//   console.log("Fail to load data");
+// } else {
+//   if (responseDataItem.status == true) {
+//     item_pool_tags.innerHTML = "";
+//     responseDataItem.value.forEach((item, index) => {
+//       var data = document.createElement("div");
+//       data.classList.add("data-row");
+//       data.innerHTML = `
+//       <span>${index + 1}</span>
+//       <span>${item.nameItem}</span>
+//       <span>${item.typeItem}</span>
+//       <span>${item.amount}</span>
+//       <span>${item.price}</span>
+//       `;
+//       item_pool_tags.appendChild(data);
+//     });
+//   }
+
+//   valueTag.textContent = `$${responseDataStat.price}`;
+//   totalTag.textContent = responseDataStat.amount;
+// }
+
+if (Signature == null) {
   tagLog.textContent = "Login";
 } else {
   tagLog.textContent = "Logout";
@@ -131,7 +136,7 @@ document.addEventListener("click", () => {
 });
 button_add_item.addEventListener("click", async () => {
   var response = await addItem(
-    signature,
+    Signature,
     name_add_new.value,
     type_add_new.value,
     amount_add_new.value,
@@ -146,7 +151,7 @@ button_add_item.addEventListener("click", async () => {
 });
 button_delete_item.addEventListener("click", async () => {
   var request = await Delete(
-    signature,
+    Signature,
     name_delete_item,
     type_delete_item,
     aggree_delete_item,
@@ -175,7 +180,7 @@ popup_edit.addEventListener("click", (e) => {
 });
 button_edit_item.addEventListener("click", async () => {
   var request = await Update(
-    signature,
+    Signature,
     item_select_edit,
     type_edit_item,
     amount_edit_item,
@@ -189,11 +194,11 @@ button_edit_item.addEventListener("click", async () => {
   }
 });
 button_copy_signature.addEventListener("click", () => {
-  navigator.clipboard.writeText(signature);
+  navigator.clipboard.writeText(Signature);
 });
 button_shipping_send.addEventListener("click", async () => {
   var request = await Shipping(
-    signature,
+    Signature,
     signature_reciever_shipping,
     name_item_shipping,
     type_item_shipping,

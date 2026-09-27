@@ -56,7 +56,7 @@ var responseDataItem = await getDataItem(signature);
 var responseDataStat = await getDataStat(signature);
 
 if (!responseDataUser || !responseDataItem || !responseDataStat) {
-  console.log("Fail to load data")
+  console.log("Fail to load data");
 } else {
   if (responseDataItem.status == true) {
     item_pool_tags.innerHTML = "";
@@ -73,7 +73,7 @@ if (!responseDataUser || !responseDataItem || !responseDataStat) {
       item_pool_tags.appendChild(data);
     });
   }
-  
+
   valueTag.textContent = `$${responseDataStat.price}`;
   totalTag.textContent = responseDataStat.amount;
   userTag.textContent = `${responseDataUser.firstName} ${responseDataUser.lastName}`;
@@ -116,6 +116,12 @@ document.addEventListener("click", () => {
   popup_edit.style.display = "none";
   popup_shipping.style.display = "none";
   aggree_delete_item.checked = false;
+  popup_shipping.querySelectorAll("input").forEach((input) => {
+    input.value = "";
+  });
+  popup_edit.querySelectorAll("input").forEach((input) => {
+    input.value = "";
+  });
   popup_delete.querySelectorAll("input").forEach((input) => {
     input.value = "";
   });
@@ -134,16 +140,23 @@ button_add_item.addEventListener("click", async () => {
   if (response.status == true) {
     popup_add_new.style.display = "none";
   } else {
-    alert(response.detail);
     popup_add_new.style.display = "none";
+    alert(response.detail);
   }
 });
-button_delete_item.addEventListener("click", () => {
-  Delete(signature, name_delete_item, type_delete_item, aggree_delete_item);
-  popup_delete.style.display = "none";
-  popup_delete.querySelectorAll("input").forEach((input) => {
-    input.value = "";
-  });
+button_delete_item.addEventListener("click", async () => {
+  var request = await Delete(
+    signature,
+    name_delete_item,
+    type_delete_item,
+    aggree_delete_item,
+  );
+  if (request.status == true) {
+    popup_delete.style.display = "none";
+  } else {
+    popup_delete.style.display = "none";
+    alert(request.detail);
+  }
 });
 spawn_popup_edit_item.addEventListener("click", (e) => {
   popup_edit.style.display = "flex";
@@ -160,32 +173,36 @@ spawn_popup_edit_item.addEventListener("click", (e) => {
 popup_edit.addEventListener("click", (e) => {
   e.stopPropagation();
 });
-button_edit_item.addEventListener("click", () => {
-  Update(
+button_edit_item.addEventListener("click", async () => {
+  var request = await Update(
     signature,
     item_select_edit,
     type_edit_item,
     amount_edit_item,
     price_edit_item,
   );
-  popup_edit.style.display = "none";
-  popup_edit.querySelectorAll("input").forEach((input) => {
-    input.value = "";
-  });
+  if (request.status == true) {
+    popup_edit.style.display = "none";
+  } else {
+    popup_edit.style.display = "none";
+    alert(request.detail);
+  }
 });
 button_copy_signature.addEventListener("click", () => {
   navigator.clipboard.writeText(signature);
 });
-button_shipping_send.addEventListener("click", () => {
-  Shipping(
+button_shipping_send.addEventListener("click", async () => {
+  var request = await Shipping(
     signature,
     signature_reciever_shipping,
     name_item_shipping,
     type_item_shipping,
     amount_item_shipping,
   );
-  popup_shipping.style.display = "none";
-  popup_shipping.querySelectorAll("input").forEach((input) => {
-    input.value = "";
-  });
+  if (request.status == true) {
+    popup_shipping.style.display = "none";
+  } else {
+    popup_shipping.style.display = "none";
+    alert(request.detail);
+  }
 });

@@ -62,10 +62,7 @@ export async function addItem(
     `http://127.0.0.1:8000/AddItem?signature=${signature}&nameItem=${nameitem}&typeItem=${typeItem}&amountItem=${amountItem}&priceItem=${priceItem}`,
     { method: "POST" },
   );
-  var response = request.json();
-  if (response.status == false) {
-    console.log(response.detail);
-  }
+  return request.json();
 }
 
 export async function getDataUser(sign) {
@@ -118,10 +115,7 @@ export async function Delete(signature, nameItem, typeItem, checklist) {
       `http://127.0.0.1:8000/delete?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}`,
       { method: "POST" },
     );
-    var response = request.json();
-    if (response.status == false) {
-      console.log(response.detail);
-    }
+    return request.json();
   }
 }
 
@@ -141,10 +135,7 @@ export async function Update(signature, nameItem, typeItem, amount, price) {
       `http://127.0.0.1:8000/update?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}&amount=${amount.value}&price=${price.value}`,
       { method: "POST" },
     );
-    var response = request.json();
-    if (response.status == false) {
-      console.log(response.detail);
-    }
+    return request.json();
   }
 }
 
@@ -162,9 +153,6 @@ export async function Shipping(
       `http://127.0.0.1:8000/shipping?signatureSender=${signature_sender}&signatureReciever=${signature_reciever.value}&nameItem=${name_item.value}&typeItem=${type_item.value}&amount=${amount.value}`,
       { method: "POST" },
     );
-    var response = request.json();
-    if (response.status == false) {
-      console.log(response.detail);
-    }
+    return request.json();
   }
 }

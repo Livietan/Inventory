@@ -108,6 +108,7 @@ def main(signature:str, nameItem:str, typeItem:str, amountItem:int, priceItem:in
         ) VALUES (?, ?, ?, ?, ?)
         """, (signature, nameItem, typeItem, amountItem, priceItem))
         connect.commit()
+        return {"status": True}
     except Exception as e :
         connect.rollback()
         return {"status": False, "detail": e}
@@ -121,6 +122,7 @@ def main(signature:str, nameItem:str, typeItem:str):
         cursor = connect.cursor()
         cursor.execute("DELETE FROM ITEMS WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?", (signature, nameItem, typeItem))
         connect.commit()
+        return {"status": True}
     except Exception as e :
         connect.rollback()
         return {"status": False, "detail": str(e)}
@@ -138,6 +140,7 @@ def main(signature:str, nameItem:str, typeItem:str, amount:str, price:str):
         WHERE SIGNATURE=? AND NAMEITEM=? AND TYPEITEM=?""",
         (amount, price, signature, nameItem, typeItem))
         connect.commit()
+        return {"status": True}
     except Exception as e:
         connect.rollback()
         return {"status": False, "detail": str(e)}
@@ -179,6 +182,7 @@ def main(signatureSender:str, signatureReciever:str, nameItem:str, typeItem:str,
                     connect.rollback()
                     return {"status": False, "detail": str(e)}
         connect.commit()
+        return {"status": True}
     except Exception as e:
         connect.rollback()
         return {"status": False, "detail": str(e)}

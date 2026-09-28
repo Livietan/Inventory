@@ -37,6 +37,7 @@ func main() {
 	http.HandleFunc("/login", Login)
 	http.HandleFunc("/insert", insertITEMS)
 	http.HandleFunc("/GetStatItem", GetStatItem)
+	http.HandleFunc("/GetItems", GetItems)
 
 	fmt.Println("Run http://127.0.0.1:8000 OK")
 	http.ListenAndServe("127.0.0.1:8000", nil)
@@ -218,7 +219,7 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&dataItem.Signature); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&dataItem); err != nil {
 		http.Error(w, "invalid Body", http.StatusBadRequest)
 		return
 	}
@@ -238,3 +239,45 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Run http://127.0.0.1:8000/GetDataItem OK")
 }
 
+type Items struct {
+	Signature string `json:"Signature"`
+	NameItem string `json:"NameItem"`
+	TypeItem string `json:"TypeItem"`
+	Amount string `json:"Amount"`
+	Price string `json:"Price"`
+}
+
+func GetItems(w http.ResponseWriter, r *http.Request) {
+	var DataItem Items
+	var items []Items
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&DataItem); err != nil {
+		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		return
+	}
+
+	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1", DataItem.Signature)
+	if err != nil {
+		return
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&DataItem.NameItem, &DataItem.TypeItem, &DataItem.Amount, &DataItem.Price)
+		if err != nil {
+			continue
+		}
+
+		items = append(items, DataItem)
+	}
+	json.NewEncoder(w).Encode(items)
+}

@@ -1,11 +1,10 @@
 import {
-  addItem,
   Delete,
-  getDataItem,
-  getDataStat,
-  getDataUser,
+  GetDataItem,
+  GetDataStat,
   Update,
   Shipping,
+  insertItem,
 } from "./API.js";
 
 var userTag = document.getElementById("name-tag");
@@ -53,36 +52,35 @@ var amount_item_shipping = document.getElementById("amount-item-shipping");
 var FirstName = sessionStorage.getItem("FirstName");
 var LastName = sessionStorage.getItem("LastName");
 var Signature = sessionStorage.getItem("Signature");
-// var responseDataUser = await getDataUser(signature);
-// var responseDataItem = await getDataItem(signature);
-// var responseDataStat = await getDataStat(signature);
+// var responseDataItem = await GetDataItem(signature);
+var responseDataStat = await GetDataStat(signature);
 
 if (FirstName && LastName != null) {
   userTag.textContent = `${FirstName} ${LastName}`
 }
 
-// if (!responseDataUser || !responseDataItem || !responseDataStat) {
-//   console.log("Fail to load data");
-// } else {
-//   if (responseDataItem.status == true) {
-//     item_pool_tags.innerHTML = "";
-//     responseDataItem.value.forEach((item, index) => {
-//       var data = document.createElement("div");
-//       data.classList.add("data-row");
-//       data.innerHTML = `
-//       <span>${index + 1}</span>
-//       <span>${item.nameItem}</span>
-//       <span>${item.typeItem}</span>
-//       <span>${item.amount}</span>
-//       <span>${item.price}</span>
-//       `;
-//       item_pool_tags.appendChild(data);
-//     });
-//   }
+if (!responseDataItem || !responseDataStat) {
+  console.log("Fail to load data");
+} else {
+  if (responseDataItem.status == true) {
+    item_pool_tags.innerHTML = "";
+    responseDataItem.value.forEach((item, index) => {
+      var data = document.createElement("div");
+      data.classList.add("data-row");
+      data.innerHTML = `
+      <span>${index + 1}</span>
+      <span>${item.nameItem}</span>
+      <span>${item.typeItem}</span>
+      <span>${item.amount}</span>
+      <span>${item.price}</span>
+      `;
+      item_pool_tags.appendChild(data);
+    });
+  }
 
-//   valueTag.textContent = `$${responseDataStat.price}`;
-//   totalTag.textContent = responseDataStat.amount;
-// }
+  valueTag.textContent = responseDataStat.Value;
+  totalTag.textContent = responseDataStat.Total;
+}
 
 if (Signature == null) {
   tagLog.textContent = "Login";
@@ -135,7 +133,7 @@ document.addEventListener("click", () => {
   });
 });
 button_add_item.addEventListener("click", async () => {
-  var response = await addItem(
+  var response = await insertItem(
     Signature,
     name_add_new.value,
     type_add_new.value,

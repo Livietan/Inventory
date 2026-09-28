@@ -64,38 +64,36 @@ export async function login(username, password, checklist) {
       sessionStorage.setItem("Signature", response.Signature);
       window.location.href = "dashboard.html";
     } else {
-      console.log(response.detail);
+      console.log(response.Detail);
     }
   }
 }
 
-export async function addItem(
+export async function insertItem(
   signature,
   nameitem,
   typeItem,
   amountItem,
   priceItem,
 ) {
-  var request = await fetch(
-    `http://127.0.0.1:8000/AddItem?signature=${signature}&nameItem=${nameitem}&typeItem=${typeItem}&amountItem=${amountItem}&priceItem=${priceItem}`,
-    { method: "POST" },
-  );
-  return request.json();
-}
-
-export async function getDataUser(sign) {
-  try {
-    const request = await fetch(
-      `http://127.0.0.1:8000/GetData?signature=${sign}`,
-      { method: "POST" },
-    );
-    return request.json();
-  } catch {
-    return null;
+  var request = await fetch("http://127.0.0.1:8000/insert", {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({
+      Signature: signature,
+      NameItem: nameitem.value,
+      TypeItem: typeItem.value,
+      AmountItem: amountItem,
+      PriceItem: priceItem,
+    }),
+  });
+  var response = request.json();
+  if (response.Status == false) {
+    console.log(response.Detail);
   }
 }
 
-export async function getDataItem(username) {
+export async function GetDataItem(username) {
   try {
     const request = await fetch(
       `http://127.0.0.1:8000/GetItems?signature=${username}`,
@@ -107,13 +105,20 @@ export async function getDataItem(username) {
   }
 }
 
-export async function getDataStat(username) {
+export async function GetDataStat(signature) {
   try {
-    const request = await fetch(
-      `http://127.0.0.1:8000/GetStat?signature=${username}`,
-      { method: "POST" },
-    );
-    return request.json();
+    const request = await fetch("http://127.0.0.1:8000/GetStatItem", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        Signature: signature,
+      }),
+    });
+    var response = request.json();
+    if ((response.Status = false)) {
+      console.log(response.Detail);
+    }
+    return response;
   } catch {
     return null;
   }

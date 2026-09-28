@@ -1,6 +1,6 @@
 import {
   Delete,
-  GetDataItem,
+  GetItems,
   GetDataStat,
   Update,
   Shipping,
@@ -52,8 +52,8 @@ var amount_item_shipping = document.getElementById("amount-item-shipping");
 var FirstName = sessionStorage.getItem("FirstName");
 var LastName = sessionStorage.getItem("LastName");
 var Signature = sessionStorage.getItem("Signature");
-// var responseDataItem = await GetDataItem(signature);
-var responseDataStat = await GetDataStat(signature);
+// var responseDataItem = await GetItems(signature);
+// var responseDataStat = await GetDataStat(Signature);
 
 if (FirstName && LastName != null) {
   userTag.textContent = `${FirstName} ${LastName}`

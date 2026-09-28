@@ -87,19 +87,26 @@ export async function insertItem(
       PriceItem: priceItem,
     }),
   });
-  var response = request.json();
+  var response = await request.json();
   if (response.Status == false) {
     console.log(response.Detail);
   }
 }
 
-export async function GetDataItem(username) {
+export async function GetItems(signature) {
   try {
-    const request = await fetch(
-      `http://127.0.0.1:8000/GetItems?signature=${username}`,
-      { method: "POST" },
-    );
-    return request.json();
+    const request = await fetch("http://127.0.0.1:8000/GetItems", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        Signature: signature,
+      }),
+    });
+    var response = await request.json();
+    if (response.Status == false) {
+      console.log(response.Detail);
+    }
+    return response;
   } catch {
     return null;
   }
@@ -114,7 +121,7 @@ export async function GetDataStat(signature) {
         Signature: signature,
       }),
     });
-    var response = request.json();
+    var response = await request.json();
     if ((response.Status = false)) {
       console.log(response.Detail);
     }
@@ -134,11 +141,19 @@ export async function Delete(signature, nameItem, typeItem, checklist) {
   } else if (checklist.checked == false) {
     alert("Please checklist the terms & conditions");
   } else {
-    const request = await fetch(
-      `http://127.0.0.1:8000/delete?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}`,
-      { method: "POST" },
-    );
-    return request.json();
+    const request = await fetch("http://127.0.0.1:8000/Delete", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        Signature: signature,
+        NameItem: nameItem,
+        TypeItem: typeItem,
+      }),
+    });
+    var response = await request.json();
+    if (response.Status == false) {
+      console.log(response.Detail);
+    }
   }
 }
 

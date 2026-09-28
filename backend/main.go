@@ -40,6 +40,7 @@ func main() {
 	http.HandleFunc("/GetItems", GetItems)
 	http.HandleFunc("/Delete", Delete)
 	http.HandleFunc("/Update", Update)
+	http.HandleFunc("/Shipping", Shipping)
 
 	fmt.Println("Run http://127.0.0.1:8000 OK")
 	http.ListenAndServe("127.0.0.1:8000", nil)
@@ -249,6 +250,11 @@ type Items struct {
 	Price string `json:"Price"`
 }
 
+type dataItems struct {
+	Status bool `json:"Status"`
+	Value []Items `json:"Value"`
+}
+
 func GetItems(w http.ResponseWriter, r *http.Request) {
 	var DataItem Items
 	var items []Items
@@ -285,7 +291,10 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 
 		items = append(items, DataItem)
 	}
-	json.NewEncoder(w).Encode(items)
+	json.NewEncoder(w).Encode(dataItems{
+		Status: true,
+		Value: items,
+	})
 	fmt.Println("Run http://127.0.0.1:8000/GetItem OK")
 }
 
@@ -355,4 +364,8 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 	fmt.Println("Run http://127.0.0.1:8000/Update OK")
+}
+
+func Shipping(w http.ResponseWriter, r *http.Request){
+
 }

@@ -169,11 +169,21 @@ export async function Update(signature, nameItem, typeItem, amount, price) {
   } else if (amount.value <= 0) {
     alert(`Amount cannot be under ${amount.value}`);
   } else {
-    const request = await fetch(
-      `http://127.0.0.1:8000/update?signature=${signature}&nameItem=${nameItem.value}&typeItem=${typeItem.value}&amount=${amount.value}&price=${price.value}`,
-      { method: "POST" },
-    );
-    return request.json();
+    const request = await fetch("http://127.0.0.1:8000/Update", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        Signature: signature,
+        NameItem: nameItem,
+        TypeItem: typeItem,
+        Amount: amount,
+        Price: price,
+      }),
+    });
+    var response = await request.json();
+    if (response.Status == false) {
+      console.log(response.Detail);
+    }
   }
 }
 

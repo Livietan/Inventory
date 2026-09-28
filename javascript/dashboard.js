@@ -52,8 +52,8 @@ var amount_item_shipping = document.getElementById("amount-item-shipping");
 var FirstName = sessionStorage.getItem("FirstName");
 var LastName = sessionStorage.getItem("LastName");
 var Signature = sessionStorage.getItem("Signature");
-// var responseDataItem = await GetItems(signature);
-// var responseDataStat = await GetDataStat(Signature);
+var responseDataItem = await GetItems(signature);
+var responseDataStat = await GetDataStat(Signature);
 
 if (FirstName && LastName != null) {
   userTag.textContent = `${FirstName} ${LastName}`
@@ -62,17 +62,17 @@ if (FirstName && LastName != null) {
 if (!responseDataItem || !responseDataStat) {
   console.log("Fail to load data");
 } else {
-  if (responseDataItem.status == true) {
+  if (responseDataItem.Status === true) {
     item_pool_tags.innerHTML = "";
-    responseDataItem.value.forEach((item, index) => {
+    responseDataItem.Value.forEach((item, index) => {
       var data = document.createElement("div");
       data.classList.add("data-row");
       data.innerHTML = `
       <span>${index + 1}</span>
-      <span>${item.nameItem}</span>
-      <span>${item.typeItem}</span>
-      <span>${item.amount}</span>
-      <span>${item.price}</span>
+      <span>${item.NameItem}</span>
+      <span>${item.TypeItem}</span>
+      <span>${item.Amount}</span>
+      <span>${item.Price}</span>
       `;
       item_pool_tags.appendChild(data);
     });

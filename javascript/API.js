@@ -60,18 +60,26 @@ export async function InsertItem(
   amountItem,
   priceItem,
 ) {
-  var request = await fetch("http://127.0.0.1:8000/insert", {
-    method: "POST",
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify({
-      Signature: signature,
-      NameItem: nameitem,
-      TypeItem: typeItem,
-      AmountItem: amountItem,
-      PriceItem: priceItem,
-    }),
-  });
-  return request.json();
+  if (amountItem.value <= 0) {
+    alert("Amount cannot 0");
+    return;
+  } else if (priceItem.value <= 0) {
+    alert("Amount cannot under 0");
+    return;
+  } else {
+    var request = await fetch("http://127.0.0.1:8000/insert", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        Signature: signature,
+        NameItem: nameitem.value,
+        TypeItem: typeItem.value,
+        AmountItem: amountItem.value,
+        PriceItem: priceItem.value,
+      }),
+    });
+    return request.json();
+  }
 }
 
 export async function GetItems(signature) {
@@ -83,11 +91,7 @@ export async function GetItems(signature) {
         Signature: signature,
       }),
     });
-    var response = await request.json();
-    if (response.Status == false) {
-      console.log(response.Detail);
-    }
-    return response;
+    return request.json();
   } catch {
     return null;
   }
@@ -102,11 +106,7 @@ export async function GetDataStat(signature) {
         Signature: signature,
       }),
     });
-    var response = await request.json();
-    if ((response.Status = false)) {
-      console.log(response.Detail);
-    }
-    return response;
+    return request.json();
   } catch {
     return null;
   }
@@ -127,14 +127,11 @@ export async function Delete(signature, nameItem, typeItem, checklist) {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         Signature: signature,
-        NameItem: nameItem,
-        TypeItem: typeItem,
+        NameItem: nameItem.value,
+        TypeItem: typeItem.value,
       }),
     });
-    var response = await request.json();
-    if (response.Status == false) {
-      console.log(response.Detail);
-    }
+    return request.json();
   }
 }
 
@@ -146,25 +143,22 @@ export async function Update(signature, nameItem, typeItem, amount, price) {
   } else if (typeItem.value.trim() == "") {
     alert("type item could'not empety");
   } else if (amount.value <= 0) {
-    alert(`Amount cannot be under ${amount.value}`);
-  } else if (amount.value <= 0) {
-    alert(`Amount cannot be under ${amount.value}`);
+    alert(`Amount cannot 0`);
+  } else if (price.value <= 0) {
+    alert(`Price cannot 0`);
   } else {
     const request = await fetch("http://127.0.0.1:8000/Update", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         Signature: signature,
-        NameItem: nameItem,
-        TypeItem: typeItem,
-        Amount: amount,
-        Price: price,
+        NameItem: nameItem.value,
+        TypeItem: typeItem.value,
+        AmountItem: amount.value,
+        PriceItem: price.value,
       }),
     });
-    var response = await request.json();
-    if (response.Status == false) {
-      console.log(response.Detail);
-    }
+    return request.json();
   }
 }
 

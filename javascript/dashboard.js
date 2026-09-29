@@ -52,38 +52,35 @@ var amount_item_shipping = document.getElementById("amount-item-shipping");
 var FirstName = sessionStorage.getItem("FirstName");
 var LastName = sessionStorage.getItem("LastName");
 var Signature = sessionStorage.getItem("Signature");
-// var responseDataItem = await GetItems(Signature);
-// var responseDataStat = await GetDataStat(Signature);
+var responseDataItem = await GetItems(Signature);
+var responseDataStat = await GetDataStat(Signature);
 
 if (FirstName && LastName != null) {
   userTag.textContent = `${FirstName} ${LastName}`;
 }
 
-// if (!responseDataItem || !responseDataStat) {
-//   console.log("Fail to load data");
-// } else {
-//   if (responseDataItem.Status === true) {
-//     item_pool_tags.innerHTML = "";
-//     if (responseDataItem.Value.lenght == 0) {
-//       return;
-//     }
-//     responseDataItem.Value.forEach((item, index) => {
-//       var data = document.createElement("div");
-//       data.classList.add("data-row");
-//       data.innerHTML = `
-//       <span>${index + 1}</span>
-//       <span>${item.NameItem}</span>
-//       <span>${item.TypeItem}</span>
-//       <span>${item.Amount}</span>
-//       <span>${item.Price}</span>
-//       `;
-//       item_pool_tags.appendChild(data);
-//     });
-//   }
+if (!responseDataItem || !responseDataStat) {
+  alert("Fail to load data");
+} else {
+  if (responseDataItem.Status === true) {
+    item_pool_tags.innerHTML = "";
+    responseDataItem.Value.forEach((item, index) => {
+      var data = document.createElement("div");
+      data.classList.add("data-row");
+      data.innerHTML = `
+      <span>${index + 1}</span>
+      <span>${item.NameItem}</span>
+      <span>${item.TypeItem}</span>
+      <span>${item.AmountItem}</span>
+      <span>${item.PriceItem}</span>
+      `;
+      item_pool_tags.appendChild(data);
+    });
+  }
 
-//   valueTag.textContent = responseDataStat.Value;
-//   totalTag.textContent = responseDataStat.Total;
-// }
+  valueTag.textContent = "$" + responseDataStat.Value;
+  totalTag.textContent = responseDataStat.Total;
+}
 
 if (Signature === null) {
   tagLog.textContent = "Login";
@@ -138,13 +135,14 @@ document.addEventListener("click", () => {
 button_add_item.addEventListener("click", async () => {
   var response = await InsertItem(
     Signature,
-    name_add_new.value,
-    type_add_new.value,
-    amount_add_new.value,
-    price_add_new.value,
+    name_add_new,
+    type_add_new,
+    amount_add_new,
+    price_add_new,
   );
-  if (response.status === true) {
+  if (response.Status === true) {
     popup_add_new.style.display = "none";
+    location.reload();
   } else {
     popup_add_new.style.display = "none";
     popup_add_new.querySelectorAll("input").forEach((input) => {
@@ -160,11 +158,16 @@ button_delete_item.addEventListener("click", async () => {
     type_delete_item,
     aggree_delete_item,
   );
-  if (request.status == true) {
+  if (request.Status === true) {
     popup_delete.style.display = "none";
+    location.reload();
   } else {
     popup_delete.style.display = "none";
-    alert(request.detail);
+    popup_delete.querySelectorAll("input").forEach((input) => {
+      input.value = "";
+    });
+    aggree_delete_item.checked = false;
+    alert(request.Detail);
   }
 });
 spawn_popup_edit_item.addEventListener("click", (e) => {
@@ -172,10 +175,10 @@ spawn_popup_edit_item.addEventListener("click", (e) => {
   e.stopPropagation();
   item_select_edit.innerHTML =
     "<option value='' disabled selected>Select item</option>";
-  responseDataItem.value.forEach((item) => {
+  responseDataItem.Value.forEach((item) => {
     var data = document.createElement("option");
-    data.value = item.nameItem;
-    data.textContent = item.nameItem;
+    data.value = item.NameItem;
+    data.textContent = item.NameItem;
     item_select_edit.appendChild(data);
   });
 });
@@ -190,11 +193,15 @@ button_edit_item.addEventListener("click", async () => {
     amount_edit_item,
     price_edit_item,
   );
-  if (request.status == true) {
+  if (request.Status === true) {
     popup_edit.style.display = "none";
+    location.reload();
   } else {
     popup_edit.style.display = "none";
-    alert(request.detail);
+    popup_edit.querySelectorAll("input").forEach((input) => {
+      input.value = "";
+    });
+    alert(request.Detail);
   }
 });
 button_copy_signature.addEventListener("click", () => {
@@ -208,7 +215,7 @@ button_shipping_send.addEventListener("click", async () => {
     type_item_shipping,
     amount_item_shipping,
   );
-  if (request.status == true) {
+  if (request.Status === true) {
     popup_shipping.style.display = "none";
   } else {
     popup_shipping.style.display = "none";

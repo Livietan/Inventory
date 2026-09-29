@@ -109,21 +109,26 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = database.Exec(context.Background(), "INSERT INTO USERS (FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD) VALUES ($1, $2, $3, $4)", register.FirstName, register.LastName, signatureStr, passwordHash)
+	Result, err := database.Exec(context.Background(), "INSERT INTO USERS (FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD) VALUES ($1, $2, $3, $4)", register.FirstName, register.LastName, signatureStr, passwordHash)
 	if err != nil {
+		log.Println("\nERROR: ", err)
+		return
+	}
+
+	if Result.RowsAffected() == 0 {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Username Not Aviable",
 		})
-		return
+	} else {
+		json.NewEncoder(w).Encode(ResponseUSERS{
+			Status:    true,
+			FirstName: register.FirstName,
+			LastName:  register.LastName,
+			Signature: signatureStr,
+		})
+		fmt.Println("Run http://127.0.0.1:8000/register OK")
 	}
-	json.NewEncoder(w).Encode(ResponseUSERS{
-		Status:    true,
-		FirstName: register.FirstName,
-		LastName:  register.LastName,
-		Signature: signatureStr,
-	})
-	fmt.Println("Run http://127.0.0.1:8000/register OK")
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -189,19 +194,22 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)", item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
+	Result, err := database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)", item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
 	if err != nil {
+		log.Println("\nERROR: ", err)
+		return
+	}
+	if Result.RowsAffected() == 0 {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Insert item fail",
 		})
-		log.Println("\nERROR: ", err)
-		return
+	} else {
+		json.NewEncoder(w).Encode(ResponseServer{
+			Status: true,
+		})
+		fmt.Println("Run http://127.0.0.1:8000/insert OK")
 	}
-	json.NewEncoder(w).Encode(ResponseServer{
-		Status: true,
-	})
-	fmt.Println("Run http://127.0.0.1:8000/insert OK")
 }
 
 func GetStatItem(w http.ResponseWriter, r *http.Request) {
@@ -222,7 +230,7 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := database.QueryRow(context.Background(), "SELECT SUM(AMOUNT), SUM(PRICE) FROM ITEMS WHERE SIGNATURE=$1", user.Signature,).Scan(&total, &value)
+	err := database.QueryRow(context.Background(), "SELECT COALESCE(SUM(AMOUNT), 0), COALESCE(SUM(AMOUNT * PRICE), 0) FROM ITEMS WHERE SIGNATURE=$1", user.Signature,).Scan(&total, &value)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
@@ -304,14 +312,23 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := database.Exec(context.Background(), "DELETE FROM ITEM WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3", itemDelete.Signature, itemDelete.NameItem, itemDelete.TypeItem,)
+	Result, err := database.Exec(context.Background(), "DELETE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3", itemDelete.Signature, itemDelete.NameItem, itemDelete.TypeItem,)
 	if err != nil {
+		log.Println("\nERROR: ", err)
+	}
+
+	if Result.RowsAffected() == 0 {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Cannot Delete Item",
 		})
+	} else {
+		json.NewEncoder(w).Encode(ResponseServer{
+			Status: true,
+		})
+
+		fmt.Println("Run http://127.0.0.1:8000/Delete OK")
 	}
-	fmt.Println("Run http://127.0.0.1:8000/Delete OK")
 }
 
 func Update(w http.ResponseWriter, r *http.Request) {
@@ -331,14 +348,25 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := database.Exec(context.Background(), "UPDATE ITEM SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5", itemUpdate.AmountItem, itemUpdate.PriceItem, itemUpdate.Signature, itemUpdate.NameItem, itemUpdate.TypeItem,)
+	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5", itemUpdate.AmountItem, itemUpdate.PriceItem, itemUpdate.Signature, itemUpdate.NameItem, itemUpdate.TypeItem,)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Cannot Update Item",
 		})
 	}
-	fmt.Println("Run http://127.0.0.1:8000/Update OK")
+
+	if Result.RowsAffected() == 0 {
+		json.NewEncoder(w).Encode(ResponseServer{
+			Status: false,
+			Detail: "Cannot Update Item",
+		})
+	} else {
+		json.NewEncoder(w).Encode(ResponseServer{
+			Status: true,
+		})
+		fmt.Println("Run http://127.0.0.1:8000/Update OK")
+	}
 }
 
 func Shipping(w http.ResponseWriter, r *http.Request){

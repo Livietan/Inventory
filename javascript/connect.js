@@ -25,9 +25,35 @@ linkRegister.addEventListener("click", () => {
   registerForm.style.display = "flex";
   loginForm.style.display = "none";
 });
-create.addEventListener("click", () => {
-  register(firstName, lastName, usernameRegister, passwordRegister, agreeRegister);
+create.addEventListener("click", async () => {
+  var response = await register(
+    firstName,
+    lastName,
+    usernameRegister,
+    passwordRegister,
+    agreeRegister,
+  );
+  if (response.Status === true) {
+    sessionStorage.setItem("FirstName", response.FirstName);
+    sessionStorage.setItem("LastName", response.LastName);
+    sessionStorage.setItem("Signature", response.Signature);
+    window.location.href = "dashboard.html";
+  } else if (response.Status === false) {
+    alert(response.Detail);
+  } else {
+    alert("Server Not Response");
+  }
 });
-loginButton.addEventListener("click", () => {
-  login(usernameLogin, passwordLogin, agreeLogin);
+loginButton.addEventListener("click", async () => {
+  var response = await login(usernameLogin, passwordLogin, agreeLogin);
+  if (response.Status === true) {
+    sessionStorage.setItem("FirstName", response.FirstName);
+    sessionStorage.setItem("LastName", response.LastName);
+    sessionStorage.setItem("Signature", response.Signature);
+    window.location.href = "dashboard.html";
+  } else if (response.Status === false) {
+    alert(response.Detail);
+  } else {
+    alert("Server Not Response");
+  }
 });

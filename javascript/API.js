@@ -21,21 +21,13 @@ export async function register(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        first_name: firstName.value,
-        last_name: lastNameValue,
+        FIrstName: firstName.value,
+        LastName: lastNameValue,
         Signature: username.value,
         Password: password.value,
       }),
     });
-    var response = await request.json();
-    if (response.Status == true) {
-      sessionStorage.setItem("FirstName", response.first_name);
-      sessionStorage.setItem("LastName", response.last_name);
-      sessionStorage.setItem("Signature", response.Signature);
-      window.location.href = "dashboard.html";
-    } else {
-      console.log(response.Detail);
-    }
+    return request.json();
   }
 }
 
@@ -57,19 +49,11 @@ export async function login(username, password, checklist) {
         Password: password.value,
       }),
     });
-    var response = await request.json();
-    if (response.Status == true) {
-      sessionStorage.setItem("FirstName", response.first_name);
-      sessionStorage.setItem("LastName", response.last_name);
-      sessionStorage.setItem("Signature", response.Signature);
-      window.location.href = "dashboard.html";
-    } else {
-      console.log(response.Detail);
-    }
+    return request.json();
   }
 }
 
-export async function insertItem(
+export async function InsertItem(
   signature,
   nameitem,
   typeItem,
@@ -81,16 +65,13 @@ export async function insertItem(
     headers: { "Content-type": "application/json" },
     body: JSON.stringify({
       Signature: signature,
-      NameItem: nameitem.value,
-      TypeItem: typeItem.value,
+      NameItem: nameitem,
+      TypeItem: typeItem,
       AmountItem: amountItem,
       PriceItem: priceItem,
     }),
   });
-  var response = await request.json();
-  if (response.Status == false) {
-    console.log(response.Detail);
-  }
+  return request.json();
 }
 
 export async function GetItems(signature) {

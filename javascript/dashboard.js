@@ -4,7 +4,7 @@ import {
   GetDataStat,
   Update,
   Shipping,
-  insertItem,
+  InsertItem,
 } from "./API.js";
 
 var userTag = document.getElementById("name-tag");
@@ -52,37 +52,40 @@ var amount_item_shipping = document.getElementById("amount-item-shipping");
 var FirstName = sessionStorage.getItem("FirstName");
 var LastName = sessionStorage.getItem("LastName");
 var Signature = sessionStorage.getItem("Signature");
-var responseDataItem = await GetItems(signature);
-var responseDataStat = await GetDataStat(Signature);
+// var responseDataItem = await GetItems(Signature);
+// var responseDataStat = await GetDataStat(Signature);
 
 if (FirstName && LastName != null) {
-  userTag.textContent = `${FirstName} ${LastName}`
+  userTag.textContent = `${FirstName} ${LastName}`;
 }
 
-if (!responseDataItem || !responseDataStat) {
-  console.log("Fail to load data");
-} else {
-  if (responseDataItem.Status === true) {
-    item_pool_tags.innerHTML = "";
-    responseDataItem.Value.forEach((item, index) => {
-      var data = document.createElement("div");
-      data.classList.add("data-row");
-      data.innerHTML = `
-      <span>${index + 1}</span>
-      <span>${item.NameItem}</span>
-      <span>${item.TypeItem}</span>
-      <span>${item.Amount}</span>
-      <span>${item.Price}</span>
-      `;
-      item_pool_tags.appendChild(data);
-    });
-  }
+// if (!responseDataItem || !responseDataStat) {
+//   console.log("Fail to load data");
+// } else {
+//   if (responseDataItem.Status === true) {
+//     item_pool_tags.innerHTML = "";
+//     if (responseDataItem.Value.lenght == 0) {
+//       return;
+//     }
+//     responseDataItem.Value.forEach((item, index) => {
+//       var data = document.createElement("div");
+//       data.classList.add("data-row");
+//       data.innerHTML = `
+//       <span>${index + 1}</span>
+//       <span>${item.NameItem}</span>
+//       <span>${item.TypeItem}</span>
+//       <span>${item.Amount}</span>
+//       <span>${item.Price}</span>
+//       `;
+//       item_pool_tags.appendChild(data);
+//     });
+//   }
 
-  valueTag.textContent = responseDataStat.Value;
-  totalTag.textContent = responseDataStat.Total;
-}
+//   valueTag.textContent = responseDataStat.Value;
+//   totalTag.textContent = responseDataStat.Total;
+// }
 
-if (Signature == null) {
+if (Signature === null) {
   tagLog.textContent = "Login";
 } else {
   tagLog.textContent = "Logout";
@@ -133,18 +136,21 @@ document.addEventListener("click", () => {
   });
 });
 button_add_item.addEventListener("click", async () => {
-  var response = await insertItem(
+  var response = await InsertItem(
     Signature,
     name_add_new.value,
     type_add_new.value,
     amount_add_new.value,
     price_add_new.value,
   );
-  if (response.status == true) {
+  if (response.status === true) {
     popup_add_new.style.display = "none";
   } else {
     popup_add_new.style.display = "none";
-    alert(response.detail);
+    popup_add_new.querySelectorAll("input").forEach((input) => {
+      input.value = "";
+    });
+    alert(response.Detail);
   }
 });
 button_delete_item.addEventListener("click", async () => {

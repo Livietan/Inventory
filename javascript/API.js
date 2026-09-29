@@ -183,5 +183,6 @@ export async function Shipping(
         AmountItem: amount.value,
       }),
     });
+    return request.json()
   }
 }

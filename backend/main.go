@@ -54,9 +54,6 @@ type ResponseServer struct {
 }
 
 var database *pgxpool.Pool
-var user RegisterLoginAccess
-var item ITEMS
-var shipping SHIPPING
 
 func main() {
 	connectDB()
@@ -97,6 +94,8 @@ func connectDB() {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
+	var user RegisterLoginAccess
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -148,7 +147,9 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	var user RegisterLoginAccess
 	var first_name, last_name, signature, password string
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -194,6 +195,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func InsertITEMS(w http.ResponseWriter, r *http.Request) {
+	var item ITEMS
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -209,7 +212,8 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)", item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
+	Result, err := database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
+	item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
 	if err != nil {
 		log.Println("\nERROR: ", err)
 		return
@@ -229,7 +233,9 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetStatItem(w http.ResponseWriter, r *http.Request) {
+	var user RegisterLoginAccess
 	var total, value string
+	
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -245,7 +251,8 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := database.QueryRow(context.Background(), "SELECT COALESCE(SUM(AMOUNT), 0), COALESCE(SUM(AMOUNT * PRICE), 0) FROM ITEMS WHERE SIGNATURE=$1", user.Signature,).Scan(&total, &value)
+	err := database.QueryRow(context.Background(), "SELECT COALESCE(SUM(AMOUNT), 0), COALESCE(SUM(AMOUNT * PRICE), 0) FROM ITEMS WHERE SIGNATURE=$1",
+	user.Signature,).Scan(&total, &value)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
@@ -267,6 +274,7 @@ type dataItems struct {
 }
 
 func GetItems(w http.ResponseWriter, r *http.Request) {
+	var item ITEMS
 	items := []ITEMS{}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -317,6 +325,8 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 }
 
 func Delete(w http.ResponseWriter, r *http.Request) {
+	var item ITEMS
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -332,7 +342,8 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "DELETE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3", item.Signature, item.NameItem, item.TypeItem,)
+	Result, err := database.Exec(context.Background(), "DELETE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+	item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
 		log.Println(err)
 		return
@@ -353,6 +364,8 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func Update(w http.ResponseWriter, r *http.Request) {
+	var item ITEMS
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -394,7 +407,9 @@ func Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func Shipping(w http.ResponseWriter, r *http.Request){
+	var shipping SHIPPING
 	var amount int
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -415,10 +430,11 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	ResultSelectSend := database.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+	ResultSelectSend := DB.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 	shipping.SignatureSend,
 	shipping.NameItem,
 	shipping.TypeItem).Scan(&amount)
+
 	if ResultSelectSend != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
@@ -428,10 +444,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 	}
 	sender_value, err := strconv.Atoi(shipping.AmountItem)
 	if err != nil {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: err.Error(),
-		})
+		log.Println(err)
 		return
 	}
 	rate := amount - sender_value
@@ -443,7 +456,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 		return
 	} else {
 		ResultUpdateSend, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEiTEM=$4",
-		amount, shipping.SignatureSend, shipping.NameItem, shipping.TypeItem)
+		rate, shipping.SignatureSend, shipping.NameItem, shipping.TypeItem)
 		if err != nil {
 			json.NewEncoder(w).Encode(ResponseServer{
 				Status: false,
@@ -458,15 +471,17 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 			})
 			return
 		} else {
-			var item string
-			ResultSelectRecieve := DB.QueryRow(context.Background(), "SELECT NAMEITEM FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+			var AmountRecieve int
+			ResultSelectRecieve := DB.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 			shipping.SignatureRecieve,
 			shipping.NameItem,
-			shipping.TypeItem).Scan(&item)
+			shipping.TypeItem).Scan(&AmountRecieve)
+
+			rate = AmountRecieve + sender_value
 
 			if ResultSelectRecieve != nil {
 				ResultInsertRecieve, err := DB.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
-				shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem, shipping.AmountItem, 0)
+				shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem, rate, 0)
 				if err != nil {
 					json.NewEncoder(w).Encode(ResponseServer{
 						Status: false,
@@ -481,14 +496,22 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 					})
 					return
 				} else {
+					err = DB.Commit(context.Background())
+					if err != nil {
+					    json.NewEncoder(w).Encode(ResponseServer{
+							Status: false,
+							Detail: "Commit failed",
+						})
+						return
+					}
 					json.NewEncoder(w).Encode(ResponseServer{
 						Status: true,
 					})
 					fmt.Println("Run http://127.0.0.1:8000/Shipping OK")
 				}
 			} else {
-				ResultUpdateRecieve, err := DB.Exec(context.Background(), "UPDATE FROM ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEITEM=$4",
-				shipping.AmountItem, shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem)
+				ResultUpdateRecieve, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEITEM=$4",
+				rate, shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem)
 				if err != nil {
 					json.NewEncoder(w).Encode(ResponseServer{
 						Status: false,
@@ -503,6 +526,14 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 					})
 					return
 				} else {
+					err = DB.Commit(context.Background())
+					if err != nil {
+					    json.NewEncoder(w).Encode(ResponseServer{
+							Status: false,
+							Detail: "Commit failed",
+						})
+						return
+					}
 					json.NewEncoder(w).Encode(ResponseServer{
 						Status: true,
 					})

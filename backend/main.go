@@ -235,7 +235,7 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 func GetStatItem(w http.ResponseWriter, r *http.Request) {
 	var user RegisterLoginAccess
 	var total, value string
-	
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -473,9 +473,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 		} else {
 			var AmountRecieve int
 			ResultSelectRecieve := DB.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
-			shipping.SignatureRecieve,
-			shipping.NameItem,
-			shipping.TypeItem).Scan(&AmountRecieve)
+			shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem).Scan(&AmountRecieve)
 
 			rate = AmountRecieve + sender_value
 

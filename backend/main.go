@@ -215,7 +215,6 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 			Status: true,
 		})
 		fmt.Println("Run http://127.0.0.1:8000/insert OK")
-		return
 	}
 }
 
@@ -334,7 +333,6 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 			Status: true,
 		})
 		fmt.Println("Run http://127.0.0.1:8000/Delete OK")
-		return
 	}
 }
 
@@ -376,7 +374,6 @@ func Update(w http.ResponseWriter, r *http.Request) {
 			Status: true,
 		})
 		fmt.Println("Run http://127.0.0.1:8000/Update OK")
-		return
 	}
 }
 

@@ -45,6 +45,8 @@ type ResponseServer struct {
 }
 
 var database *pgxpool.Pool
+var user RegisterLoginAccess
+var item ITEMS
 
 func main() {
 	connectDB()
@@ -66,7 +68,7 @@ func main() {
 func connectDB() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("error: ", err)
+		log.Fatal(err)
 	}
 
 	password := os.Getenv("PASSWORD")
@@ -74,18 +76,17 @@ func connectDB() {
 
 	database, err = pgxpool.New(context.Background(), databaseURL)
 	if err != nil {
-		log.Fatal("fail to connect database: ", err)
+		log.Fatal(err)
 	}
 
-	if errorPing := database.Ping(context.Background()); errorPing != nil {
-		log.Println(errorPing)
+	if Ping := database.Ping(context.Background()); Ping != nil {
+		log.Println(Ping)
 		log.Fatal("\nERROR: Bad Connection")
 	}
 	fmt.Println("Connection to database OK")
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	var register RegisterLoginAccess
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -96,35 +97,40 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&register); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid Body", http.StatusBadRequest)
 		return
 	}
-	Signature := sha256.Sum256([]byte(register.Signature))
+	Signature := sha256.Sum256([]byte(user.Signature))
 	signatureStr := hex.EncodeToString(Signature[:])
 
-	passwordHash, err := bcrypt.GenerateFromPassword([]byte(register.Password), bcrypt.DefaultCost)
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		http.Error(w, "Fail to hash password", http.StatusInternalServerError)
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "INSERT INTO USERS (FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD) VALUES ($1, $2, $3, $4)", register.FirstName, register.LastName, signatureStr, passwordHash)
+	Result, err := database.Exec(context.Background(), "INSERT INTO USERS (FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD) VALUES ($1, $2, $3, $4)",
+	user.FirstName, user.LastName, signatureStr, passwordHash)
 	if err != nil {
-		log.Println("\nERROR: ", err)
-		return
-	}
-
-	if Result.RowsAffected() == 0 {
+		log.Println(err)
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Username Not Aviable",
 		})
+		return
+	}
+	if Result.RowsAffected() == 0 {
+		json.NewEncoder(w).Encode(ResponseServer{
+			Status: false,
+			Detail: "Register Fail",
+		})
+		return
 	} else {
 		json.NewEncoder(w).Encode(ResponseUSERS{
 			Status:    true,
-			FirstName: register.FirstName,
-			LastName:  register.LastName,
+			FirstName: user.FirstName,
+			LastName:  user.LastName,
 			Signature: signatureStr,
 		})
 		fmt.Println("Run http://127.0.0.1:8000/register OK")
@@ -132,7 +138,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	var login RegisterLoginAccess
 	var first_name, last_name, signature, password string
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -144,15 +149,16 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&login); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid Body", http.StatusBadRequest)
 		return
 	}
 
-	Signature := sha256.Sum256([]byte(login.Signature))
+	Signature := sha256.Sum256([]byte(user.Signature))
 	signatureStr := hex.EncodeToString(Signature[:])
 
-	err := database.QueryRow(context.Background(), "SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=$1", signatureStr).Scan(&first_name, &last_name, &signature, &password)
+	err := database.QueryRow(context.Background(), "SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=$1",
+	signatureStr).Scan(&first_name, &last_name, &signature, &password)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
@@ -162,7 +168,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(login.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(user.Password))
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Wrong password"})
 		return
@@ -178,7 +184,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func InsertITEMS(w http.ResponseWriter, r *http.Request) {
-	var item ITEMS
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -204,16 +209,17 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 			Status: false,
 			Detail: "Insert item fail",
 		})
+		return
 	} else {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: true,
 		})
 		fmt.Println("Run http://127.0.0.1:8000/insert OK")
+		return
 	}
 }
 
 func GetStatItem(w http.ResponseWriter, r *http.Request) {
-	var user RegisterLoginAccess
 	var total, value string
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -252,8 +258,7 @@ type dataItems struct {
 }
 
 func GetItems(w http.ResponseWriter, r *http.Request) {
-	var DataItem ITEMS
-	var items []ITEMS
+	items := []ITEMS{}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -265,12 +270,12 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&DataItem); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&item); err != nil {
 		http.Error(w, "Invalid Body", http.StatusBadRequest)
 		return
 	}
 
-	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1", DataItem.Signature)
+	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1", item.Signature)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
@@ -278,14 +283,16 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+	defer rows.Close()
 
 	for rows.Next() {
-		err = rows.Scan(&DataItem.NameItem, &DataItem.TypeItem, &DataItem.AmountItem, &DataItem.PriceItem)
+		var Items ITEMS
+		err = rows.Scan(&item.NameItem, &item.TypeItem, &item.AmountItem, &item.PriceItem)
 		if err != nil {
 			continue
 		}
 
-		items = append(items, DataItem)
+		items = append(items, Items)
 	}
 	json.NewEncoder(w).Encode(dataItems{
 		Status: true,
@@ -295,8 +302,6 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 }
 
 func Delete(w http.ResponseWriter, r *http.Request) {
-	var itemDelete ITEMS
-
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -307,14 +312,15 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&itemDelete); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&item); err != nil {
 		http.Error(w, "Invalid Body", http.StatusBadRequest)
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "DELETE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3", itemDelete.Signature, itemDelete.NameItem, itemDelete.TypeItem,)
+	Result, err := database.Exec(context.Background(), "DELETE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3", item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
-		log.Println("\nERROR: ", err)
+		log.Println(err)
+		return
 	}
 
 	if Result.RowsAffected() == 0 {
@@ -322,17 +328,17 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 			Status: false,
 			Detail: "Cannot Delete Item",
 		})
+		return
 	} else {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: true,
 		})
-
 		fmt.Println("Run http://127.0.0.1:8000/Delete OK")
+		return
 	}
 }
 
 func Update(w http.ResponseWriter, r *http.Request) {
-	var itemUpdate ITEMS
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -343,17 +349,20 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&itemUpdate); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&item); err != nil {
 		http.Error(w, "Invalid Body", http.StatusBadRequest)
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5", itemUpdate.AmountItem, itemUpdate.PriceItem, itemUpdate.Signature, itemUpdate.NameItem, itemUpdate.TypeItem,)
+	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
+	item.AmountItem, item.PriceItem, item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Cannot Update Item",
 		})
+		log.Println(err)
+		return
 	}
 
 	if Result.RowsAffected() == 0 {
@@ -361,14 +370,24 @@ func Update(w http.ResponseWriter, r *http.Request) {
 			Status: false,
 			Detail: "Cannot Update Item",
 		})
+		return
 	} else {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: true,
 		})
 		fmt.Println("Run http://127.0.0.1:8000/Update OK")
+		return
 	}
 }
 
 func Shipping(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
 
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 }

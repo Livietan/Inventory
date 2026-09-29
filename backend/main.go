@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
@@ -39,6 +40,14 @@ type ITEMS struct {
 	Value string `json:"Value"`
 }
 
+type SHIPPING struct {
+	SignatureSend string `json:"SignatureSend"`
+	SignatureRecieve string `json:"SignatureRecieve"`
+	NameItem string `json:"NameItem"`
+	TypeItem string `json:"TypeItem"`
+	AmountItem string `json:"AmountItem"`
+}
+
 type ResponseServer struct {
 	Status bool   `json:"Status"`
 	Detail string `json:"Detail"`
@@ -47,6 +56,7 @@ type ResponseServer struct {
 var database *pgxpool.Pool
 var user RegisterLoginAccess
 var item ITEMS
+var shipping SHIPPING
 
 func main() {
 	connectDB()
@@ -274,7 +284,8 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1", item.Signature)
+	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1",
+	item.Signature)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
@@ -285,13 +296,18 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var Items ITEMS
-		err = rows.Scan(&item.NameItem, &item.TypeItem, &item.AmountItem, &item.PriceItem)
+		var item ITEMS
+
+		err = rows.Scan(
+		&item.NameItem,
+		&item.TypeItem,
+		&item.AmountItem,
+		&item.PriceItem)
 		if err != nil {
 			continue
 		}
 
-		items = append(items, Items)
+		items = append(items, item)
 	}
 	json.NewEncoder(w).Encode(dataItems{
 		Status: true,
@@ -378,13 +394,121 @@ func Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func Shipping(w http.ResponseWriter, r *http.Request){
+	var amount int
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 
+	DB, err := database.Begin(context.Background())
+	if err != nil { return }
+	defer DB.Rollback(context.Background())
+
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusOK)
 		return
+	}
+	
+	if err := json.NewDecoder(r.Body).Decode(&shipping); err != nil {
+		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
+
+	ResultSelectSend := database.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+	shipping.SignatureSend,
+	shipping.NameItem,
+	shipping.TypeItem).Scan(&amount)
+	if ResultSelectSend != nil {
+		json.NewEncoder(w).Encode(ResponseServer{
+			Status: false,
+			Detail: "Item Not Aviable Or DataBase Corrupted",
+		})
+		return
+	}
+	sender_value, err := strconv.Atoi(shipping.AmountItem)
+	if err != nil {
+		json.NewEncoder(w).Encode(ResponseServer{
+			Status: false,
+			Detail: err.Error(),
+		})
+		return
+	}
+	rate := amount - sender_value
+	if rate < 0 {
+		json.NewEncoder(w).Encode(ResponseServer{
+			Status: false,
+			Detail: "Cannot send item with amount more than your item",
+		})
+		return
+	} else {
+		ResultUpdateSend, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEiTEM=$4",
+		amount, shipping.SignatureSend, shipping.NameItem, shipping.TypeItem)
+		if err != nil {
+			json.NewEncoder(w).Encode(ResponseServer{
+				Status: false,
+				Detail: "Database Coruppted",
+			})
+			return
+		}
+		if ResultUpdateSend.RowsAffected() == 0 {
+			json.NewEncoder(w).Encode(ResponseServer{
+				Status: false,
+				Detail: "SomeThing Wrong",
+			})
+			return
+		} else {
+			var item string
+			ResultSelectRecieve := DB.QueryRow(context.Background(), "SELECT NAMEITEM FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+			shipping.SignatureRecieve,
+			shipping.NameItem,
+			shipping.TypeItem).Scan(&item)
+
+			if ResultSelectRecieve != nil {
+				ResultInsertRecieve, err := DB.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
+				shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem, shipping.AmountItem, 0)
+				if err != nil {
+					json.NewEncoder(w).Encode(ResponseServer{
+						Status: false,
+						Detail: "Database coruppted",
+					})
+					return
+				}
+				if ResultInsertRecieve.RowsAffected() == 0 {
+					json.NewEncoder(w).Encode(ResponseServer{
+						Status: false,
+						Detail: "Fail to create item recieve",
+					})
+					return
+				} else {
+					json.NewEncoder(w).Encode(ResponseServer{
+						Status: true,
+					})
+					fmt.Println("Run http://127.0.0.1:8000/Shipping OK")
+				}
+			} else {
+				ResultUpdateRecieve, err := DB.Exec(context.Background(), "UPDATE FROM ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEITEM=$4",
+				shipping.AmountItem, shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem)
+				if err != nil {
+					json.NewEncoder(w).Encode(ResponseServer{
+						Status: false,
+						Detail: "Database coruppted",
+					})
+					return
+				}
+				if ResultUpdateRecieve.RowsAffected() == 0 {
+					json.NewEncoder(w).Encode(ResponseServer{
+						Status: false,
+						Detail: "Fail to update item recieve",
+					})
+					return
+				} else {
+					json.NewEncoder(w).Encode(ResponseServer{
+						Status: true,
+					})
+					fmt.Println("Run http://127.0.0.1:8000/Shipping OK")
+				}
+			}
+		}
 	}
 }

@@ -64,6 +64,7 @@ if (!responseDataItem || !responseDataStat) {
 } else {
   if (responseDataItem.Status === true) {
     item_pool_tags.innerHTML = "";
+        
     responseDataItem.Value.forEach((item, index) => {
       var data = document.createElement("div");
       data.classList.add("data-row");
@@ -208,17 +209,11 @@ button_copy_signature.addEventListener("click", () => {
   navigator.clipboard.writeText(Signature);
 });
 button_shipping_send.addEventListener("click", async () => {
-  var request = await Shipping(
+  Shipping(
     Signature,
     signature_reciever_shipping,
     name_item_shipping,
     type_item_shipping,
     amount_item_shipping,
   );
-  if (request.Status === true) {
-    popup_shipping.style.display = "none";
-  } else {
-    popup_shipping.style.display = "none";
-    alert(request.detail);
-  }
 });

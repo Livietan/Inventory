@@ -5,13 +5,13 @@ body {
   margin: 0;
   height: 100vh;
   width: 100vw;
-  background: #1b2429;
+  background: #0a0a0a;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 .header {
-  background: #0f1a1f;
+  background: #111111;
   width: 100%;
   height: fit-content;
   padding: 1rem;
@@ -26,34 +26,14 @@ body {
   padding: 0 1rem;
   font-family: "JetBrains Mono";
   font-size: 16px;
+  gap: 0.5rem;
 }
-.search {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  color: rgba(242, 243, 244, 0.35);
-  width: 30rem;
-  padding: 0.3rem;
-  background: #18191b;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  outline: none;
-}
-.logout {
+.menu {
+  height: 100%;
   margin: 0 0 0 auto;
-  background: #3a1518;
-  color: #ff6b6b;
-  padding: 5px 10px;
-  border: 1px solid #ff5252;
-  border-radius: 6px;
-  font-weight: 500;
-  font-family: "JetBrains Mono";
-  font-size: 14px;
-  cursor: pointer;
-  user-select: none;
-}
-.logout:hover {
-  color: #ff8a8a;
-  background: #3a1f24;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 .search::placeholder {
   color: rgba(242, 243, 244, 0.35);
@@ -81,7 +61,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 30%;
-  background: #212b31;
+  background: #1c1c1c;
 }
 .card2 {
   padding: 0.5rem;
@@ -90,7 +70,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 30%;
-  background: #212b31;
+  background: #1c1c1c;
 }
 .label {
   font-family: "Inter";
@@ -111,7 +91,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 60%;
-  background: #212b31;
+  background: #151515;
   flex: 1;
   gap: 10px;
   overflow: hidden;
@@ -152,29 +132,28 @@ body {
   color: white;
   gap: 0.5rem;
 }
-.inp {
-  width: 100%;
-}
-.button-connect {
-  background: #50d2c1;
-  color: black;
-  text-align: center;
-  padding: 5px;
-  border-radius: 5px;
-}
 .connect-popup input {
   font-size: 18px;
 }
-.head-menu {
-  width: 60%;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
+.logout {
+  background: #b7a27a;
+  color: #0a0a0a;
+  padding: 5px 15px;
+  border: 1.5px solid #b7a27a;
+  border-radius: 4px;
+  font-weight: 400;
+  font-family: "JetBrains Mono";
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.logout:hover {
+  background: #c8b58c;
 }
 .button-add-item {
-  background: #103a3a;
-  border: 1.5px solid #4dffff;
-  color: #7dffff;
+  background: #b7a27a;
+  border: 1.5px solid #b7a27a;
+  color: #0a0a0a;
   padding: 5px 15px;
   border-radius: 4px;
   font-family: "Inter";
@@ -185,12 +164,12 @@ body {
   width: fit-content;
 }
 .button-add-item:hover {
-  background: #1a4a4a;
+  background: #c8b58c;
 }
 .button-edit-item {
-  background: #103a3a;
-  border: 1.5px solid #4dffff;
-  color: #7dffff;
+  background: transparent;
+  border: 1.5px solid #b7a27a;
+  color: #b7a27a;
   padding: 5px 15px;
   border-radius: 4px;
   font-family: "Inter";
@@ -201,11 +180,14 @@ body {
   width: fit-content;
 }
 .button-edit-item:hover {
-  background: #1a4a4a;
+  background: #c8b58c;
+  color: #0a0a0a;
+  border-color: #c8b58c;
 }
 .shipping {
-  background: #0f1b2e;
-  border: 1px solid #3b82f6;
+  background: transparent;
+  border: 1px solid #b7a27a;
+  color: #b7a27a;
   padding: 5px 15px;
   border-radius: 4px;
   font-family: "Inter";
@@ -214,16 +196,16 @@ body {
   cursor: pointer;
   user-select: none;
   width: fit-content;
-  color: #60a5fa;
 }
 .shipping:hover {
-  background: #16243d;
-  border: 1px solid #60a5fa;
-  color: #93c5fd;
+  background: #c8b58c;
+  color: #0a0a0a;
+  border-color: #c8b58c;
 }
 .delete {
-  background: #3a1518;
-  border: 1px solid #ff5252;
+  background: transparent;
+  border: 1px solid #b85c5c;
+  color: #c96a6a;
   padding: 5px 15px;
   border-radius: 4px;
   font-family: "Inter";
@@ -232,10 +214,10 @@ body {
   cursor: pointer;
   user-select: none;
   width: fit-content;
-  color: #ff6b6b;
 }
 .delete:hover {
-  background: #4a1a1e;
+  background: rgba(200, 92, 92, 0.1);
+  border-color: #c96a6a;
 }
 .popup-add {
   position: absolute;
@@ -244,7 +226,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #212b31;
+  background: #171717;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
   font-family: "JetBrains Mono";
@@ -257,9 +239,9 @@ body {
 .popup-add input {
   font-size: 16px;
   padding: 3px;
-  background: #0f1620;
-  border: 1px solid #2a3646;
-  color: rgba(255, 255, 255, 0.75);
+  background: #111111;
+  border: 1px solid #2e2e2e;
+  color: #f5f1e8;
   border-radius: 6px;
   padding: 10px;
 }
@@ -268,21 +250,21 @@ body {
   -webkit-appearance: none;
 }
 .popup-add input::placeholder {
-  color: #64748b;
+  color: #77716a;
 }
 .button-add {
-  background: #103a3a;
-  border: 1.5px solid #4dffff;
+  background: #b7a27a;
+  border: 1.5px solid #292929;
   padding: 0.5rem;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
   user-select: none;
   font-weight: 500;
-  color: #7dffff;
+  color: #0a0a0a;
 }
 .button-add:hover {
-  background: #1a4a4a;
+  background: #c8b58c;
 }
 .data-row {
   font-family: "JetBrains Mono";
@@ -307,7 +289,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #212b31;
+  background: #171717;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
   font-family: "JetBrains Mono";
@@ -320,28 +302,30 @@ body {
 .popup-delete input {
   font-size: 16px;
   padding: 3px;
-  background: #0f1620;
-  border: 1px solid #2a3646;
-  color: rgba(255, 255, 255, 0.75);
+  background: #111111;
+  border: 1px solid #2e2e2e;
+  color: #f5f1e8;
   border-radius: 6px;
   padding: 10px;
 }
-.popup-add input::placeholder {
-  color: #64748b;
+.popup-delete input::placeholder {
+  color: #7F4A4E;
 }
 .delete-item {
-  background: #3a1518;
-  border: 1.5px solid #ff5252;
+  background: #3a1517;
+  border: 1px solid #c85c5c;
   padding: 0.5rem;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
   user-select: none;
   font-weight: 500;
-  color: #ff6b6b;
+  color: #d86a6a;
 }
 .delete-item:hover {
-  background: #4a1a1e;
+  background: #c85c5c;
+  border-color: #c85c5c;
+  color: #0a0a0a;
 }
 .popup-edit {
   position: absolute;
@@ -350,7 +334,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #212b31;
+  background: #171717;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
   font-family: "JetBrains Mono";
@@ -363,9 +347,9 @@ body {
 .popup-edit input {
   font-size: 16px;
   padding: 3px;
-  background: #0f1620;
-  border: 1px solid #2a3646;
-  color: rgba(255, 255, 255, 0.75);
+  background: #111111;
+  border: 1px solid #2e2e2e;
+  color: #f5f1e8;
   border-radius: 6px;
   padding: 10px;
 }
@@ -374,28 +358,28 @@ body {
   appearance: none;
 }
 .popup-add input::placeholder {
-  color: #64748b;
+  color: #77716a;
 }
 .edit-item {
-  background: #103a3a;
-  border: 1.5px solid #4dffff;
+  background: #b7a27a;
+  border: 1.5px solid #292929;
   padding: 0.5rem;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
   user-select: none;
   font-weight: 500;
-  color: #7dffff;
+  color: #0a0a0a;
 }
 .edit-item:hover {
-  background: #1a4a4a;
+  background: #c8b58c;
 }
 .select-item {
   font-size: 16px;
   padding: 3px;
-  background-color: #0f1620;
-  border: 1px solid #2a3646;
-  color: rgba(255, 255, 255, 0.75);
+  background: #111111;
+  border: 1px solid #2e2e2e;
+  color: #f5f1e8;
   border-radius: 6px;
   padding: 10px;
   appearance: none;
@@ -410,7 +394,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #212b31;
+  background: #171717;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
   font-family: "JetBrains Mono";
@@ -423,25 +407,28 @@ body {
 .popup-shipping input {
   font-size: 16px;
   padding: 3px;
-  background: #0f1620;
-  border: 1px solid #2a3646;
-  color: rgba(255, 255, 255, 0.75);
+  background: #111111;
+  border: 1px solid #2e2e2e;
+  color: #f5f1e8;
   border-radius: 6px;
   padding: 10px;
 }
+.popup-shipping input::placeholder {
+  color: #77716a;
+}
 .shipping-item {
-  background: #103a3a;
-  border: 1.5px solid #4dffff;
+  background: #b7a27a;
+  border: 1.5px solid #292929;
   padding: 0.5rem;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
   user-select: none;
   font-weight: 500;
-  color: #7dffff;
+  color: #0a0a0a;
 }
 .shipping-item:hover {
-  background: #1a4a4a;
+  background: #c8b58c;
 }
 .popup-shipping input::-webkit-inner-spin-button,
 .popup-shipping input::-webkit-outer-spin-button {

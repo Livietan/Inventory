@@ -26,9 +26,12 @@
       <span class="child">Add items,</span>
       <span class="child">edit stock,</span>
       <span class="child">and manage shipments easily.</span>
+      <div class="get-started" id="get-started">
+        Get Started
+      </div>
     </div>
   </div>
-  <div class="content">
+  <div class="content" id="content">
     <div class="register" id="register">
       <div style="display: flex; flex-direction: column; gap: 10px">
         <span class="head-form">Create an account</span>
@@ -37,11 +40,11 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: var(--gap-input)">
         <div style="display: flex; gap: var(--gap-input)">
-          <input type="text" placeholder="Frist name" id="first-name" maxlength="16" />
-          <input type="text" placeholder="Last name" id="last-name" maxlength="16" />
+          <input type="text" placeholder="Frist name" id="first-name" maxlength="16" autocomplete="off" />
+          <input type="text" placeholder="Last name" id="last-name" maxlength="16" autocomplete="off" />
         </div>
-        <input type="text" placeholder="Username" id="username-register" maxlength="16" />
-        <input type="password" placeholder="Password" id="password-register" maxlength="32" />
+        <input type="text" placeholder="Username" id="username-register" maxlength="16" autocomplete="off" />
+        <input type="password" placeholder="Password" id="password-register" maxlength="32" autocomplete="off" />
       </div>
       <label for="" class="radio">
         <input type="checkbox" value="agree" id="agree-register" />
@@ -64,11 +67,11 @@
           <span class="link" id="link-register">Register</span></span>
       </div>
       <div style="display: flex; flex-direction: column; gap: var(--gap-input)">
-        <input type="text" placeholder="Username" id="username-login" maxlength="16" />
-        <input type="password" placeholder="Password" id="password-login" maxlength="32" />
+        <input type="text" placeholder="Username" id="username-login" maxlength="16" autocomplete="off" />
+        <input type="password" placeholder="Password" id="password-login" maxlength="32" autocomplete="off" />
       </div>
       <label for="" class="radio">
-        <input type="checkbox" value="agree" id="agree-login" />
+        <input type="checkbox" value="agree" id="agree-login" autocomplete="off" />
         <span>I agree to the <span class="link">Terms & Conditions</span></span></label>
       <div style="
             text-align: center;

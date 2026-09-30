@@ -48,6 +48,8 @@ body {
   background: rgba(0, 0, 0, 0.4);
   margin: 0;
   font-family: "Manrope";
+  display: flex;
+  justify-content: center;
 }
 img {
   display: block;
@@ -62,6 +64,20 @@ img {
 .child {
   font-size: 48px;
   font-weight: 400;
+}
+.get-started {
+  background: #50D2C1;
+  width: fit-content;
+  padding: 0.5rem;
+  color: #0a0a0a;
+  font-family: "Manrope";
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+.get-started:hover {
+  background: #7bf2ff;
 }
 /* register form */
 .register {
@@ -100,6 +116,8 @@ input:focus {
   text-align: center;
   cursor: pointer;
   user-select: none;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
 }
 .button-create:hover {
   background: #7bf2ff;
@@ -132,6 +150,8 @@ input:focus {
   text-align: center;
   cursor: pointer;
   user-select: none;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
 }
 .button-login:hover {
   background: #7bf2ff;

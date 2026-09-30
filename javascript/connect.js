@@ -16,6 +16,13 @@ var usernameLogin = document.getElementById("username-login");
 var passwordLogin = document.getElementById("password-login");
 var agreeLogin = document.getElementById("agree-login");
 var loginButton = document.getElementById("button-login");
+var startedButton = document.getElementById("get-started");
+
+startedButton.addEventListener("click", () => {
+  document.getElementById("content").scrollIntoView({
+    behavior: "smooth"
+  })
+})
 
 linkLogin.addEventListener("click", () => {
   registerForm.style.display = "none";

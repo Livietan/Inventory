@@ -24,7 +24,7 @@ type USER struct {
 	Password  string `json:"Password"`
 }
 
-type ITEMS struct {
+type ITEM struct {
 	Signature string `json:"Signature"`
 	NameItem string `json:"NameItem"`
 	TypeItem string `json:"TypeItem"`
@@ -189,7 +189,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func InsertITEMS(w http.ResponseWriter, r *http.Request) {
-	var item ITEMS
+	var item ITEM
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -206,7 +206,7 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
+	Result, err := database.Exec(context.Background(), "INSERT INTO ITEM (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
 	item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
 	if err != nil {
 		log.Println("\nERROR: ", err)
@@ -245,7 +245,7 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := database.QueryRow(context.Background(), "SELECT COALESCE(SUM(AMOUNT), 0), COALESCE(SUM(AMOUNT * PRICE), 0) FROM ITEMS WHERE SIGNATURE=$1",
+	err := database.QueryRow(context.Background(), "SELECT COALESCE(SUM(AMOUNT), 0), COALESCE(SUM(AMOUNT * PRICE), 0) FROM ITEM WHERE SIGNATURE=$1",
 	user.Signature,).Scan(&total, &value)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
@@ -254,7 +254,7 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	json.NewEncoder(w).Encode(ITEMS{
+	json.NewEncoder(w).Encode(ITEM{
 		Total: total,
 		Value: value,
 	})
@@ -264,12 +264,12 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 
 type dataItems struct {
 	Status bool `json:"Status"`
-	Value []ITEMS `json:"Value"`
+	Value []ITEM `json:"Value"`
 }
 
 func GetItems(w http.ResponseWriter, r *http.Request) {
-	var item ITEMS
-	items := []ITEMS{}
+	var item ITEM
+	items := []ITEM{}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -286,7 +286,7 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1",
+	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEM WHERE SIGNATURE=$1",
 	item.Signature)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
@@ -298,7 +298,7 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var item ITEMS
+		var item ITEM
 
 		err = rows.Scan(
 		&item.NameItem,
@@ -319,7 +319,7 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 }
 
 func Delete(w http.ResponseWriter, r *http.Request) {
-	var item ITEMS
+	var item ITEM
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -336,7 +336,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "DELETE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+	Result, err := database.Exec(context.Background(), "DELETE FROM ITEM WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 	item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
 		log.Println(err)
@@ -358,7 +358,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func Update(w http.ResponseWriter, r *http.Request) {
-	var item ITEMS
+	var item ITEM
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -375,7 +375,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
+	Result, err := database.Exec(context.Background(), "UPDATE ITEM SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
 	item.AmountItem, item.PriceItem, item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
 		json.NewEncoder(w).Encode(ResponseServer{
@@ -424,7 +424,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	ResultSelectSend := DB.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+	ResultSelectSend := DB.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEM WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 	shipping.SignatureSend,
 	shipping.NameItem,
 	shipping.TypeItem).Scan(&amount)
@@ -449,7 +449,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 		})
 		return
 	} else {
-		ResultUpdateSend, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEiTEM=$4",
+		ResultUpdateSend, err := DB.Exec(context.Background(), "UPDATE ITEM SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEiTEM=$4",
 		rate, shipping.SignatureSend, shipping.NameItem, shipping.TypeItem)
 		if err != nil {
 			json.NewEncoder(w).Encode(ResponseServer{
@@ -466,13 +466,13 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 			return
 		} else {
 			var AmountRecieve int
-			ResultSelectRecieve := DB.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+			ResultSelectRecieve := DB.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEM WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 			shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem).Scan(&AmountRecieve)
 
 			rate = AmountRecieve + sender_value
 
 			if ResultSelectRecieve != nil {
-				ResultInsertRecieve, err := DB.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
+				ResultInsertRecieve, err := DB.Exec(context.Background(), "INSERT INTO ITEM (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
 				shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem, rate, 0)
 				if err != nil {
 					json.NewEncoder(w).Encode(ResponseServer{
@@ -502,7 +502,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 					fmt.Println("Run http://127.0.0.1:8000/Shipping OK")
 				}
 			} else {
-				ResultUpdateRecieve, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEITEM=$4",
+				ResultUpdateRecieve, err := DB.Exec(context.Background(), "UPDATE ITEM SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEITEM=$4",
 				rate, shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem)
 				if err != nil {
 					json.NewEncoder(w).Encode(ResponseServer{

@@ -108,8 +108,8 @@
     <div class="popup-edit" id="popup-edit">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Edit
             Your Item</span>
-        <select class="select-item" id="item-select-edit"></select>
-        <input type="text" placeholder="Type" id="type-edit-item" autocomplete="off">
+        <select class="select-item" id="item-select-edit-name"></select>
+        <select class="select-item" id="item-select-edit-type"></select>
         <input type="number" placeholder="Amount" id="Amount-edit-item" min="0" autocomplete="off">
         <input type="number" placeholder="Price" id="Price-edit-item" min="0" autocomplete="off">
         <div class="edit-item" id="button-edit-item">
@@ -121,8 +121,8 @@
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Shipping
             your items</span>
         <input type="text" id="reciever-shipping" placeholder="Signature" maxlength="64" autocomplete="off">
-        <input type="text" id="name-item-shipping" placeholder="Name Item" autocomplete="off">
-        <input type="text" id="type-item-shipping" placeholder="Type Item" autocomplete="off">
+        <select class="select-item" id="item-select-shipping-name"></select>
+        <select class="select-item" id="item-select-shipping-type"></select>
         <input type="number" id="amount-item-shipping" placeholder="Amount" autocomplete="off">
         <div class="shipping-item" id="shipping-send">
             <span>Shipping</span>

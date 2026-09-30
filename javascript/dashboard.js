@@ -34,8 +34,8 @@ var name_delete_item = document.getElementById("name-delete-item");
 var type_delete_item = document.getElementById("type-delete-item");
 var aggree_delete_item = document.getElementById("aggree-delete-item");
 
-var item_select_edit = document.getElementById("item-select-edit");
-var type_edit_item = document.getElementById("type-edit-item");
+var item_select_edit_name = document.getElementById("item-select-edit-name");
+var item_select_edit_type = document.getElementById("item-select-edit-type");
 var amount_edit_item = document.getElementById("Amount-edit-item");
 var price_edit_item = document.getElementById("Price-edit-item");
 
@@ -45,8 +45,8 @@ var amount_add_new = document.getElementById("amount-add-new");
 var price_add_new = document.getElementById("price-add-new");
 
 var signature_reciever_shipping = document.getElementById("reciever-shipping");
-var name_item_shipping = document.getElementById("name-item-shipping");
-var type_item_shipping = document.getElementById("type-item-shipping");
+var name_item_shipping = document.getElementById("item-select-shipping-name");
+var type_item_shipping = document.getElementById("item-select-shipping-type");
 var amount_item_shipping = document.getElementById("amount-item-shipping");
 
 var FirstName = sessionStorage.getItem("FirstName");
@@ -110,6 +110,22 @@ popup_add_new.addEventListener("click", (e) => {
 spawn_popup_shipping.addEventListener("click", (e) => {
   popup_shipping.style.display = "flex";
   e.stopPropagation();
+  name_item_shipping.innerHTML =
+    "<option value='' disabled selected>Select item</option>";
+  type_item_shipping.innerHTML =
+    "<option value='' disabled selected>Select item</option>";
+  responseDataItem.Value.forEach((item) => {
+    var data = document.createElement("option");
+    data.value = item.NameItem;
+    data.textContent = item.NameItem;
+    name_item_shipping.appendChild(data);
+  });
+  responseDataItem.Value.forEach((item) => {
+    var data = document.createElement("option");
+    data.value = item.TypeItem;
+    data.textContent = item.TypeItem;
+    type_item_shipping.appendChild(data);
+  });
 });
 popup_shipping.addEventListener("click", (e) => {
   e.stopPropagation();
@@ -174,13 +190,21 @@ button_delete_item.addEventListener("click", async () => {
 spawn_popup_edit_item.addEventListener("click", (e) => {
   popup_edit.style.display = "flex";
   e.stopPropagation();
-  item_select_edit.innerHTML =
+  item_select_edit_name.innerHTML =
+    "<option value='' disabled selected>Select item</option>";
+  item_select_edit_type.innerHTML =
     "<option value='' disabled selected>Select item</option>";
   responseDataItem.Value.forEach((item) => {
     var data = document.createElement("option");
     data.value = item.NameItem;
     data.textContent = item.NameItem;
-    item_select_edit.appendChild(data);
+    item_select_edit_name.appendChild(data);
+  });
+  responseDataItem.Value.forEach((item) => {
+    var data = document.createElement("option");
+    data.value = item.TypeItem;
+    data.textContent = item.TypeItem;
+    item_select_edit_type.appendChild(data);
   });
 });
 popup_edit.addEventListener("click", (e) => {
@@ -189,8 +213,8 @@ popup_edit.addEventListener("click", (e) => {
 button_edit_item.addEventListener("click", async () => {
   var request = await Update(
     Signature,
-    item_select_edit,
-    type_edit_item,
+    item_select_edit_name,
+    item_select_edit_type,
     amount_edit_item,
     price_edit_item,
   );

@@ -64,6 +64,7 @@ func main() {
 
 	fmt.Println("Run http://127.0.0.1:8000 OK")
 	http.ListenAndServe("127.0.0.1:8000", nil)
+	fmt.Println("Stop http://127.0.0.1:8000")
 }
 
 func connectDB() {
@@ -77,12 +78,11 @@ func connectDB() {
 
 	database, err = pgxpool.New(context.Background(), databaseURL)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("\nERROR line(79): ", err)
 	}
 
 	if Ping := database.Ping(context.Background()); Ping != nil {
-		log.Println(Ping)
-		log.Fatal("\nERROR: Bad Connection")
+		log.Println("\nERROR line(84):", Ping)
 	}
 	fmt.Println("Connection to database OK")
 }
@@ -116,7 +116,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	Result, err := database.Exec(context.Background(), "INSERT INTO USERS (FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD) VALUES ($1, $2, $3, $4)",
 	user.FirstName, user.LastName, signatureStr, passwordHash)
 	if err != nil {
-		log.Println(err)
+		log.Println("\nERROR line(116): ", err)
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Username Not Aviable",
@@ -165,11 +165,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err := database.QueryRow(context.Background(), "SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=$1",
 	signatureStr).Scan(&first_name, &last_name, &signature, &password)
 	if err != nil {
+		log.Println("\nERROR line(165): ", err)
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "User Not Found",
 		})
-		log.Println("ERROR: ", err)
 		return
 	}
 
@@ -206,18 +206,31 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Result, err := database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
-	item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
-	if err != nil {
-		log.Println("\nERROR: ", err)
+	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
+	item.AmountItem, item.PriceItem, item.Signature, item.NameItem, item.TypeItem)
+	if err != nil{
+		log.Println("\nERROR line(209)", err)
 		return
 	}
 	if Result.RowsAffected() == 0 {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Insert item fail",
-		})
-		return
+		Result, err = database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
+		item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
+		if err != nil {
+			log.Println("\nERROR line(216): ", err)
+			return
+		}
+		if Result.RowsAffected() == 0 {
+			json.NewEncoder(w).Encode(ResponseServer{
+				Status: false,
+				Detail: "Insert item fail",
+			})
+			return
+		} else {
+			json.NewEncoder(w).Encode(ResponseServer{
+				Status: true,
+			})
+			fmt.Println("Run http://127.0.0.1:8000/insert OK")
+		}
 	} else {
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: true,
@@ -248,6 +261,7 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 	err := database.QueryRow(context.Background(), "SELECT COALESCE(SUM(AMOUNT), 0), COALESCE(SUM(AMOUNT * PRICE), 0) FROM ITEMS WHERE SIGNATURE=$1",
 	user.Signature,).Scan(&total, &value)
 	if err != nil {
+		log.Println("\nERROR line(261): ", err)
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Fail to load stat item",
@@ -289,6 +303,7 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1",
 	item.Signature)
 	if err != nil {
+		log.Println("\nERROR line(303): ", err)
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Cannot Load items",
@@ -339,7 +354,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	Result, err := database.Exec(context.Background(), "DELETE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 	item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
-		log.Println(err)
+		log.Println("\nERROR line(354): ", err)
 		return
 	}
 
@@ -378,6 +393,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
 	item.AmountItem, item.PriceItem, item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
+		log.Println("\nERROR line(393): ", err)
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Cannot Update Item",
@@ -410,7 +426,10 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
 
 	DB, err := database.Begin(context.Background())
-	if err != nil { return }
+	if err != nil {
+		log.Println("\nERROR line(428): ", err) 
+		return
+	}
 	defer DB.Rollback(context.Background())
 
 	if r.Method == http.MethodOptions {
@@ -420,7 +439,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 	
 	if err := json.NewDecoder(r.Body).Decode(&shipping); err != nil {
 		http.Error(w, "Invalid Body", http.StatusBadRequest)
-		log.Println(err)
+		log.Println("\nERROR line(440): ", err)
 		return
 	}
 
@@ -430,6 +449,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 	shipping.TypeItem).Scan(&amount)
 
 	if ResultSelectSend != nil {
+		log.Println("\nERROR line(446): ", err)
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Item Not Aviable Or DataBase Corrupted",
@@ -438,7 +458,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 	}
 	sender_value, err := strconv.Atoi(shipping.AmountItem)
 	if err != nil {
-		log.Println(err)
+		log.Println("\nERROR line(459): ", err)
 		return
 	}
 	rate := amount - sender_value
@@ -452,6 +472,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 		ResultUpdateSend, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEiTEM=$4",
 		rate, shipping.SignatureSend, shipping.NameItem, shipping.TypeItem)
 		if err != nil {
+			log.Println("\nERROR line(472): ", err)
 			json.NewEncoder(w).Encode(ResponseServer{
 				Status: false,
 				Detail: "Database Coruppted",
@@ -490,6 +511,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 				} else {
 					err = DB.Commit(context.Background())
 					if err != nil {
+						log.Println("\nERROR line(512): ", err)
 					    json.NewEncoder(w).Encode(ResponseServer{
 							Status: false,
 							Detail: "Commit failed",
@@ -505,6 +527,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 				ResultUpdateRecieve, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEITEM=$4",
 				rate, shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem)
 				if err != nil {
+					log.Println("\nERROR line(527): ", err)
 					json.NewEncoder(w).Encode(ResponseServer{
 						Status: false,
 						Detail: "Database coruppted",
@@ -520,6 +543,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 				} else {
 					err = DB.Commit(context.Background())
 					if err != nil {
+						log.Println("\nERROR line(544): ", err)
 					    json.NewEncoder(w).Encode(ResponseServer{
 							Status: false,
 							Detail: "Commit failed",

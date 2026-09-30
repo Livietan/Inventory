@@ -13,6 +13,7 @@ body {
   font-family: "JetBrains Mono";
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 .content {
   display: flex;
@@ -38,18 +39,16 @@ body {
 .text-image {
   position: absolute;
   top: 0;
-  left: 0;
-  color: white;
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 100%;
-  padding: 2rem;
   background: rgba(0, 0, 0, 0.4);
   margin: 0;
   font-family: "Manrope";
   display: flex;
   justify-content: center;
+  gap: 2rem;
 }
 img {
   display: block;
@@ -58,26 +57,32 @@ img {
   object-fit: cover;
 }
 .hero {
-  font-size: 64px;
+  position: relative;
+  color: #D1BF9B;
+  font-size: 48px;
   font-weight: 600;
 }
 .child {
-  font-size: 48px;
+  color: white;
+  font-size: 38px;
   font-weight: 400;
 }
 .get-started {
-  background: #50D2C1;
+  position: relative;
+  left: 20%;
+  background: #B7A27A;
   width: fit-content;
-  padding: 0.5rem;
+  padding: 0.75rem 2rem;
   color: #0a0a0a;
+  font-size: 18px;
   font-family: "Manrope";
   font-weight: 500;
-  border-radius: 5px;
+  border-radius: 30px;
   cursor: pointer;
   user-select: none;
 }
 .get-started:hover {
-  background: #7bf2ff;
+  background: #C2AE86;
 }
 /* register form */
 .register {
@@ -109,7 +114,7 @@ input:focus {
   border-color: rgba(255, 255, 255, 0.35);
 }
 .button-create {
-  background: #50d2c1;
+  background: #B7A27A;
   color: #0a0a0a;
   border-radius: 8px;
   padding: 14px;
@@ -120,7 +125,7 @@ input:focus {
   font-weight: 700;
 }
 .button-create:hover {
-  background: #7bf2ff;
+  background: #C2AE86;
 }
 .radio {
   display: flex;
@@ -143,7 +148,7 @@ input:focus {
   max-width: 38rem;
 }
 .button-login {
-  background: #50d2c1;
+  background: #B7A27A;
   color: #0a0a0a;
   border-radius: 8px;
   padding: 14px;
@@ -154,13 +159,13 @@ input:focus {
   font-weight: 700;
 }
 .button-login:hover {
-  background: #7bf2ff;
+  background: #C2AE86;
 }
 /* footer */
 .footer {
   height: 10vh;
   width: 100%;
-  background: #50D2C1;
+  background: #B7A27A;
 }
 .copyright {
   height: 100%;

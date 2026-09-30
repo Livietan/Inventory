@@ -169,7 +169,7 @@ export async function Shipping(
   type_item,
   amount,
 ) {
-  if (amount <= 0) {
+  if (amount.value <= 0) {
     alert("the amount cannot be 0 or below 0");
   } else {
     var request = await fetch("http://127.0.0.1:8000/Shipping", {

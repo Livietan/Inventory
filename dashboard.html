@@ -103,10 +103,10 @@
     <div class="popup-add" id="popup-add-new">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Add your
             item</span>
-        <input type="text" placeholder="Name" id="name-add-new" maxlength="16">
-        <input type="text" placeholder="Type" id="type-add-new" maxlength="16">
-        <input type="number" placeholder="Amount" id="amount-add-new">
-        <input type="number" placeholder="Price" id="price-add-new">
+        <input type="text" placeholder="Name" id="name-add-new" maxlength="16" autocomplete="off">
+        <input type="text" placeholder="Type" id="type-add-new" maxlength="16" autocomplete="off">
+        <input type="number" placeholder="Amount" id="amount-add-new" autocomplete="off">
+        <input type="number" placeholder="Price" id="price-add-new" autocomplete="off">
         <div class="button-add" id="button-add-item">
             <span>Add Item</span>
         </div>
@@ -115,8 +115,8 @@
     <div class="popup-delete" id="popup-delete">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Delete
             Your Item</span>
-        <input type="text" placeholder="Item Name" id="name-delete-item">
-        <input type="text" placeholder="Type item" id="type-delete-item">
+        <input type="text" placeholder="Item Name" id="name-delete-item" autocomplete="off">
+        <input type="text" placeholder="Type item" id="type-delete-item" autocomplete="off">
         <div style="display: flex; align-items: center; gap: 5px;">
             <input type="checkbox" value="agree" id="aggree-delete-item">
             <span style="font-size: 14px;">I understand this action cannot be undone.</span>
@@ -130,9 +130,9 @@
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Edit
             Your Item</span>
         <select class="select-item" id="item-select-edit"></select>
-        <input type="text" placeholder="Type" id="type-edit-item">
-        <input type="number" placeholder="Amount" id="Amount-edit-item" min="0">
-        <input type="number" placeholder="Price" id="Price-edit-item" min="0">
+        <input type="text" placeholder="Type" id="type-edit-item" autocomplete="off">
+        <input type="number" placeholder="Amount" id="Amount-edit-item" min="0" autocomplete="off">
+        <input type="number" placeholder="Price" id="Price-edit-item" min="0" autocomplete="off">
         <div class="edit-item" id="button-edit-item">
             <span>Edit Item</span>
         </div>
@@ -141,10 +141,10 @@
     <div class="popup-shipping" id="popup-shipping">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Shipping
             your items</span>
-        <input type="text" id="reciever-shipping" placeholder="Signature" maxlength="64">
-        <input type="text" id="name-item-shipping" placeholder="Name Item">
-        <input type="text" id="type-item-shipping" placeholder="Type Item">
-        <input type="number" id="amount-item-shipping" placeholder="Amount">
+        <input type="text" id="reciever-shipping" placeholder="Signature" maxlength="64" autocomplete="off">
+        <input type="text" id="name-item-shipping" placeholder="Name Item" autocomplete="off">
+        <input type="text" id="type-item-shipping" placeholder="Type Item" autocomplete="off">
+        <input type="number" id="amount-item-shipping" placeholder="Amount" autocomplete="off">
         <div class="shipping-item" id="shipping-send">
             <span>Shipping</span>
         </div>

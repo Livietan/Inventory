@@ -16,18 +16,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type RegisterLoginAccess struct {
+type USER struct {
+	Status bool `json:"Status"`
 	FirstName string `json:"FirstName"`
 	LastName  string `json:"LastName"`
 	Signature string `json:"Signature"`
 	Password  string `json:"Password"`
-}
-
-type ResponseUSERS struct {
-	Status    bool   `json:"Status"`
-	FirstName string `json:"FirstName"`
-	LastName  string `json:"LastName"`
-	Signature string `json:"Signature"`
 }
 
 type ITEMS struct {
@@ -94,7 +88,7 @@ func connectDB() {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	var user RegisterLoginAccess
+	var user USER
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -136,7 +130,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	} else {
-		json.NewEncoder(w).Encode(ResponseUSERS{
+		json.NewEncoder(w).Encode(USER{
 			Status:    true,
 			FirstName: user.FirstName,
 			LastName:  user.LastName,
@@ -147,7 +141,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	var user RegisterLoginAccess
+	var user USER
 	var first_name, last_name, signature, password string
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -185,7 +179,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(ResponseUSERS{
+	json.NewEncoder(w).Encode(USER{
 		Status:    true,
 		FirstName: first_name,
 		LastName:  last_name,
@@ -233,7 +227,7 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetStatItem(w http.ResponseWriter, r *http.Request) {
-	var user RegisterLoginAccess
+	var user USER
 	var total, value string
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")

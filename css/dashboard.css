@@ -165,7 +165,20 @@ body {
 }
 .table-items {
   display: grid;
-  grid-template-columns: 0.1fr 2fr 2fr 2fr 0.25fr 0.5fr;
+  padding-left: 1rem;
+  grid-template-columns: 0.1fr 2fr 2fr 2fr 0.5fr 0.5fr;
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(242, 243, 244, 0.55);
+  border-bottom: 1.75px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  flex-shrink: 0;
+}
+.table-history {
+  display: grid;
+  padding-left: 1rem;
+  grid-template-columns: 1fr 2fr 1fr;
   font-family: "Inter";
   font-size: 12px;
   font-weight: 500;
@@ -342,7 +355,8 @@ body {
 .data-row {
   font-family: "JetBrains Mono";
   display: grid;
-  grid-template-columns: 0.1fr 2fr 2.25fr 2fr 0.25fr 0.5fr;
+  grid-template-columns: 0.1fr 2fr 2fr 2fr 0.5fr 0.5fr;
+  padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   cursor: pointer;
@@ -509,5 +523,5 @@ body {
   appearance: none;
 }
 #copy-button:active {
-  transform: scale(0.90);
+  transform: scale(0.9);
 }

@@ -71,7 +71,7 @@ if (!responseDataItem || !responseDataStat) {
 
     responseDataItem.Value.forEach((item, index) => {
       var data = document.createElement("div");
-      data.classList.add("data-row");
+      data.classList.add("data-row-items");
       data.innerHTML = `
       <span>${index + 1}</span>
       <span>${item.NameItem}</span>

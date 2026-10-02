@@ -166,7 +166,7 @@ body {
 .table-items {
   display: grid;
   padding-left: 1rem;
-  grid-template-columns: 0.1fr 2fr 2fr 2fr 0.5fr 0.5fr;
+  grid-template-columns: 0.2fr 2fr 2fr 2fr 0.5fr 0.5fr;
   font-family: "Inter";
   font-size: 12px;
   font-weight: 500;
@@ -178,7 +178,7 @@ body {
 .table-history {
   display: grid;
   padding-left: 1rem;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 0.1fr 2.75fr 1fr;
   font-family: "Inter";
   font-size: 12px;
   font-weight: 500;
@@ -352,7 +352,7 @@ body {
 .button-add:hover {
   background: #c8b58c;
 }
-.data-row {
+.data-row-items {
   font-family: "JetBrains Mono";
   display: grid;
   grid-template-columns: 0.1fr 2fr 2fr 2fr 0.5fr 0.5fr;
@@ -361,7 +361,7 @@ body {
   padding-bottom: 0.5rem;
   cursor: pointer;
 }
-.data-row:hover {
+.data-row-items:hover {
   background: rgba(59, 130, 246, 0.08);
 }
 .data {

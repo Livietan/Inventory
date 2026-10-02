@@ -18,11 +18,15 @@ var spawn_popup_delete = document.getElementById("delete");
 var spawn_popup_edit_item = document.getElementById("edit-item");
 var button_logout = document.getElementById("button-logout");
 var spawn_popup_shipping = document.getElementById("shipping");
+var spawn_note_items = document.getElementById("item-menu");
+var spawn_note_history = document.getElementById("history-menu");
 
 var popup_add_new = document.getElementById("popup-add-new");
 var popup_delete = document.getElementById("popup-delete");
 var popup_edit = document.getElementById("popup-edit");
 var popup_shipping = document.getElementById("popup-shipping");
+var popup_items = document.getElementById("notepad-item");
+var popup_history = document.getElementById("notepad-history");
 
 var button_add_item = document.getElementById("button-add-item");
 var button_delete_item = document.getElementById("button-delete-item");
@@ -251,4 +255,12 @@ button_shipping_send.addEventListener("click", async () => {
     spawn_popup_shipping.style.display = "none";
     location.reload();
   }
+});
+spawn_note_items.addEventListener("click", () => {
+  popup_items.style.display = "flex";
+  popup_history.style.display = "none";
+});
+spawn_note_history.addEventListener("click", () => {
+  popup_items.style.display = "none";
+  popup_history.style.display = "flex";
 });

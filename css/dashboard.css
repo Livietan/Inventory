@@ -362,7 +362,7 @@ body {
   cursor: pointer;
 }
 .data-row-items:hover {
-  background: #211F1C;
+  background: #211f1c;
 }
 .data-row-historys {
   font-family: "JetBrains Mono";
@@ -374,7 +374,7 @@ body {
   cursor: pointer;
 }
 .data-row-historys:hover {
-  background: #211F1C;
+  background: #211f1c;
 }
 .data {
   overflow-y: auto;
@@ -515,6 +515,31 @@ body {
 }
 .popup-shipping input::placeholder {
   color: #77716a;
+}
+.popup-history-transaction {
+  position: absolute;
+  background: #171717;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
+  font-family: "JetBrains Mono";
+  padding: 0.5rem;
+  color: white;
+  gap: 10px;
+  width: 40rem;
+  padding: 10px;
+  min-height: 20rem;
+  justify-content: space-around;
+}
+.data-item-transaction {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #FFFFFF;
 }
 .shipping-item {
   background: #b7a27a;

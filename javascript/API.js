@@ -171,6 +171,10 @@ export async function Shipping(
 ) {
   if (amount.value <= 0) {
     alert("the amount cannot be 0 or below 0");
+    return
+  } else if (signature_reciever.value == signature_sender) {
+    alert("Cannot send yourself")
+    return
   } else {
     var request = await fetch("http://127.0.0.1:8000/Shipping", {
       method: "POST",

@@ -178,7 +178,7 @@ body {
 .table-history {
   display: grid;
   padding-left: 1rem;
-  grid-template-columns: 0.1fr 2.75fr 1fr;
+  grid-template-columns: 1fr 2.75fr 1fr;
   font-family: "Inter";
   font-size: 12px;
   font-weight: 500;
@@ -362,7 +362,19 @@ body {
   cursor: pointer;
 }
 .data-row-items:hover {
-  background: rgba(59, 130, 246, 0.08);
+  background: #211F1C;
+}
+.data-row-historys {
+  font-family: "JetBrains Mono";
+  display: grid;
+  grid-template-columns: 0.25fr 5fr 1.25fr;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  cursor: pointer;
+}
+.data-row-historys:hover {
+  background: #211F1C;
 }
 .data {
   overflow-y: auto;

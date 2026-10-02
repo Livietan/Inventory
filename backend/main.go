@@ -48,7 +48,6 @@ type ResponseServer struct {
 }
 
 var database *pgxpool.Pool
-
 func main() {
 	connectDB()
 	defer database.Close()

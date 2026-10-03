@@ -7,12 +7,10 @@ import {
   InsertItem,
 } from "./API.js";
 
-var userTag = document.getElementById("name-tag");
 var valueTag = document.getElementById("value-tag");
 var totalTag = document.getElementById("total-tag");
 var item_pool_tags = document.getElementById("item-pool-tags");
 var history_pool_tags = document.getElementById("history-pool-tags");
-var tagLog = document.getElementById("log");
 
 var spawn_popup_new_item = document.getElementById("add-new");
 var spawn_popup_delete = document.getElementById("delete");
@@ -54,6 +52,7 @@ var name_item_shipping = document.getElementById("item-select-shipping-name");
 var type_item_shipping = document.getElementById("item-select-shipping-type");
 var amount_item_shipping = document.getElementById("amount-item-shipping");
 
+// main
 var FirstName = sessionStorage.getItem("FirstName");
 var LastName = sessionStorage.getItem("LastName");
 var Signature = sessionStorage.getItem("Signature");
@@ -61,7 +60,7 @@ var responseDataItem = await GetItems(Signature);
 var responseDataStat = await GetDataStat(Signature);
 
 if (FirstName && LastName != null) {
-  userTag.textContent = `${FirstName} ${LastName}`;
+  document.getElementById("name-tag").textContent = `${FirstName} ${LastName}`;
 }
 
 if (!responseDataItem || !responseDataStat) {
@@ -128,56 +127,11 @@ if (!responseDataItem || !responseDataStat) {
 }
 
 if (Signature === null) {
-  tagLog.textContent = "Login";
+  document.getElementById("log").textContent = "Login";
 } else {
-  tagLog.textContent = "Logout";
+  document.getElementById("log").textContent = "Logout";
 }
 
-function shortSignature(signature) {
-  return `${signature.slice(0, 6)}...${signature.slice(-4)}`;
-}
-
-spawn_popup_delete.addEventListener("click", (e) => {
-  popup_delete.style.display = "flex";
-  e.stopPropagation();
-});
-popup_delete.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-button_logout.addEventListener("click", () => {
-  sessionStorage.clear();
-  window.location.href = "connect.html";
-});
-spawn_popup_new_item.addEventListener("click", (e) => {
-  popup_add_new.style.display = "flex";
-  e.stopPropagation();
-});
-popup_add_new.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-spawn_popup_shipping.addEventListener("click", (e) => {
-  popup_shipping.style.display = "flex";
-  e.stopPropagation();
-  name_item_shipping.innerHTML =
-    "<option value='' disabled selected>Select item</option>";
-  type_item_shipping.innerHTML =
-    "<option value='' disabled selected>Select item</option>";
-  responseDataItem.Value1.forEach((item) => {
-    var data = document.createElement("option");
-    data.value = item.NameItem;
-    data.textContent = item.NameItem;
-    name_item_shipping.appendChild(data);
-  });
-  responseDataItem.Value1.forEach((item) => {
-    var data = document.createElement("option");
-    data.value = item.TypeItem;
-    data.textContent = item.TypeItem;
-    type_item_shipping.appendChild(data);
-  });
-});
-popup_shipping.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
 document.addEventListener("click", () => {
   popup_add_new.style.display = "none";
   popup_delete.style.display = "none";
@@ -198,44 +152,39 @@ document.addEventListener("click", () => {
     input.value = "";
   });
 });
-button_add_item.addEventListener("click", async () => {
-  var response = await InsertItem(
-    Signature,
-    name_add_new,
-    type_add_new,
-    amount_add_new,
-    price_add_new,
-  );
-  if (response.Status === true) {
-    popup_add_new.style.display = "none";
-    location.reload();
-  } else {
-    popup_add_new.style.display = "none";
-    popup_add_new.querySelectorAll("input").forEach((input) => {
-      input.value = "";
-    });
-    alert(response.Detail);
-  }
+
+// spawn popup
+spawn_popup_delete.addEventListener("click", (e) => {
+  popup_delete.style.display = "flex";
+  e.stopPropagation();
 });
-button_delete_item.addEventListener("click", async () => {
-  var request = await Delete(
-    Signature,
-    name_delete_item,
-    type_delete_item,
-    aggree_delete_item,
-  );
-  if (request.Status === true) {
-    popup_delete.style.display = "none";
-    location.reload();
-  } else {
-    popup_delete.style.display = "none";
-    popup_delete.querySelectorAll("input").forEach((input) => {
-      input.value = "";
-    });
-    aggree_delete_item.checked = false;
-    alert(request.Detail);
-  }
+
+spawn_popup_new_item.addEventListener("click", (e) => {
+  popup_add_new.style.display = "flex";
+  e.stopPropagation();
 });
+
+spawn_popup_shipping.addEventListener("click", (e) => {
+  popup_shipping.style.display = "flex";
+  e.stopPropagation();
+  name_item_shipping.innerHTML =
+    "<option value='' disabled selected>Select item</option>";
+  type_item_shipping.innerHTML =
+    "<option value='' disabled selected>Select item</option>";
+  responseDataItem.Value1.forEach((item) => {
+    var data = document.createElement("option");
+    data.value = item.NameItem;
+    data.textContent = item.NameItem;
+    name_item_shipping.appendChild(data);
+  });
+  responseDataItem.Value1.forEach((item) => {
+    var data = document.createElement("option");
+    data.value = item.TypeItem;
+    data.textContent = item.TypeItem;
+    type_item_shipping.appendChild(data);
+  });
+});
+
 spawn_popup_edit_item.addEventListener("click", (e) => {
   popup_edit.style.display = "flex";
   e.stopPropagation();
@@ -256,9 +205,79 @@ spawn_popup_edit_item.addEventListener("click", (e) => {
     item_select_edit_type.appendChild(data);
   });
 });
+
+spawn_note_items.addEventListener("click", () => {
+  popup_items.style.display = "flex";
+  popup_history.style.display = "none";
+});
+spawn_note_history.addEventListener("click", () => {
+  popup_items.style.display = "none";
+  popup_history.style.display = "flex";
+});
+
+// popup
+popup_delete.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+popup_add_new.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+popup_shipping.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
 popup_edit.addEventListener("click", (e) => {
   e.stopPropagation();
 });
+
+// button
+button_logout.addEventListener("click", () => {
+  sessionStorage.clear();
+  window.location.href = "connect.html";
+});
+
+button_add_item.addEventListener("click", async () => {
+  var response = await InsertItem(
+    Signature,
+    name_add_new,
+    type_add_new,
+    amount_add_new,
+    price_add_new,
+  );
+  if (response.Status === true) {
+    popup_add_new.style.display = "none";
+    location.reload();
+  } else {
+    popup_add_new.style.display = "none";
+    popup_add_new.querySelectorAll("input").forEach((input) => {
+      input.value = "";
+    });
+    alert(response.Detail);
+  }
+});
+
+button_delete_item.addEventListener("click", async () => {
+  var request = await Delete(
+    Signature,
+    name_delete_item,
+    type_delete_item,
+    aggree_delete_item,
+  );
+  if (request.Status === true) {
+    popup_delete.style.display = "none";
+    location.reload();
+  } else {
+    popup_delete.style.display = "none";
+    popup_delete.querySelectorAll("input").forEach((input) => {
+      input.value = "";
+    });
+    aggree_delete_item.checked = false;
+    alert(request.Detail);
+  }
+});
+
 button_edit_item.addEventListener("click", async () => {
   var request = await Update(
     Signature,
@@ -278,9 +297,11 @@ button_edit_item.addEventListener("click", async () => {
     alert(request.Detail);
   }
 });
+
 button_copy_signature.addEventListener("click", () => {
   navigator.clipboard.writeText(Signature);
 });
+
 button_shipping_send.addEventListener("click", async () => {
   var response = await Shipping(
     Signature,
@@ -301,11 +322,8 @@ button_shipping_send.addEventListener("click", async () => {
     location.reload();
   }
 });
-spawn_note_items.addEventListener("click", () => {
-  popup_items.style.display = "flex";
-  popup_history.style.display = "none";
-});
-spawn_note_history.addEventListener("click", () => {
-  popup_items.style.display = "none";
-  popup_history.style.display = "flex";
-});
+
+// function
+function shortSignature(signature) {
+  return `${signature.slice(0, 6)}...${signature.slice(-4)}`;
+}

@@ -118,8 +118,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 		log.Println(err)
-		http.Error(w, "Error Request", http.StatusBadRequest)
 		return
 	}
 	Signature := sha256.Sum256([]byte(user.Signature))
@@ -127,8 +127,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
+		http.Error(w, "Bad Request", http.StatusInternalServerError)
 		log.Println(err)
-		http.Error(w, "Error Request", http.StatusInternalServerError)
 		return
 	}
 
@@ -136,17 +136,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	user.FirstName, user.LastName, signatureStr, passwordHash)
 	if err != nil {
 		log.Println(err)
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Username Not Aviable",
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Username Not Aviable"})
 		return
 	}
 	if Result.RowsAffected() == 0 {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Register Fail",
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 		return
 	} else {
 		json.NewEncoder(w).Encode(USER{
@@ -174,8 +168,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		log.Println("\nERROR line(175): ", err)
-		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
@@ -185,17 +179,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err := database.QueryRow(context.Background(), "SELECT FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD FROM USERS WHERE SIGNATURE=$1",
 	signatureStr).Scan(&first_name, &last_name, &signature, &password)
 	if err == pgx.ErrNoRows {
-		log.Println("\nERROR line(184): ", err)
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "User Not Found",
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "User Not Found"})
+		return
+	} else if err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(user.Password))
 	if err != nil {
-		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Wrong password"})
+		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Password Wrong"})
+		log.Println(err)
 		return
 	}
 
@@ -222,41 +217,35 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&item); err != nil {
-		log.Println("\nERROR line(223): ", err)
-		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
 	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
 	item.AmountItem, item.PriceItem, item.Signature, item.NameItem, item.TypeItem)
 	if err != nil{
-		log.Println("\nERROR line(229)", err)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 	if Result.RowsAffected() == 0 {
 		Result, err = database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
 		item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
 		if err != nil {
-			log.Println("\nERROR line(236): ", err)
+			http.Error(w, "Bad Request", http.StatusBadRequest)
+			log.Println(err)
 			return
 		}
 		if Result.RowsAffected() == 0 {
-			log.Println("\nERROR line(236): ", Result)
-			json.NewEncoder(w).Encode(ResponseServer{
-				Status: false,
-				Detail: "Insert item fail",
-			})
+			json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 			return
 		} else {
-			json.NewEncoder(w).Encode(ResponseServer{
-				Status: true,
-			})
+			json.NewEncoder(w).Encode(ResponseServer{Status: true})
 			fmt.Println("Run http://127.0.0.1:8000/insert OK")
 		}
 	} else {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: true,
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: true})
 		fmt.Println("Run http://127.0.0.1:8000/insert OK")
 	}
 }
@@ -276,19 +265,16 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		log.Println("\nERROR line(277): ", err)
-		http.Error(w, "invalid Body", http.StatusBadRequest)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
 	err := database.QueryRow(context.Background(), "SELECT COALESCE(SUM(AMOUNT), 0), COALESCE(SUM(AMOUNT * PRICE), 0) FROM ITEMS WHERE SIGNATURE=$1",
 	user.Signature,).Scan(&total, &value)
 	if err == pgx.ErrNoRows {
-		log.Println("\nERROR line(283): ", err)
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Data Not Found",
-		})
+		log.Println(err)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
 	json.NewEncoder(w).Encode(ITEM{
@@ -319,18 +305,20 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&item); err != nil {
-		log.Println("\nERROR line(320): ", err)
-		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
 	items, err := executeQueryItem(item.Signature)
 	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 		log.Println(err)
 		return
 	}
 	transactions, err := executeQueryTransaction(item.Signature)
 	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 		log.Println(err)
 		return
 	}
@@ -356,28 +344,24 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&item); err != nil {
-		log.Println("\nERROR line(377): ", err)
-		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
 	Result, err := database.Exec(context.Background(), "DELETE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 	item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
-		log.Println("\nERROR line(383): ", err)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
 	if Result.RowsAffected() == 0 {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Cannot Delete Item",
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 		return
 	} else {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: true,
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: true})
 		fmt.Println("Run http://127.0.0.1:8000/Delete OK")
 	}
 }
@@ -396,28 +380,24 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&item); err != nil {
-		log.Println("\nERROR line(417): ", err)
-		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
 	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
 	item.AmountItem, item.PriceItem, item.Signature, item.NameItem, item.TypeItem,)
 	if err != nil {
-		log.Println("\nERROR line(423): ", err)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
 	if Result.RowsAffected() == 0 {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Cannot Update Item",
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 		return
 	} else {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: true,
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: true})
 		fmt.Println("Run http://127.0.0.1:8000/Update OK")
 	}
 }
@@ -433,7 +413,8 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 
 	DB, err := database.Begin(context.Background())
 	if err != nil {
-		log.Println("\nERROR line(453): ", err) 
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err) 
 		return
 	}
 	defer DB.Rollback(context.Background())
@@ -444,8 +425,8 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 	}
 	
 	if err := json.NewDecoder(r.Body).Decode(&shipping); err != nil {
-		log.Println("\nERROR line(465): ", err)
-		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
@@ -455,41 +436,30 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 	shipping.TypeItem).Scan(&amount, &price)
 
 	if ResultSelectSend != nil {
-		log.Println("\nERROR line(446): ", ResultSelectSend)
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Item Not Aviable Or DataBase Corrupted",
-		})
+		log.Println(ResultSelectSend)
+		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 		return
 	}
 	sender_amount, err := strconv.Atoi(shipping.AmountItem)
 	if err != nil {
-		log.Println("\nERROR line(459): ", err)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 	rate := amount - sender_amount
 	if rate < 0 {
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Cannot send item with amount more than your item",
-		})
+		json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 		return
 	} else {
 		ResultUpdateSend, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEiTEM=$4",
 		rate, shipping.SignatureSend, shipping.NameItem, shipping.TypeItem)
 		if err != nil {
-			log.Println("\nERROR line(472): ", err)
-			json.NewEncoder(w).Encode(ResponseServer{
-				Status: false,
-				Detail: "Database Coruppted",
-			})
+			http.Error(w, "Bad Request", http.StatusBadRequest)
+			log.Println(err)
 			return
 		}
 		if ResultUpdateSend.RowsAffected() == 0 {
-			json.NewEncoder(w).Encode(ResponseServer{
-				Status: false,
-				Detail: "SomeThing Wrong",
-			})
+			json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 			return
 		} else {
 			var AmountRecieve int
@@ -502,93 +472,71 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 				ResultInsertRecieve, err := DB.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
 				shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem, sender_amount, price)
 				if err != nil {
-					json.NewEncoder(w).Encode(ResponseServer{
-						Status: false,
-						Detail: "Database coruppted",
-					})
+					http.Error(w, "Bad Request", http.StatusBadRequest)
+					log.Println(err)
 					return
 				}
 				if ResultInsertRecieve.RowsAffected() == 0 {
-					json.NewEncoder(w).Encode(ResponseServer{
-						Status: false,
-						Detail: "Fail to create item recieve",
-					})
+					json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 					return
 				} else {
 					request1, err1 := GenerateTransactionHistory(shipping.SignatureSend, shipping.SignatureSend, shipping.SignatureRecieve, "Send", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
-					request2, err2 := GenerateTransactionHistory(shipping.SignatureRecieve, shipping.SignatureSend, shipping.SignatureRecieve, "Recieve", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
-					if err1 != nil || err2 != nil {
+					if err1 != nil {
+						http.Error(w, "Bad Request", http.StatusBadRequest)
 						log.Println(err1)
+						return
+					}
+					request2, err2 := GenerateTransactionHistory(shipping.SignatureRecieve, shipping.SignatureSend, shipping.SignatureRecieve, "Recieve", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
+					if err2 != nil {
+						http.Error(w, "Bad Request", http.StatusBadRequest)
 						log.Println(err2)
-						json.NewEncoder(w).Encode(ResponseServer{
-							Status: false,
-							Detail: "Database Crash",
-						})
 						return
 					}
 					if request1.RowsAffected() == 0 || request2.RowsAffected() == 0 {
-						json.NewEncoder(w).Encode(ResponseServer{
-							Status: false,
-							Detail: "Fail create invoice",
-						})
+						json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 						return
 					}
 					err = DB.Commit(context.Background())
 					if err != nil {
-						log.Println("\nERROR line(544): ", err)
-					    json.NewEncoder(w).Encode(ResponseServer{
-							Status: false,
-							Detail: "Commit failed",
-						})
+						log.Println(err)
+					    json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 						return
 					}
-					json.NewEncoder(w).Encode(ResponseServer{
-						Status: true,
-					})
+					json.NewEncoder(w).Encode(ResponseServer{Status: true})
 					fmt.Println("Run http://127.0.0.1:8000/Shipping OK")
 				}
 			} else {
 				ResultUpdateRecieve, err := DB.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1 WHERE SIGNATURE=$2 AND NAMEITEM=$3 AND TYPEITEM=$4",
 				rate, shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem)
 				if err != nil {
-					log.Println("\nERROR line(527): ", err)
-					json.NewEncoder(w).Encode(ResponseServer{
-						Status: false,
-						Detail: "Database coruppted",
-					})
+					http.Error(w, "Bad Request", http.StatusBadRequest)
+					log.Println(err)
 					return
 				}
 				if ResultUpdateRecieve.RowsAffected() == 0 {
-					json.NewEncoder(w).Encode(ResponseServer{
-						Status: false,
-						Detail: "Fail to update item recieve",
-					})
+					json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 					return
 				} else {
 					request1, err1 := GenerateTransactionHistory(shipping.SignatureSend, shipping.SignatureSend, shipping.SignatureRecieve, "Send", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
 					if err1 != nil {
-						log.Println("\nERROR line(518): ", err1)
+						http.Error(w, "Bad Request", http.StatusBadRequest)
+						log.Println(err1)
 						return
 					}
 					request2, err2 := GenerateTransactionHistory(shipping.SignatureRecieve, shipping.SignatureSend, shipping.SignatureRecieve, "Recieve", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
 					if err2 != nil {
-						log.Println("\nERROR line(518): ", err2)
+						http.Error(w, "Bad Request", http.StatusBadRequest)
+						log.Println(err2)
 						return
 					}
 					if request1.RowsAffected() == 0 || request2.RowsAffected() == 0 {
-						json.NewEncoder(w).Encode(ResponseServer{
-							Status: false,
-							Detail: "Fail create invoice",
-						})
+						json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 						return
 					}
 					err = DB.Commit(context.Background())
 					if err != nil {
-						log.Println("\nERROR line(544): ", err)
-					    json.NewEncoder(w).Encode(ResponseServer{
-							Status: false,
-							Detail: "Commit failed",
-						})
+						log.Println(err)
+					    json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Commit failed"})
 						return
 					}
 					json.NewEncoder(w).Encode(ResponseServer{
@@ -612,7 +560,7 @@ func GenerateTransactionHistory(owner string, sender string, reciever string, di
 	request, err := DB.Exec(context.Background(), `INSERT INTO LEDGER (TRANSACTION_SIGNATURE, SIGNATURE, SENDER, RECIEVER, DIRECTION, NAMEITEM, TYPEITEM, AMOUNT, PRICE) 
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, transaction_id, owner, sender, reciever, direction, nameItem, typeItem, amount, price)
 	if err != nil {
-		log.Println("\nERROR line(622): ", err)
+		log.Println(err)
 		return request, err
 	}
 	return request, nil
@@ -623,6 +571,7 @@ func executeQueryItem(signature string) ([]ITEM, error) {
 	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1",
 	signature)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -653,6 +602,7 @@ func executeQueryTransaction(signature string) ([]TRANSACTION, error) {
 	signature)
 	
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 	defer rows.Close()

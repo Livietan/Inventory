@@ -93,11 +93,13 @@ func connectDB() {
 
 	database, err = pgxpool.New(context.Background(), databaseURL)
 	if err != nil {
-		log.Println("\nERROR line(95): ", err)
+		log.Println(err)
+		return
 	}
 
 	if Ping := database.Ping(context.Background()); Ping != nil {
-		log.Println("\nERROR line(100):", Ping)
+		log.Println(Ping)
+		return
 	}
 	fmt.Println("Connection to database OK")
 }
@@ -116,8 +118,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		log.Println("\nERROR line(119): ", err)
-		http.Error(w, "Invalid Body", http.StatusBadRequest)
+		log.Println(err)
+		http.Error(w, "Error Request", http.StatusBadRequest)
 		return
 	}
 	Signature := sha256.Sum256([]byte(user.Signature))
@@ -125,15 +127,15 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
-		log.Println("\nERROR line(127): ", err)
-		http.Error(w, "Fail to hash password", http.StatusInternalServerError)
+		log.Println(err)
+		http.Error(w, "Error Request", http.StatusInternalServerError)
 		return
 	}
 
 	Result, err := database.Exec(context.Background(), "INSERT INTO USERS (FIRSTNAME, LASTNAME, SIGNATURE, PASSWORD) VALUES ($1, $2, $3, $4)",
 	user.FirstName, user.LastName, signatureStr, passwordHash)
 	if err != nil {
-		log.Println("\nERROR line(134): ", err)
+		log.Println(err)
 		json.NewEncoder(w).Encode(ResponseServer{
 			Status: false,
 			Detail: "Username Not Aviable",

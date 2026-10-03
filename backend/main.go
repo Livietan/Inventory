@@ -56,7 +56,6 @@ type TRANSACTION struct {
 	Amount string `json:"Amount"`
 	Price string `json:"Price"`
 	Time string `json:"Time"`
-	Value string `json:"Value"`
 }
 
 type ResponseServer struct {
@@ -73,7 +72,7 @@ func main() {
 	http.HandleFunc("/login", Login)
 	http.HandleFunc("/insert", InsertITEMS)
 	http.HandleFunc("/GetStatItem", GetStatItem)
-	http.HandleFunc("/GetItems", GetItems)
+	http.HandleFunc("/GetItems", GetData)
 	http.HandleFunc("/Delete", Delete)
 	http.HandleFunc("/Update", Update)
 	http.HandleFunc("/Shipping", Shipping)
@@ -300,12 +299,12 @@ func GetStatItem(w http.ResponseWriter, r *http.Request) {
 
 type dataItems struct {
 	Status bool `json:"Status"`
-	Value []ITEM `json:"Value"`
+	Value1 []ITEM `json:"Value1"`
+	Value2 []TRANSACTION `json:"Value2"`
 }
 
-func GetItems(w http.ResponseWriter, r *http.Request) {
-	var item ITEM
-	items := []ITEM{}
+func GetData(w http.ResponseWriter, r *http.Request) {
+	var item USER
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -323,40 +322,20 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1",
-	item.Signature)
+	items, err := executeQueryItem(item.Signature)
 	if err != nil {
-		log.Println("\nERROR line(326): ", err)
+		log.Println(err)
 		return
 	}
-	if !rows.Next() {
-		log.Println("\nERROR line(326): ", err)
-		json.NewEncoder(w).Encode(ResponseServer{
-			Status: false,
-			Detail: "Data crash",
-		})
+	transactions, err := executeQueryTransaction(item.Signature)
+	if err != nil {
+		log.Println(err)
 		return
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var item ITEM
-
-		err = rows.Scan(
-		&item.NameItem,
-		&item.TypeItem,
-		&item.AmountItem,
-		&item.PriceItem)
-		if err != nil {
-			log.Println("\nERROR line(351): ", err)
-			continue
-		}
-
-		items = append(items, item)
 	}
 	json.NewEncoder(w).Encode(dataItems{
 		Status: true,
-		Value: items,
+		Value1: items,
+		Value2: transactions,
 	})
 	fmt.Println("Run http://127.0.0.1:8000/GetItem OK")
 }
@@ -468,7 +447,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	ResultSelectSend := DB.QueryRow(context.Background(), "SELECT AMOUNT FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+	ResultSelectSend := DB.QueryRow(context.Background(), "SELECT AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 	shipping.SignatureSend,
 	shipping.NameItem,
 	shipping.TypeItem).Scan(&amount, &price)
@@ -518,9 +497,6 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 			rate = AmountRecieve + sender_amount
 
 			if ResultSelectRecieve != nil {
-				log.Println("\nERROR line(506): ", ResultSelectRecieve)
-				return
-			} else if ResultSelectRecieve == pgx.ErrNoRows {
 				ResultInsertRecieve, err := DB.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
 				shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem, sender_amount, price)
 				if err != nil {
@@ -623,6 +599,7 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 	}
 }
 
+// Tool
 func GenerateTransactionHistory(owner string, sender string, reciever string, direction string, nameItem string, typeItem string, amount int, price int, DB pgx.Tx) (pgconn.CommandTag, error) {
 	time_now := time.Now()
 	time_format := time_now.Format("04:15 01-02-2006")
@@ -637,4 +614,70 @@ func GenerateTransactionHistory(owner string, sender string, reciever string, di
 		return request, err
 	}
 	return request, nil
+}
+
+func executeQueryItem(signature string) ([]ITEM, error) {
+	Data := []ITEM{}
+	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1",
+	signature)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var item ITEM
+
+		err = rows.Scan(
+		&item.NameItem,
+		&item.TypeItem,
+		&item.AmountItem,
+		&item.PriceItem)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		Data = append(Data, item)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return Data, nil
+}
+
+func executeQueryTransaction(signature string) ([]TRANSACTION, error) {
+	Data := []TRANSACTION{}
+	rows, err := database.Query(context.Background(), "SELECT TRANSACTION_SIGNATURE, SENDER, RECIEVER, DIRECTION, NAMEITEM, TYPEITEM, AMOUNT, PRICE, TIME FROM LEDGER WHERE SIGNATURE=$1",
+	signature)
+	
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var Datas TRANSACTION
+		var timeData time.Time
+
+		err = rows.Scan(
+		&Datas.Transaction_Signature,
+		&Datas.Sender,
+		&Datas.Reciever,
+		&Datas.Direction,
+		&Datas.NameItem,
+		&Datas.TypeItem,
+		&Datas.Amount,
+		&Datas.Price,
+		&timeData)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		
+		Datas.Time = timeData.Format("15:04 02-01-2006")
+		Data = append(Data, Datas)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return Data, nil
 }

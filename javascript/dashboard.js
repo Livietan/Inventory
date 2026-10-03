@@ -11,6 +11,7 @@ var userTag = document.getElementById("name-tag");
 var valueTag = document.getElementById("value-tag");
 var totalTag = document.getElementById("total-tag");
 var item_pool_tags = document.getElementById("item-pool-tags");
+var history_pool_tags = document.getElementById("history-pool-tags");
 var tagLog = document.getElementById("log");
 
 var spawn_popup_new_item = document.getElementById("add-new");
@@ -68,8 +69,9 @@ if (!responseDataItem || !responseDataStat) {
 } else {
   if (responseDataItem.Status === true) {
     item_pool_tags.innerHTML = "";
+    history_pool_tags.innerHTML = "";
 
-    responseDataItem.Value.forEach((item, index) => {
+    responseDataItem.Value1.forEach((item, index) => {
       var data = document.createElement("div");
       data.classList.add("data-row-items");
       data.innerHTML = `
@@ -81,6 +83,44 @@ if (!responseDataItem || !responseDataStat) {
       `;
       item_pool_tags.appendChild(data);
     });
+
+    responseDataItem.Value2.forEach((item, index) => {
+      var data = document.createElement("div");
+      data.classList.add("data-row-historys");
+      data.innerHTML = `
+      <span>${index + 1}</span>
+      <span>${item.Transaction_Signature}</span>
+      <span>${item.Time}</span>
+      `;
+
+      data.addEventListener("click", (e) => {
+        document.getElementById("popup-history-transaction").style.display =
+          "flex";
+        document.getElementById("transaction_id").textContent =
+          item.Transaction_Signature;
+        document.getElementById("sender_transaction").textContent =
+          shortSignature(item.Sender);
+        document.getElementById("reciever_transaction").textContent =
+          shortSignature(item.Reciever);
+        document.getElementById("direction_transaction").textContent =
+          item.Direction;
+        document.getElementById("time_transaction").textContent =
+          item.Time;
+        document.getElementById("nameItem_transaction").textContent =
+          item.NameItem;
+        document.getElementById("typeItem_transaction").textContent =
+          item.TypeItem;
+        document.getElementById("amountItem_transaction").textContent =
+          item.Amount;
+        document.getElementById("priceItem_transaction").textContent =
+          `$${item.Price}`;
+        document.getElementById("value_transaction").textContent =
+          `$${item.Amount * item.Price}`;
+        e.stopPropagation();
+      });
+
+      history_pool_tags.appendChild(data);
+    });
   }
 
   valueTag.textContent = "$" + responseDataStat.Value;
@@ -91,6 +131,10 @@ if (Signature === null) {
   tagLog.textContent = "Login";
 } else {
   tagLog.textContent = "Logout";
+}
+
+function shortSignature(signature) {
+  return `${signature.slice(0, 6)}...${signature.slice(-4)}`;
 }
 
 spawn_popup_delete.addEventListener("click", (e) => {
@@ -118,13 +162,13 @@ spawn_popup_shipping.addEventListener("click", (e) => {
     "<option value='' disabled selected>Select item</option>";
   type_item_shipping.innerHTML =
     "<option value='' disabled selected>Select item</option>";
-  responseDataItem.Value.forEach((item) => {
+  responseDataItem.Value1.forEach((item) => {
     var data = document.createElement("option");
     data.value = item.NameItem;
     data.textContent = item.NameItem;
     name_item_shipping.appendChild(data);
   });
-  responseDataItem.Value.forEach((item) => {
+  responseDataItem.Value1.forEach((item) => {
     var data = document.createElement("option");
     data.value = item.TypeItem;
     data.textContent = item.TypeItem;
@@ -140,6 +184,7 @@ document.addEventListener("click", () => {
   popup_edit.style.display = "none";
   popup_shipping.style.display = "none";
   aggree_delete_item.checked = false;
+  document.getElementById("popup-history-transaction").style.display = "none";
   popup_shipping.querySelectorAll("input").forEach((input) => {
     input.value = "";
   });
@@ -204,7 +249,7 @@ spawn_popup_edit_item.addEventListener("click", (e) => {
     data.textContent = item.NameItem;
     item_select_edit_name.appendChild(data);
   });
-  responseDataItem.Value.forEach((item) => {
+  responseDataItem.Value1.forEach((item) => {
     var data = document.createElement("option");
     data.value = item.TypeItem;
     data.textContent = item.TypeItem;

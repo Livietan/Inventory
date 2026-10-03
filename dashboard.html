@@ -96,13 +96,7 @@
                     <span>Transaction ID</span>
                     <span>Time</span>
                 </div>
-                <div class="data" id="history-pool-tags">
-                    <div class="data-row-historys">
-                        <span>1</span>
-                        <span>57f8422861db1ada0dbc75a10364d7d4</span>
-                        <span>026-09-12 05:52:01</span>
-                    </div>
-                </div>
+                <div class="data" id="history-pool-tags"></div>
             </div>
         </div>
     </div>
@@ -157,19 +151,46 @@
         </div>
     </div>
     <!-- data transactions -->
-    <div class="popup-history-transaction">
-        <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Your Transaction ID</span>
-        <span>Sender: </span>
-        <span>Reciever: </span>
-        <span>Direction: </span>
-        <span>Time: </span>
-        <div class="data-item-transaction">
-            <span>Name Item</span>
-            <span>Type Item</span>
-            <span>Amount</span>
-            <span>$/Item</span>
+    <div class="popup-history-transaction" id="popup-history-transaction">
+        <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);"
+            id="transaction_id">Your
+            Transaction ID</span>
+        <div style="display: flex; width: auto;">
+            <span>Sender:</span>
+            <span id="sender_transaction" style="margin: 0 0 0 auto;">Null</span>
         </div>
-        <span>Value: </span>
+        <div style="display: flex; width: auto;">
+            <span>Reciever:</span>
+            <span id="reciever_transaction" style="margin: 0 0 0 auto;">Null</span>
+        </div>
+        <div style="display: flex; width: auto;">
+            <span>Direction:</span>
+            <span id="direction_transaction" style="margin: 0 0 0 auto;">Null</span>
+        </div>
+        <div style="display: flex; width: auto;">
+            <span>Time:</span>
+            <span id="time_transaction" style="margin: 0 0 0 auto;">Null</span>
+        </div>
+        <div style="display: flex; width: auto;">
+            <span>Name Item:</span>
+            <span id="nameItem_transaction" style="margin: 0 0 0 auto;">Null</span>
+        </div>
+        <div style="display: flex; width: auto;">
+            <span>Type Item:</span>
+            <span id="typeItem_transaction" style="margin: 0 0 0 auto;">Null</span>
+        </div>
+        <div style="display: flex; width: auto;">
+            <span>Amount:</span>
+            <span id="amountItem_transaction" style="margin: 0 0 0 auto;">0</span>
+        </div>
+        <div style="display: flex; width: auto;">
+            <span>Price:</span>
+            <span id="priceItem_transaction" style="margin: 0 0 0 auto;">0</span>
+        </div>
+        <div style="display: flex; width: auto;">
+            <span>Value:</span>
+            <span id="value_transaction" style="margin: 0 0 0 auto;">Null</span>
+        </div>
     </div>
 </body>
 <script type="module" src="javascript/dashboard.js"></script>

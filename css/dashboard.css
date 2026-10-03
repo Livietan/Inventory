@@ -367,7 +367,7 @@ body {
 .data-row-historys {
   font-family: "JetBrains Mono";
   display: grid;
-  grid-template-columns: 0.25fr 5fr 1.25fr;
+  grid-template-columns: .75fr 4.75fr 2fr;
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -526,16 +526,16 @@ body {
   transform: translate(-50%, -50%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
-  font-family: "JetBrains Mono";
+  font-family: "Manrope";
   padding: 0.5rem;
   color: white;
-  gap: 10px;
-  width: 40rem;
+  gap: 1rem;
+  width: 30rem;
   padding: 10px;
   min-height: 20rem;
   justify-content: space-around;
 }
-.data-item-transaction {
+.table-item-transaction {
   display: flex;
   justify-content: space-around;
   padding-bottom: 5px;

@@ -367,7 +367,7 @@ body {
 .data-row-historys {
   font-family: "JetBrains Mono";
   display: grid;
-  grid-template-columns: .75fr 4.75fr 2fr;
+  grid-template-columns: 0.75fr 4.75fr 2fr;
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -539,7 +539,7 @@ body {
   display: flex;
   justify-content: space-around;
   padding-bottom: 5px;
-  border-bottom: 1px solid #FFFFFF;
+  border-bottom: 1px solid #ffffff;
 }
 .shipping-item {
   background: #b7a27a;
@@ -561,4 +561,74 @@ body {
 }
 #copy-button:active {
   transform: scale(0.9);
+}
+.alert-popup-fail {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 53rem;
+  left: 20px;
+  background: #d9364f;
+  border-radius: 2px;
+  padding: 5px 20px;
+
+  animation: alert-popup 2s ease forwards;
+}
+
+.alert-title-fail {
+  color: #ff8796;
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 20px;
+}
+.alert-message-fail {
+  color: #f58b99;
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.alert-popup-success {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 53rem;
+  left: 20px;
+  background: #3aa76d;
+  border-radius: 2px;
+  padding: 5px 20px;
+
+  animation: alert-popup 2s ease forwards;
+}
+
+.alert-title-success {
+  color: #a8f0c4;
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 20px;
+}
+.alert-message-success {
+  color: #92ddb0;
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 16px;
+}
+
+@keyframes alert-popup {
+  0% {
+    transform: translateY(400px);
+    opacity: 0;
+  }
+  30% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(400px);
+    opacity: 0;
+  }
 }

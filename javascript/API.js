@@ -6,13 +6,13 @@ export async function register(
   checklist,
 ) {
   if (username.value.trim() == "") {
-    alert("username could'not empety");
+    alertPopup(false, "Username could'not empety");
   } else if (password.value.trim() == "") {
-    alert("password could'not empety");
+    alertPopup(false, "Password could'not empety");
   } else if (firstName.value.trim() == "") {
-    alert("fist name could'not empety");
+    alertPopup(false, "First name could'not empety");
   } else if (checklist.checked == false) {
-    alert("Please checklist the terms & conditions");
+    alertPopup(false, "Please checklist the terms & conditions");
   } else {
     var lastNameValue = lastName.value.trim() === "" ? "" : lastName.value;
     const request = await fetch("http://127.0.0.1:8000/register?", {
@@ -33,11 +33,11 @@ export async function register(
 
 export async function login(username, password, checklist) {
   if (username.value.trim() == "") {
-    alert("username could'not empety");
+    alertPopup(false, "username could'not empety");
   } else if (password.value.trim() == "") {
-    alert("password could'not empety");
-  } else if (checklist.checked == false) {
-    alert("Please checklist the terms & conditions");
+    alertPopup(false, "password could'not empety");
+  } else if (checklist.checked === false) {
+    alertPopup(false, "Please checklist the terms & conditions");
   } else {
     const request = await fetch("http://127.0.0.1:8000/login", {
       method: "POST",
@@ -61,11 +61,15 @@ export async function InsertItem(
   priceItem,
 ) {
   if (amountItem.value <= 0) {
-    alert("Amount cannot 0");
+    alertPopup(false, "Amount cannot 0");
     return;
   } else if (priceItem.value <= 0) {
-    alert("Amount cannot under 0");
+    alertPopup(false, "Amount cannot under 0");
     return;
+  } else if (nameitem.value.trim() == "") {
+    alertPopup(false, "Name cannot empety");
+  } else if (typeItem.value.trim() == "") {
+    alertPopup(false, "Type cannot empety")
   } else {
     var request = await fetch("http://127.0.0.1:8000/insert", {
       method: "POST",
@@ -113,14 +117,12 @@ export async function GetDataStat(signature) {
 }
 
 export async function Delete(signature, nameItem, typeItem, checklist) {
-  if (signature.trim() == "") {
-    alert("signature could'not empety");
-  } else if (nameItem.value.trim() == "") {
-    alert("name item could'not empety");
+  if (nameItem.value.trim() == "") {
+    alertPopup(false, "name item could'not empety");
   } else if (typeItem.value.trim() == "") {
-    alert("type item could'not empety");
+    alertPopup(false, "type item could'not empety");
   } else if (checklist.checked == false) {
-    alert("Please checklist the terms & conditions");
+    alertPopup(false, "Please checklist the terms & conditions");
   } else {
     const request = await fetch("http://127.0.0.1:8000/Delete", {
       method: "POST",
@@ -137,15 +139,15 @@ export async function Delete(signature, nameItem, typeItem, checklist) {
 
 export async function Update(signature, nameItem, typeItem, amount, price) {
   if (signature.trim() == "") {
-    alert("signature could'not empety");
+    alertPopup(false, "signature could'not empety");
   } else if (nameItem.value.trim() == "") {
-    alert("name item could'not empety");
+    alertPopup(false, "name item could'not empety");
   } else if (typeItem.value.trim() == "") {
-    alert("type item could'not empety");
+    alertPopup(false, "type item could'not empety");
   } else if (amount.value <= 0) {
-    alert(`Amount cannot 0`);
+    alertPopup(false, "Amount cannot 0");
   } else if (price.value <= 0) {
-    alert(`Price cannot 0`);
+    alertPopup(false, "Price cannot 0");
   } else {
     const request = await fetch("http://127.0.0.1:8000/Update", {
       method: "POST",
@@ -170,11 +172,11 @@ export async function Shipping(
   amount,
 ) {
   if (amount.value <= 0) {
-    alert("the amount cannot be 0 or below 0");
-    return
+    alertPopup(false, "the amount cannot be 0 or below 0");
+    return;
   } else if (signature_reciever.value == signature_sender) {
-    alert("Cannot send yourself")
-    return
+    alertPopup(false, "Cannot send yourself");
+    return;
   } else {
     var request = await fetch("http://127.0.0.1:8000/Shipping", {
       method: "POST",
@@ -187,6 +189,26 @@ export async function Shipping(
         AmountItem: amount.value,
       }),
     });
-    return request.json()
+    return request.json();
+  }
+}
+
+export function alertPopup(status, message = "Bad Request") {
+  if (status === false) {
+    var popup = document.createElement("div");
+    popup.classList.add("alert-popup-fail");
+    popup.innerHTML = `
+    <span class='alert-title-fail'>Failed</span>
+    <span class='alert-message-fail'>${message}</span>
+    `;
+    document.body.appendChild(popup);
+  } else {
+    var popup = document.createElement("div");
+    popup.classList.add("alert-popup-success");
+    popup.innerHTML = `
+    <span class='alert-title-success'>Success</span>
+    <span class='alert-message-success'>Operation Success</span>
+    `;
+    document.body.appendChild(popup);
   }
 }

@@ -198,7 +198,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Status:    true,
 		FirstName: first_name,
 		LastName:  last_name,
-		Signature: signatureStr,
+		Signature: signature,
 	})
 	fmt.Println("Run http://127.0.0.1:8000/login OK")
 }

@@ -5,6 +5,7 @@ import {
   Update,
   Shipping,
   InsertItem,
+  alertPopup,
 } from "./API.js";
 
 var valueTag = document.getElementById("value-tag");
@@ -64,7 +65,7 @@ if (FirstName && LastName != null) {
 }
 
 if (!responseDataItem || !responseDataStat) {
-  alert("Fail to load data");
+  alertPopup(false);
 } else {
   if (responseDataItem.Status === true) {
     item_pool_tags.innerHTML = "";
@@ -103,8 +104,7 @@ if (!responseDataItem || !responseDataStat) {
           shortSignature(item.Reciever);
         document.getElementById("direction_transaction").textContent =
           item.Direction;
-        document.getElementById("time_transaction").textContent =
-          item.Time;
+        document.getElementById("time_transaction").textContent = item.Time;
         document.getElementById("nameItem_transaction").textContent =
           item.NameItem;
         document.getElementById("typeItem_transaction").textContent =
@@ -157,6 +157,22 @@ document.addEventListener("click", () => {
 spawn_popup_delete.addEventListener("click", (e) => {
   popup_delete.style.display = "flex";
   e.stopPropagation();
+  name_delete_item.innerHTML =
+    "<option value='' disabled selected>Select item</option>";
+  type_delete_item.innerHTML =
+    "<option value='' disabled selected>Select item</option>";
+  responseDataItem.Value1.forEach((item) => {
+    var data = document.createElement("option");
+    data.value = item.NameItem;
+    data.textContent = item.NameItem;
+    name_delete_item.appendChild(data);
+  });
+  responseDataItem.Value1.forEach((item) => {
+    var data = document.createElement("option");
+    data.value = item.TypeItem;
+    data.textContent = item.TypeItem;
+    type_delete_item.appendChild(data);
+  });
 });
 
 spawn_popup_new_item.addEventListener("click", (e) => {
@@ -192,7 +208,7 @@ spawn_popup_edit_item.addEventListener("click", (e) => {
     "<option value='' disabled selected>Select item</option>";
   item_select_edit_type.innerHTML =
     "<option value='' disabled selected>Select item</option>";
-  responseDataItem.Value.forEach((item) => {
+  responseDataItem.Value1.forEach((item) => {
     var data = document.createElement("option");
     data.value = item.NameItem;
     data.textContent = item.NameItem;
@@ -246,15 +262,18 @@ button_add_item.addEventListener("click", async () => {
     amount_add_new,
     price_add_new,
   );
-  if (response.Status === true) {
+  if (response.Status == true) {
+    alertPopup(true);
     popup_add_new.style.display = "none";
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 1500);
   } else {
+    alertPopup(false, response.Detail);
     popup_add_new.style.display = "none";
     popup_add_new.querySelectorAll("input").forEach((input) => {
       input.value = "";
     });
-    alert(response.Detail);
   }
 });
 
@@ -266,15 +285,18 @@ button_delete_item.addEventListener("click", async () => {
     aggree_delete_item,
   );
   if (request.Status === true) {
+    alertPopup(true);
     popup_delete.style.display = "none";
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 1500);
   } else {
+    alertPopup(false, request.Detail);
     popup_delete.style.display = "none";
     popup_delete.querySelectorAll("input").forEach((input) => {
       input.value = "";
     });
     aggree_delete_item.checked = false;
-    alert(request.Detail);
   }
 });
 
@@ -287,14 +309,17 @@ button_edit_item.addEventListener("click", async () => {
     price_edit_item,
   );
   if (request.Status === true) {
+    alertPopup(true);
     popup_edit.style.display = "none";
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 1500);
   } else {
+    alertPopup(false, request.Detail);
     popup_edit.style.display = "none";
     popup_edit.querySelectorAll("input").forEach((input) => {
       input.value = "";
     });
-    alert(request.Detail);
   }
 });
 
@@ -310,16 +335,18 @@ button_shipping_send.addEventListener("click", async () => {
     type_item_shipping,
     amount_item_shipping,
   );
-  if (response.Status === false) {
+  if (response.Status === true) {
+    alertPopup(true);
     spawn_popup_shipping.style.display = "none";
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 1500);
+  } else {
+    alertPopup(false, response.Detail);
+    spawn_popup_shipping.style.display = "none";
     spawn_popup_shipping.querySelectorAll("input").forEach((input) => {
       input.value = "";
     });
-    alert(response.Detail);
-  } else {
-    spawn_popup_shipping.style.display = "none";
-    location.reload();
   }
 });
 

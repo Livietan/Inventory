@@ -1,4 +1,4 @@
-import { login, register } from "./API.js";
+import { alertPopup, login, register } from "./API.js";
 
 var linkRegister = document.getElementById("link-register");
 var registerForm = document.getElementById("register");
@@ -20,9 +20,9 @@ var startedButton = document.getElementById("get-started");
 
 startedButton.addEventListener("click", () => {
   document.getElementById("content").scrollIntoView({
-    behavior: "smooth"
-  })
-})
+    behavior: "smooth",
+  });
+});
 
 linkLogin.addEventListener("click", () => {
   registerForm.style.display = "none";
@@ -45,22 +45,18 @@ create.addEventListener("click", async () => {
     sessionStorage.setItem("LastName", response.LastName);
     sessionStorage.setItem("Signature", response.Signature);
     window.location.href = "dashboard.html";
-  } else if (response.Status === false) {
-    alert(response.Detail);
   } else {
-    alert("Server Not Response");
+    alertPopup(false, response.Detail);
   }
 });
 loginButton.addEventListener("click", async () => {
   var response = await login(usernameLogin, passwordLogin, agreeLogin);
-  if (response.Status === true) {
+  if (response.Status == true) {
     sessionStorage.setItem("FirstName", response.FirstName);
     sessionStorage.setItem("LastName", response.LastName);
     sessionStorage.setItem("Signature", response.Signature);
     window.location.href = "dashboard.html";
-  } else if (response.Status === false) {
-    alert(response.Detail);
   } else {
-    alert("Server Not Response");
+    alertPopup(false, response.Detail);
   }
 });

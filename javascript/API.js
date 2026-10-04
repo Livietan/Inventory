@@ -138,7 +138,7 @@ export async function Delete(signature, nameItem, typeItem, checklist) {
 }
 
 export async function Update(signature, nameItem, typeItem, amount, price) {
-  if (signature.trim() == "") {
+  if (signature.trim() === null) {
     alertPopup(false, "signature could'not empety");
   } else if (nameItem.value.trim() == "") {
     alertPopup(false, "name item could'not empety");

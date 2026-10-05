@@ -65,7 +65,7 @@ if (FirstName && LastName != null) {
 }
 
 if (!responseDataItem || !responseDataStat) {
-  alertPopup(false);
+  alertPopup(false, "Server Off");
 } else {
   if (responseDataItem.Status === true) {
     item_pool_tags.innerHTML = "";
@@ -229,6 +229,9 @@ spawn_note_items.addEventListener("click", () => {
 spawn_note_history.addEventListener("click", () => {
   popup_items.style.display = "none";
   popup_history.style.display = "flex";
+});
+document.getElementById("input-file-icon").addEventListener("click", () => {
+  document.getElementById("input-file").click();
 });
 
 // popup

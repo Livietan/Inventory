@@ -566,7 +566,7 @@ body {
   position: fixed;
   display: flex;
   flex-direction: column;
-  top: 53rem;
+  top: 54rem;
   left: 20px;
   background: #d9364f;
   border-radius: 2px;
@@ -592,7 +592,7 @@ body {
   position: fixed;
   display: flex;
   flex-direction: column;
-  top: 53rem;
+  top: 54rem;
   left: 20px;
   background: #3aa76d;
   border-radius: 2px;
@@ -631,4 +631,26 @@ body {
     transform: translateY(400px);
     opacity: 0;
   }
+}
+
+.input-image {
+  display: flex;
+  border: 1px solid #2e2e2e;
+  border-radius: 5px;
+  background: #111111;
+  padding: 10px;
+  width: auto;
+  font-family: Arial;
+  align-items: center;
+  gap: 5px;
+  font-weight: 200;
+  cursor: pointer;
+  user-select: none;
+}
+.input-file-icon {
+  background: #efefef;
+  color: #000000;
+  border: 1px solid #767676;
+  border-radius: 3px;
+  padding: 2px 3px;
 }

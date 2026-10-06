@@ -569,7 +569,7 @@ func GenerateTransactionHistory(owner string, sender string, reciever string, di
 
 func executeQueryItem(signature string) ([]ITEM, error) {
 	Data := []ITEM{}
-	rows, err := database.Query(context.Background(), "SELECT NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1",
+	rows, err := database.Query(context.Background(), "SELECT IMAGE, NAMEITEM, TYPEITEM, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1",
 	signature)
 	if err != nil {
 		log.Println(err)
@@ -580,6 +580,7 @@ func executeQueryItem(signature string) ([]ITEM, error) {
 		var item ITEM
 
 		err = rows.Scan(
+		&item.Image,
 		&item.NameItem,
 		&item.TypeItem,
 		&item.AmountItem,

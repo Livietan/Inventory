@@ -357,7 +357,7 @@ button_delete_item.addEventListener("click", async () => {
 });
 
 button_edit_item.addEventListener("click", async () => {
-  if (signature.trim() === null) {
+  if (Signature === null) {
     alertPopup(false, "signature could'not empety");
   } else if (item_select_edit_name.value.trim() == "") {
     alertPopup(false, "name item could'not empety");
@@ -392,25 +392,40 @@ button_edit_item.addEventListener("click", async () => {
 });
 
 button_shipping_send.addEventListener("click", async () => {
-  var response = await Shipping(
-    Signature,
-    signature_reciever_shipping,
-    name_item_shipping,
-    type_item_shipping,
-    amount_item_shipping,
-  );
-  if (response.Status === true) {
-    alertPopup(true);
-    spawn_popup_shipping.style.display = "none";
-    setTimeout(() => {
-      location.reload();
-    }, 1500);
+  if (amount_item_shipping.value <= 0) {
+    alertPopup(false, "the amount cannot be 0 or below 0");
+  } else if (signature_reciever_shipping.value == signature_sender) {
+    alertPopup(
+      false,
+      "Cannot send to yourself, please enter different signature/address",
+    );
+  } else if (name_item_shipping.value.trim() == "") {
+    alertPopup(false, "Please enter the item name");
+  } else if (type_item_shipping.value.trim() == "") {
+    alertPopup(false, "Please enter the item type");
+  } else if (signature_reciever_shipping.value.trim() == "") {
+    alertPopup(false, "Please enter address/signature");
   } else {
-    alertPopup(false, response.Detail);
-    spawn_popup_shipping.style.display = "none";
-    spawn_popup_shipping.querySelectorAll("input").forEach((input) => {
-      input.value = "";
-    });
+    var response = await Shipping(
+      Signature,
+      signature_reciever_shipping.value,
+      name_item_shipping.value,
+      type_item_shipping.value,
+      amount_item_shipping.value,
+    );
+    if (response.Status === true) {
+      alertPopup(true);
+      spawn_popup_shipping.style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+    } else {
+      alertPopup(false, response.Detail);
+      spawn_popup_shipping.style.display = "none";
+      spawn_popup_shipping.querySelectorAll("input").forEach((input) => {
+        input.value = "";
+      });
+    }
   }
 });
 

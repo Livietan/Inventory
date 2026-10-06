@@ -136,25 +136,21 @@ export async function Shipping(
   type_item,
   amount,
 ) {
-  if (amount.value <= 0) {
-    alertPopup(false, "the amount cannot be 0 or below 0");
-    return;
-  } else if (signature_reciever.value == signature_sender) {
-    alertPopup(false, "Cannot send yourself");
-    return;
-  } else {
+  try {
     var request = await fetch("http://127.0.0.1:8000/Shipping", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         SignatureSend: signature_sender,
-        SignatureRecieve: signature_reciever.value,
-        NameItem: name_item.value,
-        TypeItem: type_item.value,
-        AmountItem: amount.value,
+        SignatureRecieve: signature_reciever,
+        NameItem: name_item,
+        TypeItem: type_item,
+        AmountItem: amount,
       }),
     });
     return request.json();
+  } catch {
+    return null;
   }
 }
 

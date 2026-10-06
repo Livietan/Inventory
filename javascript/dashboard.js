@@ -266,102 +266,129 @@ button_logout.addEventListener("click", () => {
 });
 
 button_add_item.addEventListener("click", async () => {
-  if (input_file.files.length == 0) {
-    var path_default = "/image/default.png";
-    var response = await InsertItem(
-      Signature,
-      path_default,
-      name_add_new,
-      type_add_new,
-      amount_add_new,
-      price_add_new,
-    );
-    if (response.Status == true) {
-      alertPopup(true);
-      popup_add_new.style.display = "none";
-      setTimeout(() => {
-        location.reload();
-      }, 1500);
-    } else {
-      alertPopup(false, response.Detail);
-      popup_add_new.style.display = "none";
-      popup_add_new.querySelectorAll("input").forEach((input) => {
-        input.value = "";
-      });
-    }
+  if (amount_add_new.value <= 0) {
+    alertPopup(false, "Amount cannot 0");
+    return;
+  } else if (price_add_new.value <= 0) {
+    alertPopup(false, "Amount cannot 0");
+    return;
+  } else if (name_add_new.value.trim() == "") {
+    alertPopup(false, "Name cannot empety");
+  } else if (type_add_new.value.trim() == "") {
+    alertPopup(false, "Type cannot empety");
   } else {
-    var response = await InsertItem(
-      Signature,
-      input_file.file[0].name,
-      name_add_new,
-      type_add_new,
-      amount_add_new,
-      price_add_new,
-    );
-    if (response.Status == true) {
-      alertPopup(true);
-      popup_add_new.style.display = "none";
-      setTimeout(() => {
-        location.reload();
-      }, 1500);
+    if (input_file.files.length == 0) {
+      var path_default = "/image/default.png";
+      var response = await InsertItem(
+        Signature,
+        path_default,
+        name_add_new.value,
+        type_add_new.value,
+        amount_add_new.value,
+        price_add_new.value,
+      );
+      if (response.Status == true) {
+        alertPopup(true);
+        popup_add_new.style.display = "none";
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      } else {
+        alertPopup(false, response.Detail);
+        popup_add_new.style.display = "none";
+        popup_add_new.querySelectorAll("input").forEach((input) => {
+          input.value = "";
+        });
+      }
     } else {
-      alertPopup(false, response.Detail);
-      popup_add_new.style.display = "none";
-      popup_add_new.querySelectorAll("input").forEach((input) => {
-        input.value = "";
-      });
+      var response = await InsertItem(
+        Signature,
+        input_file.file[0].name,
+        name_add_new.value,
+        type_add_new.value,
+        amount_add_new.value,
+        price_add_new.value,
+      );
+      if (response.Status == true) {
+        alertPopup(true);
+        popup_add_new.style.display = "none";
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      } else {
+        alertPopup(false, response.Detail);
+        popup_add_new.style.display = "none";
+        popup_add_new.querySelectorAll("input").forEach((input) => {
+          input.value = "";
+        });
+      }
     }
   }
 });
 
 button_delete_item.addEventListener("click", async () => {
-  var request = await Delete(
-    Signature,
-    name_delete_item,
-    type_delete_item,
-    aggree_delete_item,
-  );
-  if (request.Status === true) {
-    alertPopup(true);
-    popup_delete.style.display = "none";
-    setTimeout(() => {
-      location.reload();
-    }, 1500);
+  if (name_delete_item.value.trim() == "") {
+    alertPopup(false, "name item could'not empety");
+  } else if (type_delete_item.value.trim() == "") {
+    alertPopup(false, "type item could'not empety");
+  } else if (aggree_delete_item.checked == false) {
+    alertPopup(false, "Please checklist the terms & conditions");
   } else {
-    alertPopup(false, request.Detail);
-    popup_delete.style.display = "none";
-    popup_delete.querySelectorAll("input").forEach((input) => {
-      input.value = "";
-    });
-    aggree_delete_item.checked = false;
+    var request = await Delete(
+      Signature,
+      name_delete_item.value,
+      type_delete_item.value,
+    );
+    if (request.Status === true) {
+      alertPopup(true);
+      popup_delete.style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+    } else {
+      alertPopup(false, request.Detail);
+      popup_delete.style.display = "none";
+      popup_delete.querySelectorAll("input").forEach((input) => {
+        input.value = "";
+      });
+      aggree_delete_item.checked = false;
+    }
   }
 });
 
 button_edit_item.addEventListener("click", async () => {
-  var request = await Update(
-    Signature,
-    item_select_edit_name,
-    item_select_edit_type,
-    amount_edit_item,
-    price_edit_item,
-  );
-  if (request.Status === true) {
-    alertPopup(true);
-    popup_edit.style.display = "none";
-    setTimeout(() => {
-      location.reload();
-    }, 1500);
+  if (signature.trim() === null) {
+    alertPopup(false, "signature could'not empety");
+  } else if (item_select_edit_name.value.trim() == "") {
+    alertPopup(false, "name item could'not empety");
+  } else if (item_select_edit_type.value.trim() == "") {
+    alertPopup(false, "type item could'not empety");
+  } else if (amount_edit_item.value <= 0) {
+    alertPopup(false, "Amount cannot 0");
+  } else if (price_edit_item.value <= 0) {
+    alertPopup(false, "Price cannot 0");
   } else {
-    alertPopup(false, request.Detail);
-    popup_edit.style.display = "none";
-    popup_edit.querySelectorAll("input").forEach((input) => {
-      input.value = "";
-    });
+    var request = await Update(
+      Signature,
+      item_select_edit_name.value,
+      item_select_edit_type.value,
+      amount_edit_item.value,
+      price_edit_item.value,
+    );
+    if (request.Status === true) {
+      alertPopup(true);
+      popup_edit.style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+    } else {
+      alertPopup(false, request.Detail);
+      popup_edit.style.display = "none";
+      popup_edit.querySelectorAll("input").forEach((input) => {
+        input.value = "";
+      });
+    }
   }
-});
-
-button_copy_signature.addEventListener("click", () => {
-  navigator.clipboard.writeText(Signature);
 });
 
 button_shipping_send.addEventListener("click", async () => {
@@ -385,6 +412,10 @@ button_shipping_send.addEventListener("click", async () => {
       input.value = "";
     });
   }
+});
+
+button_copy_signature.addEventListener("click", () => {
+  navigator.clipboard.writeText(Signature);
 });
 
 // function

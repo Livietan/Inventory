@@ -51,6 +51,7 @@ create.addEventListener("click", async () => {
 });
 loginButton.addEventListener("click", async () => {
   var response = await login(usernameLogin, passwordLogin, agreeLogin);
+  
   if (response.Status == true) {
     sessionStorage.setItem("FirstName", response.FirstName);
     sessionStorage.setItem("LastName", response.LastName);
@@ -58,5 +59,27 @@ loginButton.addEventListener("click", async () => {
     window.location.href = "dashboard.html";
   } else {
     alertPopup(false, response.Detail);
+  }
+});
+document.getElementById("eye-icon-register").addEventListener("click", () => {
+  var eye = document.getElementById("eye-icon-register");
+
+  if (passwordRegister.type === "password") {
+    passwordRegister.type = "text";
+    eye.src = "/assets/visibility_on.svg";
+  } else {
+    passwordRegister.type = "password";
+    eye.src = "assets/visibility_off.svg";
+  }
+});
+document.getElementById("eye-icon-login").addEventListener("click", () => {
+  var eye = document.getElementById("eye-icon-login");
+
+  if (passwordLogin.type === "password") {
+    passwordLogin.type = "text";
+    eye.src = "/assets/visibility_on.svg";
+  } else {
+    passwordLogin.type = "password";
+    eye.src = "assets/visibility_off.svg";
   }
 });

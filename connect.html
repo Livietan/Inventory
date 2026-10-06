@@ -33,6 +33,7 @@
     </div>
   </div>
   <div class="content" id="content">
+    <!-- register -->
     <div class="register" id="register">
       <div style="display: flex; flex-direction: column; gap: 10px">
         <span class="head-form">Create an account</span>
@@ -45,7 +46,10 @@
           <input type="text" placeholder="Last name" id="last-name" maxlength="16" autocomplete="off" />
         </div>
         <input type="text" placeholder="Username" id="username-register" maxlength="16" autocomplete="off" />
-        <input type="password" placeholder="Password" id="password-register" maxlength="32" autocomplete="off" />
+        <div class="password">
+          <input type="password" placeholder="Password" id="password-register" maxlength="32" autocomplete="off" />
+          <img class="eye-icon" id="eye-icon-register" src="/assets/visibility_off.svg">
+        </div>
       </div>
       <label for="" class="radio">
         <input type="checkbox" value="agree" id="agree-register" />
@@ -61,6 +65,7 @@
         </div>
       </div>
     </div>
+    <!-- login -->
     <div class="login" id="login">
       <div style="display: flex; flex-direction: column; gap: 10px">
         <span class="head-form">Login</span>
@@ -69,7 +74,10 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: var(--gap-input)">
         <input type="text" placeholder="Username" id="username-login" maxlength="16" autocomplete="off" />
-        <input type="password" placeholder="Password" id="password-login" maxlength="32" autocomplete="off" />
+        <div class="password">
+          <input type="password" placeholder="Password" id="password-login" maxlength="32" autocomplete="off" />
+          <img class="eye-icon" id="eye-icon-login" src="/assets/visibility_off.svg">
+        </div>
       </div>
       <label for="" class="radio">
         <input type="checkbox" value="agree" id="agree-login" autocomplete="off" />

@@ -30,6 +30,7 @@ type USER struct {
 
 type ITEM struct {
 	Signature string `json:"Signature"`
+	Image string `json:"Image"`
 	NameItem string `json:"NameItem"`
 	TypeItem string `json:"TypeItem"`
 	AmountItem string `json:"AmountItem"`
@@ -230,8 +231,8 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if Result.RowsAffected() == 0 {
-		Result, err = database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
-		item.Signature, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
+		Result, err = database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, IMAGE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5, $6)",
+		item.Signature, item.Image, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
 		if err != nil {
 			http.Error(w, "Bad Request", http.StatusBadRequest)
 			log.Println(err)

@@ -24,41 +24,59 @@ startedButton.addEventListener("click", () => {
   });
 });
 
-linkLogin.addEventListener("click", () => {
-  registerForm.style.display = "none";
-  loginForm.style.display = "flex";
-});
 linkRegister.addEventListener("click", () => {
   registerForm.style.display = "flex";
   loginForm.style.display = "none";
 });
+linkLogin.addEventListener("click", () => {
+  registerForm.style.display = "none";
+  loginForm.style.display = "flex";
+});
 create.addEventListener("click", async () => {
-  var response = await register(
-    firstName,
-    lastName,
-    usernameRegister,
-    passwordRegister,
-    agreeRegister,
-  );
-  if (response.Status === true) {
-    sessionStorage.setItem("FirstName", response.FirstName);
-    sessionStorage.setItem("LastName", response.LastName);
-    sessionStorage.setItem("Signature", response.Signature);
-    window.location.href = "dashboard.html";
+  if (username.value.trim() == "") {
+    alertPopup(false, "Username could'not empety");
+  } else if (password.value.trim() == "") {
+    alertPopup(false, "Password could'not empety");
+  } else if (firstName.value.trim() == "") {
+    alertPopup(false, "First name could'not empety");
+  } else if (agreeRegister.checked == false) {
+    alertPopup(false, "Please checklist the terms & conditions");
   } else {
-    alertPopup(false, response.Detail);
+    var lastNameValue = lastName.value.trim() === "" ? "" : lastName.value;
+    var response = await register(
+      firstName.value,
+      lastNameValue,
+      usernameRegister.value,
+      passwordRegister.value,
+    );
+    if (response.Status === true) {
+      sessionStorage.setItem("FirstName", response.FirstName);
+      sessionStorage.setItem("LastName", response.LastName);
+      sessionStorage.setItem("Signature", response.Signature);
+      window.location.href = "dashboard.html";
+    } else {
+      alertPopup(false, response.Detail);
+    }
   }
 });
 loginButton.addEventListener("click", async () => {
-  var response = await login(usernameLogin, passwordLogin, agreeLogin);
-  
-  if (response.Status == true) {
-    sessionStorage.setItem("FirstName", response.FirstName);
-    sessionStorage.setItem("LastName", response.LastName);
-    sessionStorage.setItem("Signature", response.Signature);
-    window.location.href = "dashboard.html";
+  if (username.value.trim() == "") {
+    alertPopup(false, "username could'not empety");
+  } else if (password.value.trim() == "") {
+    alertPopup(false, "password could'not empety");
+  } else if (agreeLogin.checked === false) {
+    alertPopup(false, "Please checklist the terms & conditions");
   } else {
-    alertPopup(false, response.Detail);
+    var response = await login(usernameLogin, passwordLogin);
+
+    if (response.Status == true) {
+      sessionStorage.setItem("FirstName", response.FirstName);
+      sessionStorage.setItem("LastName", response.LastName);
+      sessionStorage.setItem("Signature", response.Signature);
+      window.location.href = "dashboard.html";
+    } else {
+      alertPopup(false, response.Detail);
+    }
   }
 });
 document.getElementById("eye-icon-register").addEventListener("click", () => {

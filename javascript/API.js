@@ -1,60 +1,36 @@
-export async function register(
-  firstName,
-  lastName,
-  username,
-  password,
-  checklist,
-) {
-  if (username.value.trim() == "") {
-    alertPopup(false, "Username could'not empety");
-  } else if (password.value.trim() == "") {
-    alertPopup(false, "Password could'not empety");
-  } else if (firstName.value.trim() == "") {
-    alertPopup(false, "First name could'not empety");
-  } else if (checklist.checked == false) {
-    alertPopup(false, "Please checklist the terms & conditions");
-  } else {
-    var lastNameValue = lastName.value.trim() === "" ? "" : lastName.value;
-    const request = await fetch("http://127.0.0.1:8000/register?", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        FIrstName: firstName.value,
-        LastName: lastNameValue,
-        Signature: username.value,
-        Password: password.value,
-      }),
-    });
-    return request.json();
-  }
+export async function register(firstName, lastName, username, password) {
+  const request = await fetch("http://127.0.0.1:8000/register?", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      FIrstName: firstName,
+      LastName: lastName,
+      Signature: username,
+      Password: password,
+    }),
+  });
+  return request.json();
 }
 
-export async function login(username, password, checklist) {
-  if (username.value.trim() == "") {
-    alertPopup(false, "username could'not empety");
-  } else if (password.value.trim() == "") {
-    alertPopup(false, "password could'not empety");
-  } else if (checklist.checked === false) {
-    alertPopup(false, "Please checklist the terms & conditions");
-  } else {
-    const request = await fetch("http://127.0.0.1:8000/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        Signature: username.value,
-        Password: password.value,
-      }),
-    });
-    return request.json();
-  }
+export async function login(username, password) {
+  const request = await fetch("http://127.0.0.1:8000/login", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      Signature: username,
+      Password: password,
+    }),
+  });
+  return request.json();
 }
 
 export async function InsertItem(
   signature,
+  imageItem,
   nameitem,
   typeItem,
   amountItem,
@@ -69,13 +45,14 @@ export async function InsertItem(
   } else if (nameitem.value.trim() == "") {
     alertPopup(false, "Name cannot empety");
   } else if (typeItem.value.trim() == "") {
-    alertPopup(false, "Type cannot empety")
+    alertPopup(false, "Type cannot empety");
   } else {
     var request = await fetch("http://127.0.0.1:8000/insert", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         Signature: signature,
+        Image: imageItem,
         NameItem: nameitem.value,
         TypeItem: typeItem.value,
         AmountItem: amountItem.value,

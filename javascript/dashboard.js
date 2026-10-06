@@ -53,6 +53,8 @@ var name_item_shipping = document.getElementById("item-select-shipping-name");
 var type_item_shipping = document.getElementById("item-select-shipping-type");
 var amount_item_shipping = document.getElementById("amount-item-shipping");
 
+var input_file = document.getElementById("input-file");
+
 // main
 var FirstName = sessionStorage.getItem("FirstName");
 var LastName = sessionStorage.getItem("LastName");
@@ -231,7 +233,13 @@ spawn_note_history.addEventListener("click", () => {
   popup_history.style.display = "flex";
 });
 document.getElementById("input-file-icon").addEventListener("click", () => {
-  document.getElementById("input-file").click();
+  input_file.click();
+  input_file.addEventListener("change", () => {
+    if (input_file.files.length > 0) {
+      document.getElementById("select-file-tag").textContent =
+        input_file.files[0].name;
+    }
+  });
 });
 
 // popup
@@ -258,25 +266,51 @@ button_logout.addEventListener("click", () => {
 });
 
 button_add_item.addEventListener("click", async () => {
-  var response = await InsertItem(
-    Signature,
-    name_add_new,
-    type_add_new,
-    amount_add_new,
-    price_add_new,
-  );
-  if (response.Status == true) {
-    alertPopup(true);
-    popup_add_new.style.display = "none";
-    setTimeout(() => {
-      location.reload();
-    }, 1500);
+  if (input_file.files.length == 0) {
+    var path_default = "/image/default.png";
+    var response = await InsertItem(
+      Signature,
+      path_default,
+      name_add_new,
+      type_add_new,
+      amount_add_new,
+      price_add_new,
+    );
+    if (response.Status == true) {
+      alertPopup(true);
+      popup_add_new.style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+    } else {
+      alertPopup(false, response.Detail);
+      popup_add_new.style.display = "none";
+      popup_add_new.querySelectorAll("input").forEach((input) => {
+        input.value = "";
+      });
+    }
   } else {
-    alertPopup(false, response.Detail);
-    popup_add_new.style.display = "none";
-    popup_add_new.querySelectorAll("input").forEach((input) => {
-      input.value = "";
-    });
+    var response = await InsertItem(
+      Signature,
+      input_file.file[0].name,
+      name_add_new,
+      type_add_new,
+      amount_add_new,
+      price_add_new,
+    );
+    if (response.Status == true) {
+      alertPopup(true);
+      popup_add_new.style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+    } else {
+      alertPopup(false, response.Detail);
+      popup_add_new.style.display = "none";
+      popup_add_new.querySelectorAll("input").forEach((input) => {
+        input.value = "";
+      });
+    }
   }
 });
 

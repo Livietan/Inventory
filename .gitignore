@@ -7,3 +7,5 @@
 *.svg
 *.bmp
 *.ico
+
+!images/.gitkeep

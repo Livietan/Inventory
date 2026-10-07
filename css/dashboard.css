@@ -664,9 +664,9 @@ body {
   padding: 0.5rem;
   color: white;
   gap: 5px;
-  width: 30rem;
+  width: 50rem;
   padding: 10px;
-  min-height: 20rem;
+  min-height: 40rem;
 }
 .card-item {
   display: flex;
@@ -676,4 +676,30 @@ body {
   width: auto;
   height: 7rem;
   border-radius: 5px;
+}
+.table-history-item {
+  display: grid;
+  padding-left: 1rem;
+  grid-template-columns: 1fr 2.75fr 1fr;
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(242, 243, 244, 0.55);
+  padding-top: 10px;
+  border-bottom: 1.75px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  flex-shrink: 0;
+}
+.history-item {
+  display: flex;
+  flex-direction: column;
+}
+.data-history-item {
+  font-family: "JetBrains Mono";
+  display: grid;
+  grid-template-columns: 1fr 5fr 2fr;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  cursor: pointer;
 }

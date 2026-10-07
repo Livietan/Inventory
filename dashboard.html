@@ -200,33 +200,42 @@
         </div>
     </div>
     <!-- data item -->
-    <div class="popup-data-item">
+    <div class="popup-data-item" id="popup-data-item">
         <span style="padding-bottom: 5px; font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);"
-            id="transaction_id">Name Item</span>
+            id="NameItem">Name Item</span>
         <div class="card-item">
-            <img src="images/Default.png" alt="Default.png">
+            <img id="image-item" src="images/Default.png" alt="Default.png">
             <div
                 style="display: flex; flex-direction: column; width: 100%; padding: 10px; justify-content: space-between;">
                 <div style="display: flex;">
                     <span>Type Item:</span>
-                    <span style="margin: 0 0 0 auto;">Null</span>
+                    <span id="TypeItem" style="margin: 0 0 0 auto;">Null</span>
                 </div>
                 <div style="display: flex;">
                     <span>Amount:</span>
-                    <span style="margin: 0 0 0 auto;">Null</span>
+                    <span id="AmountItem" style="margin: 0 0 0 auto;">Null</span>
                 </div>
                 <div style="display: flex;">
                     <span>Price:</span>
-                    <span style="margin: 0 0 0 auto;">Null</span>
+                    <span id="PriceItem" style="margin: 0 0 0 auto;">Null</span>
                 </div>
                 <div style="display: flex;">
                     <span>Value:</span>
-                    <span style="margin: 0 0 0 auto;">Null</span>
+                    <span id="ValueItem" style="margin: 0 0 0 auto;">Null</span>
                 </div>
             </div>
         </div>
-        <div>
-            <div style="border-bottom: 1px solid white; width: 100%; padding-bottom: 5px;">History</div>
+        <div class="history-item">
+            <div class="table-history-item">
+                <span>#</span>
+                <span>Id transactions</span>
+                <span>Time</span>
+            </div>
+            <div class="data-history-item">
+                <span>1</span>
+                <span>transaction12980930182</span>
+                <span>Time53463</span>
+            </div>
         </div>
     </div>
 </body>

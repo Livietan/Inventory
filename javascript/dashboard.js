@@ -83,6 +83,15 @@ if (!responseDataItem || !responseDataStat) {
       <span>${item.AmountItem}</span>
       <span>${item.PriceItem}</span>
       `;
+      data.addEventListener("click", () => {
+        document.getElementById("popup-data-item").style.display = "flex";
+        document.getElementById("NameItem").textContent = item.NameItem;
+        document.getElementById("image-item").src = item.Image;
+        document.getElementById("TypeItem").textContent = item.TypeItem;
+        document.getElementById("AmountItem").textContent = item.AmountItem;
+        document.getElementById("PriceItem").textContent = `$${item.PriceItem}`;
+        document.getElementById("ValueItem").textContent =`$${item.AmountItem * item.PriceItem}`;
+      });
       item_pool_tags.appendChild(data);
     });
 
@@ -140,7 +149,7 @@ document.addEventListener("click", () => {
   popup_edit.style.display = "none";
   popup_shipping.style.display = "none";
   aggree_delete_item.checked = false;
-  input_file.value = "";  
+  input_file.value = "";
   document.getElementById("select-file-tag").textContent = "No file selected";
   document.getElementById("popup-history-transaction").style.display = "none";
   popup_shipping.querySelectorAll("input").forEach((input) => {

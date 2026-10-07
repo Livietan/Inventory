@@ -574,7 +574,6 @@ body {
 
   animation: alert-popup 2s ease forwards;
 }
-
 .alert-title-fail {
   color: #ff8796;
   font-family: "Manrope";
@@ -587,7 +586,6 @@ body {
   font-weight: 500;
   font-size: 16px;
 }
-
 .alert-popup-success {
   position: fixed;
   display: flex;
@@ -600,7 +598,6 @@ body {
 
   animation: alert-popup 2s ease forwards;
 }
-
 .alert-title-success {
   color: #a8f0c4;
   font-family: "Manrope";
@@ -613,7 +610,6 @@ body {
   font-weight: 500;
   font-size: 16px;
 }
-
 @keyframes alert-popup {
   0% {
     transform: translateY(400px);
@@ -632,7 +628,6 @@ body {
     opacity: 0;
   }
 }
-
 .input-image {
   display: flex;
   border: 1px solid #2e2e2e;
@@ -654,4 +649,31 @@ body {
   border: 1px solid #767676;
   border-radius: 3px;
   padding: 2px 3px;
+}
+.popup-data-item {
+  position: absolute;
+  display: flex;
+  background: #171717;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 1px 5px rgba(6, 10, 12, 0.6);
+  font-family: "Manrope";
+  padding: 0.5rem;
+  color: white;
+  gap: 5px;
+  width: 30rem;
+  padding: 10px;
+  min-height: 20rem;
+}
+.card-item {
+  display: flex;
+  width: 100%;
+}
+.card-item img {
+  width: auto;
+  height: 7rem;
+  border-radius: 5px;
 }

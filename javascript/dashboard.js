@@ -27,6 +27,7 @@ var popup_edit = document.getElementById("popup-edit");
 var popup_shipping = document.getElementById("popup-shipping");
 var popup_items = document.getElementById("notepad-item");
 var popup_history = document.getElementById("notepad-history");
+var popup_item = document.getElementById("popup-data-item");
 
 var button_add_item = document.getElementById("button-add-item");
 var button_delete_item = document.getElementById("button-delete-item");
@@ -83,14 +84,16 @@ if (!responseDataItem || !responseDataStat) {
       <span>${item.AmountItem}</span>
       <span>${item.PriceItem}</span>
       `;
-      data.addEventListener("click", () => {
-        document.getElementById("popup-data-item").style.display = "flex";
+      data.addEventListener("click", async (e) => {
+        popup_item.style.display = "flex";
         document.getElementById("NameItem").textContent = item.NameItem;
         document.getElementById("image-item").src = item.Image;
         document.getElementById("TypeItem").textContent = item.TypeItem;
         document.getElementById("AmountItem").textContent = item.AmountItem;
         document.getElementById("PriceItem").textContent = `$${item.PriceItem}`;
-        document.getElementById("ValueItem").textContent =`$${item.AmountItem * item.PriceItem}`;
+        document.getElementById("ValueItem").textContent =
+          `$${item.AmountItem * item.PriceItem}`;
+        e.stopPropagation();
       });
       item_pool_tags.appendChild(data);
     });
@@ -148,6 +151,7 @@ document.addEventListener("click", () => {
   popup_delete.style.display = "none";
   popup_edit.style.display = "none";
   popup_shipping.style.display = "none";
+  popup_item.style.display = "none";
   aggree_delete_item.checked = false;
   input_file.value = "";
   document.getElementById("select-file-tag").textContent = "No file selected";
@@ -288,51 +292,26 @@ button_add_item.addEventListener("click", async () => {
   } else if (type_add_new.value.trim() == "") {
     alertPopup(false, "Type cannot empety");
   } else {
-    if (input_file.files.length == 0) {
-      var path_default = "/images/Default.png";
-      var response = await InsertItem(
-        Signature,
-        path_default,
-        name_add_new.value,
-        type_add_new.value,
-        amount_add_new.value,
-        price_add_new.value,
-      );
-      if (response.Status == true) {
-        alertPopup(true);
-        popup_add_new.style.display = "none";
-        setTimeout(() => {
-          location.reload();
-        }, 1500);
-      } else {
-        alertPopup(false, response.Detail);
-        popup_add_new.style.display = "none";
-        popup_add_new.querySelectorAll("input").forEach((input) => {
-          input.value = "";
-        });
-      }
+    var response = await InsertItem(
+      Signature,
+      input_file.files[0] ?? null,
+      name_add_new.value,
+      type_add_new.value,
+      amount_add_new.value,
+      price_add_new.value,
+    );
+    if (response.Status === true) {
+      alertPopup(true);
+      popup_add_new.style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
     } else {
-      var response = await InsertItem(
-        Signature,
-        `/images/${input_file.file[0].name}`,
-        name_add_new.value,
-        type_add_new.value,
-        amount_add_new.value,
-        price_add_new.value,
-      );
-      if (response.Status == true) {
-        alertPopup(true);
-        popup_add_new.style.display = "none";
-        setTimeout(() => {
-          location.reload();
-        }, 1500);
-      } else {
-        alertPopup(false, response.Detail);
-        popup_add_new.style.display = "none";
-        popup_add_new.querySelectorAll("input").forEach((input) => {
-          input.value = "";
-        });
-      }
+      alertPopup(false, response.Detail);
+      popup_add_new.style.display = "none";
+      popup_add_new.querySelectorAll("input").forEach((input) => {
+        input.value = "";
+      });
     }
   }
 });

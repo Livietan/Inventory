@@ -652,7 +652,7 @@ body {
 }
 .popup-data-item {
   position: absolute;
-  display: flex;
+  display: none;
   background: #171717;
   flex-direction: column;
   top: 50%;

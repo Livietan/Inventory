@@ -45,19 +45,25 @@ export async function InsertItem(
   priceItem,
 ) {
   try {
-    var request = await fetch("http://127.0.0.1:8000/insert", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        Signature: signature,
-        Image: imageItem,
-        NameItem: nameitem,
-        TypeItem: typeItem,
-        AmountItem: amountItem,
-        PriceItem: priceItem,
-      }),
-    });
-    return request.json();
+    if (imageItem === null) {
+      var formData = new FormData();
+      formData.append("Signature", signature);
+      formData.append("Image", imageItem);
+      formData.append("NameItem", nameitem);
+      formData.append("TypeItem", typeItem);
+      formData.append("Amount", amountItem);
+      formData.append("Price", priceItem);
+
+      if (imageItem !== null) {
+        formData.append("Image", "Default.png")
+      }
+
+      var request = await fetch("http://127.0.0.1:8000/insert", {
+        method: "POST",
+        body: formData,
+      });
+      return request.json();
+    }
   } catch {
     return null;
   }

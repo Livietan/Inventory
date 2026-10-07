@@ -7,7 +7,9 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"strconv"
@@ -205,8 +207,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func InsertITEMS(w http.ResponseWriter, r *http.Request) {
-	var item ITEM
-
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -216,15 +216,27 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
-
-	if err := json.NewDecoder(r.Body).Decode(&item); err != nil {
-		http.Error(w, "Bad Request", http.StatusBadRequest)
-		log.Println(err)
-		return
+	fileImage, handlerImage, err := r.FormFile("Image")
+	image_path := "images/Default.png"
+	if err == nil {
+		image_path, err = saveImage(fileImage, handlerImage.Filename)
+		if err != nil {
+			http.Error(w, "Bad Request", http.StatusBadRequest)
+			log.Println(err)
+			return
+		}
 	}
+	signature := r.FormValue("Signature")
+	nameItem := r.FormValue("NameItem")
+	typeItem := r.FormValue("TypeItem")
+	amountString := r.FormValue("Amount")
+	priceString := r.FormValue("Price")
+
+	amount, _ := strconv.Atoi(amountString)
+	price, _ := strconv.Atoi(priceString)
 
 	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
-	item.AmountItem, item.PriceItem, item.Signature, item.NameItem, item.TypeItem)
+	amount, price, signature, nameItem, typeItem)
 	if err != nil{
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 		log.Println(err)
@@ -232,7 +244,7 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 	}
 	if Result.RowsAffected() == 0 {
 		Result, err = database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, IMAGE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5, $6)",
-		item.Signature, item.Image, item.NameItem, item.TypeItem, item.AmountItem, item.PriceItem)
+		signature, image_path, nameItem, typeItem, amount, price)
 		if err != nil {
 			http.Error(w, "Bad Request", http.StatusBadRequest)
 			log.Println(err)
@@ -634,4 +646,19 @@ func executeQueryTransaction(signature string) ([]TRANSACTION, error) {
 		return nil, err
 	}
 	return Data, nil
+}
+func saveImage(file multipart.File, identity string) (string, error) {
+	defer file.Close()
+	dst, err := os.Create("images/" + identity)
+	if err != nil {
+		return "", err
+	}
+	defer dst.Close()
+
+	_, err = io.Copy(dst, file)
+	if err != nil {
+		return "", err
+	}
+	image_path := fmt.Sprintf("images/%s", identity)
+	return image_path, nil
 }

@@ -278,7 +278,7 @@ button_add_item.addEventListener("click", async () => {
     alertPopup(false, "Type cannot empety");
   } else {
     if (input_file.files.length == 0) {
-      var path_default = "/image/default.png";
+      var path_default = "/image/Default.png";
       var response = await InsertItem(
         Signature,
         path_default,

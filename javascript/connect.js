@@ -33,9 +33,9 @@ linkLogin.addEventListener("click", () => {
   loginForm.style.display = "flex";
 });
 create.addEventListener("click", async () => {
-  if (username.value.trim() == "") {
+  if (usernameRegister.value.trim() == "") {
     alertPopup(false, "Username could'not empety");
-  } else if (password.value.trim() == "") {
+  } else if (passwordRegister.value.trim() == "") {
     alertPopup(false, "Password could'not empety");
   } else if (firstName.value.trim() == "") {
     alertPopup(false, "First name could'not empety");
@@ -60,14 +60,14 @@ create.addEventListener("click", async () => {
   }
 });
 loginButton.addEventListener("click", async () => {
-  if (username.value.trim() == "") {
+  if (usernameLogin.value.trim() == "") {
     alertPopup(false, "username could'not empety");
-  } else if (password.value.trim() == "") {
+  } else if (passwordLogin.value.trim() == "") {
     alertPopup(false, "password could'not empety");
   } else if (agreeLogin.checked === false) {
     alertPopup(false, "Please checklist the terms & conditions");
   } else {
-    var response = await login(usernameLogin, passwordLogin);
+    var response = await login(usernameLogin.value, passwordLogin.value);
 
     if (response.Status == true) {
       sessionStorage.setItem("FirstName", response.FirstName);

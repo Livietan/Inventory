@@ -61,8 +61,8 @@ var input_file = document.getElementById("input-file");
 var FirstName = sessionStorage.getItem("FirstName");
 var LastName = sessionStorage.getItem("LastName");
 var Signature = sessionStorage.getItem("Signature");
-var responseDataItem = await GetItems(Signature);
 var responseDataStat = await GetDataStat(Signature);
+var responseDataItem = await GetItems(true, Signature);
 
 if (FirstName && LastName != null) {
   document.getElementById("name-tag").textContent = `${FirstName} ${LastName}`;
@@ -85,7 +85,8 @@ if (!responseDataItem || !responseDataStat) {
       <span>${item.AmountItem}</span>
       <span>${item.PriceItem}</span>
       `;
-      data.addEventListener("click", (e) => {
+      data.addEventListener("click", async (e) => {
+        e.stopPropagation();
         popup_item.style.display = "flex";
         document.getElementById("NameItem").textContent = item.NameItem;
         document.getElementById("image-item").src = item.Image;
@@ -94,7 +95,24 @@ if (!responseDataItem || !responseDataStat) {
         document.getElementById("PriceItem").textContent = `$${item.PriceItem}`;
         document.getElementById("ValueItem").textContent =
           `$${item.AmountItem * item.PriceItem}`;
-        e.stopPropagation();
+        var history_item = document.getElementById("history_per_item");
+        history_item.innerHTML = "";
+        var response3 = await GetItems(
+          false,
+          Signature,
+          item.NameItem,
+          item.TypeItem,
+        );
+        response3.Value3.forEach((item, index) => {
+          var data = document.createElement("div");
+          data.classList.add("history_items");
+          data.innerHTML = `
+          <span>${index + 1}</span>
+          <span>${item.Transaction_Signature}</span>
+          <span>${item.Time}</span>
+          `;
+          history_item.appendChild(data);
+        });
       });
       item_pool_tags.appendChild(data);
     });
@@ -109,8 +127,8 @@ if (!responseDataItem || !responseDataStat) {
       `;
 
       data.addEventListener("click", (e) => {
-        data_history_item.style.display =
-          "flex";
+        e.stopPropagation();
+        data_history_item.style.display = "flex";
         document.getElementById("transaction_id").textContent =
           item.Transaction_Signature;
         document.getElementById("sender_transaction").textContent =
@@ -130,7 +148,6 @@ if (!responseDataItem || !responseDataStat) {
           `$${item.Price}`;
         document.getElementById("value_transaction").textContent =
           `$${item.Amount * item.Price}`;
-        e.stopPropagation();
       });
 
       history_pool_tags.appendChild(data);
@@ -276,10 +293,10 @@ popup_edit.addEventListener("click", (e) => {
 });
 popup_item.addEventListener("click", (e) => {
   e.stopPropagation();
-})
+});
 data_history_item.addEventListener("click", (e) => {
   e.stopPropagation();
-})
+});
 
 // button
 button_logout.addEventListener("click", () => {
@@ -360,9 +377,9 @@ button_edit_item.addEventListener("click", async () => {
     alertPopup(false, "name item could'not empety");
   } else if (item_select_edit_type.value.trim() == "") {
     alertPopup(false, "type item could'not empety");
-  } else if (amount_edit_item.value <= 0) {
+  } else if (amount_edit_item.value < 0) {
     alertPopup(false, "Amount cannot 0");
-  } else if (price_edit_item.value <= 0) {
+  } else if (price_edit_item.value < 0) {
     alertPopup(false, "Price cannot 0");
   } else {
     var request = await Update(
@@ -391,7 +408,7 @@ button_edit_item.addEventListener("click", async () => {
 button_shipping_send.addEventListener("click", async () => {
   if (amount_item_shipping.value <= 0) {
     alertPopup(false, "the amount cannot be 0 or below 0");
-  } else if (signature_reciever_shipping.value == signature_sender) {
+  } else if (signature_reciever_shipping.value == Signature) {
     alertPopup(
       false,
       "Cannot send to yourself, please enter different signature/address",
@@ -412,13 +429,11 @@ button_shipping_send.addEventListener("click", async () => {
     );
     if (response.Status === true) {
       alertPopup(true);
-      spawn_popup_shipping.style.display = "none";
       setTimeout(() => {
         location.reload();
       }, 1500);
     } else {
       alertPopup(false, response.Detail);
-      spawn_popup_shipping.style.display = "none";
       spawn_popup_shipping.querySelectorAll("input").forEach((input) => {
         input.value = "";
       });

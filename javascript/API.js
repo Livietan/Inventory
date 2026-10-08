@@ -67,16 +67,32 @@ export async function InsertItem(
   }
 }
 
-export async function GetItems(signature) {
+export async function GetItems(type, signature, nameItem, typeItem) {
   try {
-    const request = await fetch("http://127.0.0.1:8000/GetItems", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        Signature: signature,
-      }),
-    });
-    return request.json();
+    if (type === true) {
+      const request = await fetch("http://127.0.0.1:8000/GetItems", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({
+          Signature: signature,
+        }),
+      });
+      return request.json();
+    } else if (type === false) {
+      const request = await fetch("http://127.0.0.1:8000/GetItems", {
+        method: "POST",
+        headers: { "Content-Type": "Application/json" },
+        body: JSON.stringify({
+          Signature: signature,
+          NameItem: nameItem,
+          TypeItem: typeItem,
+        }),
+      });
+      return request.json();
+    } else {
+      console.log("type missing!");
+      return;
+    }
   } catch {
     return null;
   }

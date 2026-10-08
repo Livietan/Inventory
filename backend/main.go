@@ -216,16 +216,7 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
-	fileImage, handlerImage, err := r.FormFile("Image")
-	image_path := "images/Default.png"
-	if err == nil {
-		image_path, err = saveImage(fileImage, handlerImage.Filename)
-		if err != nil {
-			http.Error(w, "Bad Request", http.StatusBadRequest)
-			log.Println(err)
-			return
-		}
-	}
+
 	signature := r.FormValue("Signature")
 	nameItem := r.FormValue("NameItem")
 	typeItem := r.FormValue("TypeItem")
@@ -243,6 +234,16 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if Result.RowsAffected() == 0 {
+		fileImage, handlerImage, err := r.FormFile("Image")
+		image_path := "images/Default.png"
+		if err == nil {
+			image_path, err = saveImage(fileImage, handlerImage.Filename)
+			if err != nil {
+				http.Error(w, "Bad Request", http.StatusBadRequest)
+				log.Println(err)
+				return
+			}
+		}
 		Result, err = database.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, IMAGE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5, $6)",
 		signature, image_path, nameItem, typeItem, amount, price)
 		if err != nil {
@@ -256,10 +257,12 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		} else {
 			json.NewEncoder(w).Encode(ResponseServer{Status: true})
 			fmt.Println("Run http://127.0.0.1:8000/insert OK")
+			return
 		}
 	} else {
 		json.NewEncoder(w).Encode(ResponseServer{Status: true})
 		fmt.Println("Run http://127.0.0.1:8000/insert OK")
+		return
 	}
 }
 
@@ -302,10 +305,11 @@ type dataItems struct {
 	Status bool `json:"Status"`
 	Value1 []ITEM `json:"Value1"`
 	Value2 []TRANSACTION `json:"Value2"`
+	Value3 []TRANSACTION `json:"Value3"`
 }
 
 func GetData(w http.ResponseWriter, r *http.Request) {
-	var item USER
+	var item ITEM
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -335,10 +339,17 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
+	history_per_item, err := historyPerItem(item.Signature, item.NameItem, item.TypeItem)
+	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
 	json.NewEncoder(w).Encode(dataItems{
 		Status: true,
 		Value1: items,
 		Value2: transactions,
+		Value3: history_per_item,
 	})
 	fmt.Println("Run http://127.0.0.1:8000/GetItem OK")
 }
@@ -417,6 +428,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 
 func Shipping(w http.ResponseWriter, r *http.Request){
 	var shipping SHIPPING
+	var image string
 	var amount, price int
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -443,10 +455,10 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	ResultSelectSend := DB.QueryRow(context.Background(), "SELECT AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
+	ResultSelectSend := DB.QueryRow(context.Background(), "SELECT IMAGE, AMOUNT, PRICE FROM ITEMS WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3",
 	shipping.SignatureSend,
 	shipping.NameItem,
-	shipping.TypeItem).Scan(&amount, &price)
+	shipping.TypeItem).Scan(&image, &amount, &price)
 
 	if ResultSelectSend != nil {
 		log.Println(ResultSelectSend)
@@ -482,8 +494,8 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 			rate = AmountRecieve + sender_amount
 
 			if ResultSelectRecieve != nil {
-				ResultInsertRecieve, err := DB.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5)",
-				shipping.SignatureRecieve, shipping.NameItem, shipping.TypeItem, sender_amount, price)
+				ResultInsertRecieve, err := DB.Exec(context.Background(), "INSERT INTO ITEMS (SIGNATURE, IMAGE, NAMEITEM, TYPEITEM, AMOUNT, PRICE) VALUES ($1, $2, $3, $4, $5, $6)",
+				shipping.SignatureRecieve, image, shipping.NameItem, shipping.TypeItem, sender_amount, price)
 				if err != nil {
 					http.Error(w, "Bad Request", http.StatusBadRequest)
 					log.Println(err)
@@ -647,6 +659,42 @@ func executeQueryTransaction(signature string) ([]TRANSACTION, error) {
 	}
 	return Data, nil
 }
+func historyPerItem(signature string, nameItem string, typeItem string) ([]TRANSACTION, error) {
+	Data := []TRANSACTION{}
+	rows, err := database.Query(context.Background(), `SELECT TRANSACTION_SIGNATURE, SENDER, RECIEVER, DIRECTION, NAMEITEM, TYPEITEM, AMOUNT, PRICE, TIME FROM LEDGER 
+	WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3`, signature, nameItem, typeItem)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var Datas TRANSACTION
+		var timeData time.Time
+
+		err = rows.Scan(
+		&Datas.Transaction_Signature,
+		&Datas.Sender,
+		&Datas.Reciever,
+		&Datas.Direction,
+		&Datas.NameItem,
+		&Datas.TypeItem,
+		&Datas.Amount,
+		&Datas.Price,
+		&timeData)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		
+		Datas.Time = timeData.Format("15:04 02-01-2006")
+		Data = append(Data, Datas)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return Data, nil
+}
+
 func saveImage(file multipart.File, identity string) (string, error) {
 	defer file.Close()
 	dst, err := os.Create(fmt.Sprintf("../images/%s", identity))

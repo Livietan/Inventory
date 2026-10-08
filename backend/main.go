@@ -649,7 +649,7 @@ func executeQueryTransaction(signature string) ([]TRANSACTION, error) {
 }
 func saveImage(file multipart.File, identity string) (string, error) {
 	defer file.Close()
-	dst, err := os.Create("images/" + identity)
+	dst, err := os.Create(fmt.Sprintf("../images/%s", identity))
 	if err != nil {
 		return "", err
 	}

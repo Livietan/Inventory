@@ -28,6 +28,7 @@ var popup_shipping = document.getElementById("popup-shipping");
 var popup_items = document.getElementById("notepad-item");
 var popup_history = document.getElementById("notepad-history");
 var popup_item = document.getElementById("popup-data-item");
+var data_history_item = document.getElementById("popup-history-transaction");
 
 var button_add_item = document.getElementById("button-add-item");
 var button_delete_item = document.getElementById("button-delete-item");
@@ -84,7 +85,7 @@ if (!responseDataItem || !responseDataStat) {
       <span>${item.AmountItem}</span>
       <span>${item.PriceItem}</span>
       `;
-      data.addEventListener("click", async (e) => {
+      data.addEventListener("click", (e) => {
         popup_item.style.display = "flex";
         document.getElementById("NameItem").textContent = item.NameItem;
         document.getElementById("image-item").src = item.Image;
@@ -108,7 +109,7 @@ if (!responseDataItem || !responseDataStat) {
       `;
 
       data.addEventListener("click", (e) => {
-        document.getElementById("popup-history-transaction").style.display =
+        data_history_item.style.display =
           "flex";
         document.getElementById("transaction_id").textContent =
           item.Transaction_Signature;
@@ -155,7 +156,7 @@ document.addEventListener("click", () => {
   aggree_delete_item.checked = false;
   input_file.value = "";
   document.getElementById("select-file-tag").textContent = "No file selected";
-  document.getElementById("popup-history-transaction").style.display = "none";
+  data_history_item.style.display = "none";
   popup_shipping.querySelectorAll("input").forEach((input) => {
     input.value = "";
   });
@@ -273,6 +274,12 @@ popup_shipping.addEventListener("click", (e) => {
 popup_edit.addEventListener("click", (e) => {
   e.stopPropagation();
 });
+popup_item.addEventListener("click", (e) => {
+  e.stopPropagation();
+})
+data_history_item.addEventListener("click", (e) => {
+  e.stopPropagation();
+})
 
 // button
 button_logout.addEventListener("click", () => {

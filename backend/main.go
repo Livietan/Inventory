@@ -236,7 +236,7 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	
+
 	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
 	amount, price, signature, nameItem, typeItem)
 	if err != nil{
@@ -670,10 +670,10 @@ func executeQueryTransaction(signature string) ([]TRANSACTION, error) {
 	}
 	return Data, nil
 }
-func historyPerItem(signature string, nameItem string, typeItem string) ([]TRANSACTION, error) {
+func historyPerItem(signature string, name_item string, type_item string) ([]TRANSACTION, error) {
 	Data := []TRANSACTION{}
 	rows, err := database.Query(context.Background(), `SELECT TRANSACTION_SIGNATURE, SENDER, RECIEVER, DIRECTION, NAMEITEM, TYPEITEM, AMOUNT, PRICE, TIME FROM LEDGER 
-	WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3`, signature, nameItem, typeItem)
+	WHERE SIGNATURE=$1 AND NAMEITEM=$2 AND TYPEITEM=$3`, signature, name_item, type_item)
 	if err != nil {
 		return nil, err
 	}
@@ -706,9 +706,9 @@ func historyPerItem(signature string, nameItem string, typeItem string) ([]TRANS
 	return Data, nil
 }
 
-func saveImage(file multipart.File, identity string) (string, error) {
+func saveImage(file multipart.File, name_file string) (string, error) {
 	defer file.Close()
-	dst, err := os.Create(fmt.Sprintf("../images/%s", identity))
+	dst, err := os.Create(fmt.Sprintf("../images/%s", name_file))
 	if err != nil {
 		return "", err
 	}
@@ -718,6 +718,6 @@ func saveImage(file multipart.File, identity string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	image_path := fmt.Sprintf("images/%s", identity)
+	image_path := fmt.Sprintf("images/%s", name_file)
 	return image_path, nil
 }

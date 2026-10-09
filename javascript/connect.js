@@ -16,7 +16,6 @@ document.getElementById("btn-nav").addEventListener("click", () => {
     behavior: "smooth",
   });
 });
-
 document.getElementById("link-register").addEventListener("click", () => {
   registerForm.style.display = "flex";
   loginForm.style.display = "none";

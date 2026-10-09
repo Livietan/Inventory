@@ -88,7 +88,8 @@ func main() {
 func connectDB() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
 
 	password := os.Getenv("PASSWORD")
@@ -130,7 +131,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
-		http.Error(w, "Bad Request", http.StatusInternalServerError)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 		log.Println(err)
 		return
 	}
@@ -223,9 +224,19 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 	amountString := r.FormValue("Amount")
 	priceString := r.FormValue("Price")
 
-	amount, _ := strconv.Atoi(amountString)
-	price, _ := strconv.Atoi(priceString)
-
+	amount, err := strconv.Atoi(amountString)
+	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
+	price, err := strconv.Atoi(priceString)
+	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
+	
 	Result, err := database.Exec(context.Background(), "UPDATE ITEMS SET AMOUNT=$1, PRICE=$2 WHERE SIGNATURE=$3 AND NAMEITEM=$4 AND TYPEITEM=$5",
 	amount, price, signature, nameItem, typeItem)
 	if err != nil{

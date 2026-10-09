@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Access</title>
+  <title>Connect</title>
   <link rel="stylesheet" href="css/connect.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,15 +20,15 @@
 
 <body>
   <header>
-    <img src="assets/chatgpt.png" alt="error.png">
+    <img src="assets/chatgpt.png" alt="chatgpt.png">
     <div class="text-image">
-      <div style="display: flex; flex-direction: column; left: 20%; position: relative;">
-        <span class="parent">Keep Control Your Warehouse</span>
-        <span class="child">Control everything with ease</span>
-        <span class="description">Add items, edit stock, and manage shipments</span>
+      <div class="container-text-image">
+        <span class="parent">Pertahankan kendali atas gudang Anda.</span>
+        <span class="child">Kendalikan segalanya dengan mudah</span>
+        <span class="description">Tambahkan barang, ubah stok, dan kelola pengiriman</span>
       </div>
       <div class="btn-nav" id="btn-nav">
-        Get Started
+        Mulai
       </div>
     </div>
   </header>
@@ -36,58 +36,58 @@
     <!-- halaman daftar -->
     <div class="register" id="register">
       <div class="head-form">
-        <span class="hero-form">Create an account</span>
-        <span>Already have an account?
-          <span class="link" id="link-login">Login</span></span>
+        <span class="hero-form">Buat Akun</span>
+        <span>Sudah punya akun?
+          <span class="link" id="link-login">Masuk</span></span>
       </div>
       <div class="container-input">
         <div class="container-name">
-          <input type="text" placeholder="Frist name" id="first-name" maxlength="16" autocomplete="off" />
-          <input type="text" placeholder="Last name" id="last-name" maxlength="16" autocomplete="off" />
+          <input type="text" placeholder="Nama depan" id="first-name" maxlength="16" autocomplete="off" />
+          <input type="text" placeholder="Nama belakang" id="last-name" maxlength="16" autocomplete="off" />
         </div>
-        <input type="text" placeholder="Username" id="username-register" maxlength="16" autocomplete="off" />
+        <input type="text" placeholder="Nama pengguna" id="username-register" maxlength="16" autocomplete="off" />
         <div class="password">
-          <input type="password" placeholder="Password" id="password-register" maxlength="32" autocomplete="off" />
+          <input type="password" placeholder="Kata sandi" id="password-register" maxlength="32" autocomplete="off" />
           <img class="eye-icon" id="eye-icon-register" src="/assets/visibility_off.svg">
         </div>
       </div>
-      <label for="" class="radio">
+      <label class="radio">
         <input type="checkbox" value="agree" id="agree-register" />
-        <span>I agree to the <span class="link">Terms & Conditions</span></span></label>
+        <span>Saya menyetujui <span class="link">syarat & ketentuan</span></span></label>
       <div class="container-create">
         <div class="button-create" id="create">
-          <span>Create account</span>
+          <span>Buat Akun</span>
         </div>
       </div>
     </div>
     <!-- halaman access -->
     <div class="login" id="login">
       <div class="head-form">
-        <span class="hero-form">Login</span>
-        <span>Don't have an account?
-          <span class="link" id="link-register">Register</span>
+        <span class="hero-form">Masuk</span>
+        <span>Tidak punya akun?
+          <span class="link" id="link-register">Buat akun</span>
         </span>
       </div>
       <div class="container-input">
-        <input type="text" placeholder="Username" id="username-login" maxlength="16" autocomplete="off" />
+        <input type="text" placeholder="Nama pengguna" id="username-login" maxlength="16" autocomplete="off" />
         <div class="password">
-          <input type="password" placeholder="Password" id="password-login" maxlength="32" autocomplete="off" />
+          <input type="password" placeholder="Kata sandi" id="password-login" maxlength="32" autocomplete="off" />
           <img class="eye-icon" id="eye-icon-login" src="/assets/visibility_off.svg">
         </div>
       </div>
       <label for="" class="radio">
         <input type="checkbox" value="agree" id="agree-login" autocomplete="off" />
-        <span>I agree to the <span class="link">Terms & Conditions</span></span></label>
+        <span>Saya menyetujui <span class="link">syarat & ketentuan</span></span></label>
       <div class="container-create">
         <div class="button-login" id="connect">
-          <span>Login</span>
+          <span>Masuk</span>
         </div>
       </div>
     </div>
   </div>
   <div class="footer">
     <div class="copyright">
-      <span>Inventory System Designed & Developed by Akmal Rasyid © 2026 Inventory System. All rights reserved.</span>
+      <span>Sistem Inventaris dirancang & dikembangkan oleh Akmal Rasyid © 2026 Inventory System.</span>
     </div>
   </div>
 </body>

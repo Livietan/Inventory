@@ -56,6 +56,12 @@ img {
   height: 100vh;
   object-fit: cover;
 }
+.container-text-image {
+  display: flex;
+  flex-direction: column;
+  left: 20%;
+  position: relative;
+}
 .parent {
   position: relative;
   color: #d1bf9b;

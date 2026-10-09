@@ -63,6 +63,7 @@ var LastName = sessionStorage.getItem("LastName");
 var Signature = sessionStorage.getItem("Signature");
 var responseDataStat = await GetDataStat(Signature);
 var responseDataItem = await GetItems(true, Signature);
+var array = ["none", "flex"]
 
 if (FirstName && LastName != null) {
   document.getElementById("name-tag").textContent = `${FirstName} ${LastName}`;
@@ -83,7 +84,7 @@ if (!responseDataItem || !responseDataStat) {
       <span>${item.NameItem}</span>
       <span>${item.TypeItem}</span>
       <span>${item.AmountItem}</span>
-      <span>${item.PriceItem}</span>
+      <span>${Number(item.PriceItem).toLocaleString("id-ID")}</span>
       `;
       data.addEventListener("click", async (e) => {
         e.stopPropagation();
@@ -153,23 +154,24 @@ if (!responseDataItem || !responseDataStat) {
       history_pool_tags.appendChild(data);
     });
   }
+  var  values = responseDataStat.Value;
 
-  valueTag.textContent = "$" + responseDataStat.Value;
+  valueTag.textContent = "RP" + Number(values).toLocaleString("id-ID");
   totalTag.textContent = responseDataStat.Total;
 }
 
 if (Signature === null) {
-  document.getElementById("log").textContent = "Login";
+  document.getElementById("log").textContent = "Masuk";
 } else {
-  document.getElementById("log").textContent = "Logout";
+  document.getElementById("log").textContent = "Keluar";
 }
 
 document.addEventListener("click", () => {
-  popup_add_new.style.display = "none";
-  popup_delete.style.display = "none";
-  popup_edit.style.display = "none";
-  popup_shipping.style.display = "none";
-  popup_item.style.display = "none";
+  popup_add_new.style.display = array[0];
+  popup_delete.style.display = array[0];
+  popup_edit.style.display = array[0];
+  popup_shipping.style.display = array[0];
+  popup_item.style.display = array[0];
   aggree_delete_item.checked = false;
   input_file.value = "";
   document.getElementById("select-file-tag").textContent = "No file selected";
@@ -190,7 +192,7 @@ document.addEventListener("click", () => {
 
 // spawn popup
 spawn_popup_delete.addEventListener("click", (e) => {
-  popup_delete.style.display = "flex";
+  popup_delete.style.display = array[1];
   e.stopPropagation();
   name_delete_item.innerHTML =
     "<option value='' disabled selected>Select item</option>";
@@ -211,7 +213,7 @@ spawn_popup_delete.addEventListener("click", (e) => {
 });
 
 spawn_popup_new_item.addEventListener("click", (e) => {
-  popup_add_new.style.display = "flex";
+  popup_add_new.style.display = array[1];
   e.stopPropagation();
 });
 
@@ -237,7 +239,7 @@ spawn_popup_shipping.addEventListener("click", (e) => {
 });
 
 spawn_popup_edit_item.addEventListener("click", (e) => {
-  popup_edit.style.display = "flex";
+  popup_edit.style.display = array[1];
   e.stopPropagation();
   item_select_edit_name.innerHTML =
     "<option value='' disabled selected>Select item</option>";
@@ -258,12 +260,12 @@ spawn_popup_edit_item.addEventListener("click", (e) => {
 });
 
 spawn_note_items.addEventListener("click", () => {
-  popup_items.style.display = "flex";
-  popup_history.style.display = "none";
+  popup_items.style.display = array[1];
+  popup_history.style.display = array[0];
 });
 spawn_note_history.addEventListener("click", () => {
-  popup_items.style.display = "none";
-  popup_history.style.display = "flex";
+  popup_items.style.display = array[0];
+  popup_history.style.display = array[1];
 });
 document.getElementById("input-file-icon").addEventListener("click", () => {
   input_file.click();
@@ -326,13 +328,13 @@ button_add_item.addEventListener("click", async () => {
     );
     if (response.Status === true) {
       alertPopup(true);
-      popup_add_new.style.display = "none";
+      popup_add_new.style.display = array[0];
       setTimeout(() => {
         location.reload();
       }, 1500);
     } else {
       alertPopup(false, response.Detail);
-      popup_add_new.style.display = "none";
+      popup_add_new.style.display = array[0];
       popup_add_new.querySelectorAll("input").forEach((input) => {
         input.value = "";
       });

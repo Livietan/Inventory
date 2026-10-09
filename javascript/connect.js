@@ -11,18 +11,20 @@ var passwordRegister = document.getElementById("password-register");
 var usernameLogin = document.getElementById("username-login");
 var passwordLogin = document.getElementById("password-login");
 
+var array = ["none", "flex"];
+
 document.getElementById("btn-nav").addEventListener("click", () => {
   document.getElementById("content").scrollIntoView({
     behavior: "smooth",
   });
 });
 document.getElementById("link-register").addEventListener("click", () => {
-  registerForm.style.display = "flex";
-  loginForm.style.display = "none";
+  registerForm.style.display = array[1];
+  loginForm.style.display = array[0];
 });
 document.getElementById("link-login").addEventListener("click", () => {
-  registerForm.style.display = "none";
-  loginForm.style.display = "flex";
+  registerForm.style.display = array[0];
+  loginForm.style.display = array[1];
 });
 document.getElementById("create").addEventListener("click", async () => {
   if (usernameRegister.value.trim() == "") {

@@ -193,6 +193,9 @@ body {
   padding: 0.5rem;
   background: #151515;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 .connect-popup {
   position: absolute;
@@ -355,7 +358,7 @@ body {
 .data-row-items {
   font-family: "JetBrains Mono";
   display: grid;
-  grid-template-columns: 0.1fr 2fr 2fr 2fr 0.5fr 0.5fr;
+  grid-template-columns: 0.2fr 2fr 2fr 2fr 0.5fr 0.5fr;
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;

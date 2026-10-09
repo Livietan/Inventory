@@ -1,45 +1,38 @@
 import { alertPopup, login, register } from "./API.js";
 
-var linkRegister = document.getElementById("link-register");
 var registerForm = document.getElementById("register");
-var linkLogin = document.getElementById("link-login");
 var loginForm = document.getElementById("login");
 
 var firstName = document.getElementById("first-name");
 var lastName = document.getElementById("last-name");
 var usernameRegister = document.getElementById("username-register");
 var passwordRegister = document.getElementById("password-register");
-var agreeRegister = document.getElementById("agree-register");
-var create = document.getElementById("create");
 
 var usernameLogin = document.getElementById("username-login");
 var passwordLogin = document.getElementById("password-login");
-var agreeLogin = document.getElementById("agree-login");
-var loginButton = document.getElementById("button-login");
-var startedButton = document.getElementById("btn-nav");
 
-startedButton.addEventListener("click", () => {
+document.getElementById("btn-nav").addEventListener("click", () => {
   document.getElementById("content").scrollIntoView({
     behavior: "smooth",
   });
 });
 
-linkRegister.addEventListener("click", () => {
+document.getElementById("link-register").addEventListener("click", () => {
   registerForm.style.display = "flex";
   loginForm.style.display = "none";
 });
-linkLogin.addEventListener("click", () => {
+document.getElementById("link-login").addEventListener("click", () => {
   registerForm.style.display = "none";
   loginForm.style.display = "flex";
 });
-create.addEventListener("click", async () => {
+document.getElementById("create").addEventListener("click", async () => {
   if (usernameRegister.value.trim() == "") {
     alertPopup(false, "Username could'not empety");
   } else if (passwordRegister.value.trim() == "") {
     alertPopup(false, "Password could'not empety");
   } else if (firstName.value.trim() == "") {
     alertPopup(false, "First name could'not empety");
-  } else if (agreeRegister.checked == false) {
+  } else if (document.getElementById("agree-register").checked == false) {
     alertPopup(false, "Please checklist the terms & conditions");
   } else {
     var lastNameValue = lastName.value.trim() === "" ? "" : lastName.value;
@@ -59,12 +52,12 @@ create.addEventListener("click", async () => {
     }
   }
 });
-loginButton.addEventListener("click", async () => {
+document.getElementById("connect").addEventListener("click", async () => {
   if (usernameLogin.value.trim() == "") {
     alertPopup(false, "username could'not empety");
   } else if (passwordLogin.value.trim() == "") {
     alertPopup(false, "password could'not empety");
-  } else if (agreeLogin.checked === false) {
+  } else if (document.getElementById("agree-login").checked === false) {
     alertPopup(false, "Please checklist the terms & conditions");
   } else {
     var response = await login(usernameLogin.value, passwordLogin.value);
@@ -87,7 +80,7 @@ document.getElementById("eye-icon-register").addEventListener("click", () => {
     eye.src = "/assets/visibility_on.svg";
   } else {
     passwordRegister.type = "password";
-    eye.src = "assets/visibility_off.svg";
+    eye.src = "/assets/visibility_off.svg";
   }
 });
 document.getElementById("eye-icon-login").addEventListener("click", () => {
@@ -98,6 +91,6 @@ document.getElementById("eye-icon-login").addEventListener("click", () => {
     eye.src = "/assets/visibility_on.svg";
   } else {
     passwordLogin.type = "password";
-    eye.src = "assets/visibility_off.svg";
+    eye.src = "/assets/visibility_off.svg";
   }
 });

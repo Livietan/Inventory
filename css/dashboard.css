@@ -569,8 +569,10 @@ body {
   top: 54rem;
   left: 20px;
   background: #d9364f;
-  border-radius: 2px;
+  border-radius: 1px;
   padding: 5px 20px;
+  min-width: 15rem;
+  max-width: 15rem;
 
   animation: alert-popup 2s ease forwards;
 }
@@ -593,8 +595,10 @@ body {
   top: 54rem;
   left: 20px;
   background: #3aa76d;
-  border-radius: 2px;
+  border-radius: 1px;
   padding: 5px 20px;
+  min-width: 15rem;
+  max-width: 15rem;
 
   animation: alert-popup 2s ease forwards;
 }

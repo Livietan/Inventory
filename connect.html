@@ -19,29 +19,29 @@
 </head>
 
 <body>
-  <div class="header">
+  <header>
     <img src="assets/chatgpt.png" alt="error.png">
     <div class="text-image">
       <div style="display: flex; flex-direction: column; left: 20%; position: relative;">
-        <span class="hero">Keep Control Your Warehouse</span>
+        <span class="parent">Keep Control Your Warehouse</span>
         <span class="child">Control everything with ease</span>
-        <span style="color: white; font-family: 'Manrope'; font-size: 16px; font-weight: 500;">Add items, edit stock, and manage shipments</span>
+        <span class="description">Add items, edit stock, and manage shipments</span>
       </div>
-      <div class="get-started" id="get-started">
+      <div class="btn-nav" id="btn-nav">
         Get Started
       </div>
     </div>
-  </div>
+  </header>
   <div class="content" id="content">
     <!-- register -->
     <div class="register" id="register">
-      <div style="display: flex; flex-direction: column; gap: 10px">
-        <span class="head-form">Create an account</span>
+      <div class="head-form">
+        <span class="hero-form">Create an account</span>
         <span>Already have an account?
           <span class="link" id="link-login">Login</span></span>
       </div>
-      <div style="display: flex; flex-direction: column; gap: var(--gap-input)">
-        <div style="display: flex; gap: var(--gap-input)">
+      <div class="container-input">
+        <div class="container-name">
           <input type="text" placeholder="Frist name" id="first-name" maxlength="16" autocomplete="off" />
           <input type="text" placeholder="Last name" id="last-name" maxlength="16" autocomplete="off" />
         </div>
@@ -54,12 +54,7 @@
       <label for="" class="radio">
         <input type="checkbox" value="agree" id="agree-register" />
         <span>I agree to the <span class="link">Terms & Conditions</span></span></label>
-      <div style="
-            text-align: center;
-            gap: 10px;
-            display: flex;
-            flex-direction: column;
-          ">
+      <div class="container-create">
         <div class="button-create" id="create">
           <span>Create account</span>
         </div>
@@ -67,12 +62,13 @@
     </div>
     <!-- login -->
     <div class="login" id="login">
-      <div style="display: flex; flex-direction: column; gap: 10px">
-        <span class="head-form">Login</span>
+      <div class="head-form">
+        <span class="hero-form">Login</span>
         <span>Don't have an account?
-          <span class="link" id="link-register">Register</span></span>
+          <span class="link" id="link-register">Register</span>
+        </span>
       </div>
-      <div style="display: flex; flex-direction: column; gap: var(--gap-input)">
+      <div class="container-input">
         <input type="text" placeholder="Username" id="username-login" maxlength="16" autocomplete="off" />
         <div class="password">
           <input type="password" placeholder="Password" id="password-login" maxlength="32" autocomplete="off" />
@@ -82,12 +78,7 @@
       <label for="" class="radio">
         <input type="checkbox" value="agree" id="agree-login" autocomplete="off" />
         <span>I agree to the <span class="link">Terms & Conditions</span></span></label>
-      <div style="
-            text-align: center;
-            gap: 10px;
-            display: flex;
-            flex-direction: column;
-          ">
+      <div class="container-create">
         <div class="button-login" id="button-login">
           <span>Login</span>
         </div>

@@ -23,7 +23,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-.head-form {
+.hero-form {
   font-size: 54px;
   font-weight: 500;
 }
@@ -56,7 +56,7 @@ img {
   height: 100vh;
   object-fit: cover;
 }
-.hero {
+.parent {
   position: relative;
   color: #d1bf9b;
   font-size: 48px;
@@ -67,7 +67,13 @@ img {
   font-size: 38px;
   font-weight: 400;
 }
-.get-started {
+.description {
+  color: white;
+  font-family: "Manrope";
+  font-size: 16px;
+  font-weight: 500;
+}
+.btn-nav {
   position: relative;
   left: 20%;
   background: #b7a27a;
@@ -81,7 +87,7 @@ img {
   cursor: pointer;
   user-select: none;
 }
-.get-started:hover {
+.btn-nav:hover {
   background: #c2ae86;
 }
 /* register form */
@@ -92,6 +98,26 @@ img {
   gap: 2rem;
   width: 100%;
   max-width: 38rem;
+}
+.head-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.container-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-input);
+}
+.container-name {
+  display: flex;
+  gap: var(--gap-input);
+}
+.container-create {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 10px;
 }
 .password {
   position: relative;
@@ -194,7 +220,7 @@ input:focus {
   flex-direction: column;
   top: 54rem;
   left: 20px;
-  background: #D9364F;
+  background: #d9364f;
   border-radius: 2px;
   padding: 5px 20px;
 
@@ -202,13 +228,13 @@ input:focus {
 }
 
 .alert-title-fail {
-  color: #FF8796;
+  color: #ff8796;
   font-family: "Manrope";
   font-weight: 700;
   font-size: 20px;
 }
 .alert-message-fail {
-  color: #F58B99;
+  color: #f58b99;
   font-family: "Manrope";
   font-weight: 500;
   font-size: 16px;
@@ -220,7 +246,7 @@ input:focus {
   flex-direction: column;
   top: 54rem;
   left: 20px;
-  background: #3AA76D;
+  background: #3aa76d;
   border-radius: 2px;
   padding: 5px 20px;
 
@@ -228,13 +254,13 @@ input:focus {
 }
 
 .alert-title-success {
-  color: #A8F0C4;
+  color: #a8f0c4;
   font-family: "Manrope";
   font-weight: 700;
   font-size: 20px;
 }
 .alert-message-success {
-  color: #92DDB0;
+  color: #92ddb0;
   font-family: "Manrope";
   font-weight: 500;
   font-size: 16px;

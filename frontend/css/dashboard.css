@@ -712,7 +712,7 @@ body {
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  cursor: pointer;
+  cursor: default;
 }
 .history_items:hover {
   background: #211f1c;

@@ -82,7 +82,6 @@ func main() {
 
 	fmt.Println("Run http://127.0.0.1:8000 OK")
 	http.ListenAndServe("127.0.0.1:8000", nil)
-	fmt.Println("Stop http://127.0.0.1:8000")
 }
 
 func connectDB() {
@@ -91,6 +90,9 @@ func connectDB() {
 		log.Println(err)
 		return
 	}
+	server := http.FileServer(http.Dir("../frontend"))
+	http.Handle("/", server)
+	fmt.Println("Server Active http://127.0.0.1:5500/frontend/connect.html")
 
 	password := os.Getenv("PASSWORD")
 	databaseURL := fmt.Sprintf("postgres://postgres:%s@127.0.0.1:5432/inventory", password)
@@ -246,7 +248,7 @@ func InsertITEMS(w http.ResponseWriter, r *http.Request) {
 	}
 	if Result.RowsAffected() == 0 {
 		fileImage, handlerImage, err := r.FormFile("Image")
-		image_path := "images/Default.png"
+		image_path := "/images/Default.png"
 		if err == nil {
 			image_path, err = saveImage(fileImage, handlerImage.Filename)
 			if err != nil {
@@ -516,13 +518,13 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 					json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 					return
 				} else {
-					request1, err1 := GenerateTransactionHistory(shipping.SignatureSend, shipping.SignatureSend, shipping.SignatureRecieve, "Send", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
+					request1, err1 := GenerateTransactionHistory(shipping.SignatureSend, shipping.SignatureSend, shipping.SignatureRecieve, "Kirim", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
 					if err1 != nil {
 						http.Error(w, "Bad Request", http.StatusBadRequest)
 						log.Println(err1)
 						return
 					}
-					request2, err2 := GenerateTransactionHistory(shipping.SignatureRecieve, shipping.SignatureSend, shipping.SignatureRecieve, "Recieve", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
+					request2, err2 := GenerateTransactionHistory(shipping.SignatureRecieve, shipping.SignatureSend, shipping.SignatureRecieve, "Terima", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
 					if err2 != nil {
 						http.Error(w, "Bad Request", http.StatusBadRequest)
 						log.Println(err2)
@@ -553,13 +555,13 @@ func Shipping(w http.ResponseWriter, r *http.Request){
 					json.NewEncoder(w).Encode(ResponseServer{Status: false, Detail: "Operation Fail"})
 					return
 				} else {
-					request1, err1 := GenerateTransactionHistory(shipping.SignatureSend, shipping.SignatureSend, shipping.SignatureRecieve, "Send", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
+					request1, err1 := GenerateTransactionHistory(shipping.SignatureSend, shipping.SignatureSend, shipping.SignatureRecieve, "Kirim", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
 					if err1 != nil {
 						http.Error(w, "Bad Request", http.StatusBadRequest)
 						log.Println(err1)
 						return
 					}
-					request2, err2 := GenerateTransactionHistory(shipping.SignatureRecieve, shipping.SignatureSend, shipping.SignatureRecieve, "Recieve", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
+					request2, err2 := GenerateTransactionHistory(shipping.SignatureRecieve, shipping.SignatureSend, shipping.SignatureRecieve, "Terima", shipping.NameItem, shipping.TypeItem, sender_amount, price, DB)
 					if err2 != nil {
 						http.Error(w, "Bad Request", http.StatusBadRequest)
 						log.Println(err2)
@@ -718,6 +720,6 @@ func saveImage(file multipart.File, name_file string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	image_path := fmt.Sprintf("images/%s", name_file)
+	image_path := fmt.Sprintf("/images/%s", name_file)
 	return image_path, nil
 }

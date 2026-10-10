@@ -92,10 +92,10 @@ if (!responseDataItem || !responseDataStat) {
         document.getElementById("NameItem").textContent = item.NameItem;
         document.getElementById("image-item").src = item.Image;
         document.getElementById("TypeItem").textContent = item.TypeItem;
-        document.getElementById("AmountItem").textContent = item.AmountItem;
-        document.getElementById("PriceItem").textContent = `$${item.PriceItem}`;
+        document.getElementById("AmountItem").textContent = Number(item.AmountItem).toLocaleString("id-ID");
+        document.getElementById("PriceItem").textContent = `Rp${Number(item.PriceItem).toLocaleString("id-ID")}`;
         document.getElementById("ValueItem").textContent =
-          `$${item.AmountItem * item.PriceItem}`;
+          `Rp${Number(item.AmountItem * item.PriceItem).toLocaleString("id-ID")}`;
         var history_item = document.getElementById("history_per_item");
         history_item.innerHTML = "";
         var response3 = await GetItems(
@@ -144,11 +144,11 @@ if (!responseDataItem || !responseDataStat) {
         document.getElementById("typeItem_transaction").textContent =
           item.TypeItem;
         document.getElementById("amountItem_transaction").textContent =
-          item.Amount;
+          Number(item.Amount).toLocaleString("id-ID");
         document.getElementById("priceItem_transaction").textContent =
-          `$${item.Price}`;
+          `Rp${Number(item.Price).toLocaleString("id-ID")}/barang`;
         document.getElementById("value_transaction").textContent =
-          `$${item.Amount * item.Price}`;
+          `Rp${Number(item.Amount * item.Price).toLocaleString("id-ID")}`;
       });
 
       history_pool_tags.appendChild(data);
@@ -156,8 +156,8 @@ if (!responseDataItem || !responseDataStat) {
   }
   var  values = responseDataStat.Value;
 
+  totalTag.textContent = Number(responseDataStat.Total).toLocaleString("id-ID");
   valueTag.textContent = "RP" + Number(values).toLocaleString("id-ID");
-  totalTag.textContent = responseDataStat.Total;
 }
 
 if (Signature === null) {
@@ -303,7 +303,7 @@ data_history_item.addEventListener("click", (e) => {
 // button
 button_logout.addEventListener("click", () => {
   sessionStorage.clear();
-  window.location.href = "connect.html";
+  window.location.href = "/frontend/connect.html";
 });
 
 button_add_item.addEventListener("click", async () => {

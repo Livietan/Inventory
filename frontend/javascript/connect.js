@@ -47,7 +47,7 @@ document.getElementById("create").addEventListener("click", async () => {
       sessionStorage.setItem("FirstName", response.FirstName);
       sessionStorage.setItem("LastName", response.LastName);
       sessionStorage.setItem("Signature", response.Signature);
-      window.location.href = "dashboard.html";
+      window.location.href = "/frontend/dashboard.html";
     } else {
       alertPopup(false, response.Detail);
     }
@@ -67,7 +67,7 @@ document.getElementById("connect").addEventListener("click", async () => {
       sessionStorage.setItem("FirstName", response.FirstName);
       sessionStorage.setItem("LastName", response.LastName);
       sessionStorage.setItem("Signature", response.Signature);
-      window.location.href = "dashboard.html";
+      window.location.href = "/frontend/dashboard.html";
     } else {
       alertPopup(false, response.Detail);
     }
